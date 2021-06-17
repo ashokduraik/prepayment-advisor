@@ -17,16 +17,32 @@
   </ion-header>
 
   <div id="container">
-    <strong>Why Prepayment?</strong>
-    <p style="margin-bottom: 30px;">A small prepayment can significantly reduce the loan term or EMI amount</p>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Why Prepayment?</ion-card-title>
+      </ion-card-header>
 
-    <strong>Ready to get advice for your loan?</strong>
-    <p>Please provide the basic information about your loan.</p>
-    <div style="margin-top: 30px;">
-      <ion-button (click)="newLoan()" color="primary">
-        <ion-icon name="add-circle-outline"></ion-icon>
-        <span style="padding-left: 10px;">Loan</span>
-      </ion-button>
-    </div> 
+      <ion-card-content>
+        A small prepayment can significantly reduce the loan term or EMI amount
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card style="margin-top: 40px;">
+      <ion-card-header>
+        <ion-card-title>Ready to get advice for your loan?</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Please provide the basic information about your loan.
+      </ion-card-content>
+
+      <div style="margin: 20px 0 20px 0;">
+        <ion-button (click)="newLoan()" color="primary">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          <span style="padding-left: 10px;">Loan</span>
+        </ion-button>
+      </div>
+    </ion-card>
+     
   </div>
 </ion-content>

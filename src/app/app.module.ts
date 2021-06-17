@@ -4,9 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -21,14 +21,17 @@ import { LoanBasicComponent } from './modules/loan-basic/loan-basic.component';
   entryComponents: [],
   imports: [
     FormsModule,
-    BrowserModule, 
+    BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     IonicModule.forRoot(),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '__ppadb',
+      driverOrder: [Drivers.IndexedDB, 'sqlite', 'websql', Drivers.LocalStorage]
+    }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
-    })
+    }),
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

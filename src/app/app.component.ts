@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
 
 @Component({
@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    await this.storage.create();
     // this.checkLoginStatus();
     // this.listenForLoginEvents();
 
@@ -94,10 +95,4 @@ export class AppComponent implements OnInit {
   //     return this.router.navigateByUrl('/app/tabs/schedule');
   //   });
   // }
-
-  openTutorial() {
-    this.menu.enable(false);
-    this.storage.set('ion_did_tutorial', false);
-    this.router.navigateByUrl('/tutorial');
-  }
 }

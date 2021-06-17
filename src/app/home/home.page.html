@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Prepayment Advisor
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Prepayment Advisor</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <strong>Why Prepayment?</strong>
+    <p style="margin-bottom: 30px;">A small prepayment can significantly reduce the loan term or EMI amount</p>
+
+    <strong>Ready to get advice for your loan?</strong>
+    <p>Please provide the basic information about your loan.</p>
+    <div style="margin-top: 30px;">
+      <ion-button (click)="newLoan()" color="primary">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <span style="padding-left: 10px;">Loan</span>
+      </ion-button>
+    </div> 
+  </div>
+</ion-content>

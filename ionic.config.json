@@ -1,0 +1,8 @@
+{
+  "name": "ppa",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

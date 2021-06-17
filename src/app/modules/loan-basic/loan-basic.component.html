@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Add Loan
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Add Loan</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <form [formGroup]="loanForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating" color="primary">Interest Rate per year</ion-label>
+        <ion-input formControlName="interest" type="number"  spellcheck="false"
+          autocapitalize="off" autofocus="true" required>
+        </ion-input>
+      </ion-item>
+
+      <ion-text color="danger" *ngIf="loanForm.get('interest').dirty || loanForm.get('interest').touched || submitted == true">
+        <p *ngIf="loanForm.get('interest').hasError('required')">
+          <ion-icon name="information-circle-outline"></ion-icon>Interest Rate is required
+        </p>
+        <p *ngIf="loanForm.get('interest').hasError('min')">
+          <ion-icon name="information-circle-outline"></ion-icon>Interest Rate should be greater than 0
+        </p>
+        <p *ngIf="loanForm.get('interest').hasError('max')">
+          <ion-icon name="information-circle-outline"></ion-icon>Interest Rate should be less than 50
+        </p>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating" color="primary">EMI</ion-label>
+        <ion-input formControlName="emi" type="number"  spellcheck="false"
+          autocapitalize="off" autofocus="true" required>
+        </ion-input>
+      </ion-item>
+
+      <ion-text color="danger" *ngIf="loanForm.get('emi').dirty || loanForm.get('emi').touched || submitted == true">
+        <p *ngIf="loanForm.get('emi').hasError('required')">
+          <ion-icon name="information-circle-outline"></ion-icon>EMI is required
+        </p>
+        <p *ngIf="loanForm.get('emi').hasError('min')">
+          <ion-icon name="information-circle-outline"></ion-icon>EMI should be greater than 1
+        </p>
+        <p *ngIf="loanForm.get('emi').hasError('max')">
+          <ion-icon name="information-circle-outline"></ion-icon>EMI should be less than 99999999
+        </p>
+      </ion-text>
+    </ion-list>
+
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="onLogin(loanForm)" type="submit" expand="block">Next</ion-button>
+      </ion-col>
+    </ion-row>
+  </form> 
+</ion-content>

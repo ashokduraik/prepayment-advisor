@@ -11,12 +11,12 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
-import { LoanBasicComponent } from './modules/loan-basic/loan-basic.component';
+import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoanBasicComponent
+    LoanBasicComponent,
   ],
   entryComponents: [],
   imports: [
@@ -27,13 +27,21 @@ import { LoanBasicComponent } from './modules/loan-basic/loan-basic.component';
     IonicModule.forRoot(),
     IonicStorageModule.forRoot({
       name: '__ppadb',
-      driverOrder: [Drivers.IndexedDB, 'sqlite', 'websql', Drivers.LocalStorage]
+      driverOrder: [
+        Drivers.IndexedDB,
+        'sqlite',
+        'websql',
+        Drivers.LocalStorage
+      ]
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production
     }),
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{
+    provide: RouteReuseStrategy,
+    useClass: IonicRouteStrategy
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

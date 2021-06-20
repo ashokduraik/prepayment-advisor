@@ -99,3 +99,78 @@ p {
   vertical-align: middle;
   padding: 0 5px;
 }
+
+.label {
+  padding: 15px 0 0 15px;
+  font-size: 15px;
+  display: block;
+}
+
+ion-input {
+  border-color: #8e8e8e;
+  border-width: thin;
+  border-style: solid;
+  border-radius: 5px;
+  margin: 5px 15px 15px 15px;
+  width: auto !important;
+}
+
+ion-radio {
+  margin-right: 10px;
+  margin-left: 0px;
+}
+
+.radio-with-ul ul {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.radio-with-ul ion-label {
+  margin-bottom: 0px;
+}
+
+.radio-with-ul ion-radio {
+  margin-bottom: 0px;
+}
+
+.radio-with-ul .radio-label {
+  padding-left: 15px;
+  color: #000;
+  padding-top: 5px;
+  padding-bottom: 10px;
+}
+
+.ion-align-self-end {
+  text-align: end;
+}
+
+.speaker-card h2 {
+  margin-top: 0px;
+}
+
+.speaker-card .speaker-item p {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.speaker-card ion-card-header {
+  padding: 0;
+}
+
+.speaker-card ion-card-content {
+  flex: 1 1 auto;
+  padding: 0;
+}
+
+.ios ion-list {
+  margin-bottom: 10px;
+}
+
+.md ion-list {
+  border-top: 1px solid var(--ion-color-step-150, #d7d8da);
+  padding: 0;
+}
+
+ion-checkbox {
+  margin-right: 10px;
+}

@@ -1,0 +1,46 @@
+#container {
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+  margin: 0;
+}
+
+#container a {
+  text-decoration: none;
+}
+
+.speaker-card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Due to the fact the cards are inside of columns the margins don't overlap
+ * properly so we want to remove the extra margin between cards
+ */
+ion-col:not(:last-of-type) .speaker-card {
+  margin-bottom: 0;
+}
+
+.speaker-card .speaker-item {
+  --min-height: 85px;
+}
+
+.speaker-card .speaker-item h2 {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}

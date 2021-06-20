@@ -19,19 +19,19 @@
     <ion-card>
       <ion-list>
 
-        <span class="label">Enter Interest Rate per year</span>
-        <ion-input formControlName="interest" type="number" autofocus="true" required></ion-input>
+        <span class="label">Enter Rate of Interest per year</span>
+        <ion-input formControlName="interestRate" type="number" autofocus="true" required></ion-input>
 
         <ion-text color="danger"
-          *ngIf="loanForm.get('interest').dirty || loanForm.get('interest').touched || submitted == true">
-          <p *ngIf="loanForm.get('interest').hasError('required')">
-            <ion-icon name="information-circle-outline"></ion-icon>Interest Rate is required
+          *ngIf="loanForm.get('interestRate').dirty || loanForm.get('interestRate').touched || submitted == true">
+          <p *ngIf="loanForm.get('interestRate').hasError('required')">
+            <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest is required
           </p>
-          <p *ngIf="loanForm.get('interest').hasError('min')">
-            <ion-icon name="information-circle-outline"></ion-icon>Interest Rate should be greater than 0
+          <p *ngIf="loanForm.get('interestRate').hasError('min')">
+            <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be greater than 0
           </p>
-          <p *ngIf="loanForm.get('interest').hasError('max')">
-            <ion-icon name="information-circle-outline"></ion-icon>Interest Rate should be less than 50
+          <p *ngIf="loanForm.get('interestRate').hasError('max')">
+            <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be less than 50
           </p>
         </ion-text>
 
@@ -48,19 +48,36 @@
           <p *ngIf="loanForm.get('emi').hasError('max')">
             <ion-icon name="information-circle-outline"></ion-icon>EMI should be less than 99999999
           </p>
+          <p *ngIf="minEmi >loanForm.get('emi').value">
+            <ion-icon name="information-circle-outline"></ion-icon>As per your loan amount, your minimum EMI should be
+            greater than {{minEmi}}
+          </p>
         </ion-text>
 
         <ion-list>
-          <ion-radio-group formControlName="amountType">
-            <ion-item lines="none">
-              <ion-label text-wrap>I know the Loan amount and all the EMI paid amount</ion-label>
-              <ion-radio slot="start" value="FULL_AMOUNT"></ion-radio>
-            </ion-item>
+          <ion-radio-group formControlName="amountType" class="radio-with-ul">
+            <ion-card>
+              <ion-item lines="none">
+                <ion-label text-wrap>Please select this if you know</ion-label>
+                <ion-radio slot="start" value="FULL_TRANS"></ion-radio>
+              </ion-item>
+              <ul>
+                <li>All the amount paid as EMI</li>
+                <li>All interest rate movement with date</li>
+                <li>All the prepayment or part payment with date if paid any</li>
+                <li>All the loan topup or disbursement if you got any</li>
+              </ul>
+              <div class="radio-label">Without above information we can't able calculate the outstanding amount
+                correctly</div>
+            </ion-card>
 
-            <ion-item lines="none">
-              <ion-label text-wrap>I know the current outstanding amount only</ion-label>
-              <ion-radio slot="start" value="OUTSTANDING_AMOUNT"></ion-radio>
-            </ion-item>
+            <ion-card style="margin-top: 30px;">
+              <ion-item lines="none">
+                <ion-label text-wrap>Don't worry if you just know the current outstanding, Just select this and plan for
+                  the future</ion-label>
+                <ion-radio slot="start" value="OUTSTANDING_AMOUNT"></ion-radio>
+              </ion-item>
+            </ion-card>
           </ion-radio-group>
         </ion-list>
 
@@ -71,7 +88,7 @@
           </p>
         </ion-text>
 
-        <span class="label" *ngIf="loanForm.get('amountType').value == 'FULL_AMOUNT'">Enter Loan amount</span>
+        <span class="label" *ngIf="loanForm.get('amountType').value == 'FULL_TRANS'">Enter Loan amount</span>
         <span class="label" *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT'">Enter Current Outstanding
           amount</span>
         <ion-input *ngIf="loanForm.get('amountType').value" formControlName="amount" type="number" required></ion-input>
@@ -93,7 +110,7 @@
         </ion-text>
 
         <ion-item lines="none">
-          <ion-label *ngIf="loanForm.get('amountType').value == 'FULL_AMOUNT'">EMI started month and year</ion-label>
+          <ion-label *ngIf="loanForm.get('amountType').value == 'FULL_TRANS'">EMI started month and year</ion-label>
           <ion-label *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT'">Outstanding amount as of
           </ion-label>
           <ion-datetime *ngIf="loanForm.get('amountType').value" displayFormat="MMMM YYYY" formControlName="startDate"

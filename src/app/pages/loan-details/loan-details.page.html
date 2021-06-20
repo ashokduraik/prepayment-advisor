@@ -1,0 +1,111 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Loan Details
+    </ion-title>
+    <ion-buttons *ngIf="loan && loan._id" slot="end">
+      <ion-button (click)="deleteLoan();" color="danger">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Loan Details</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card class="speaker-card" *ngIf="loan">
+    <ion-card-header color="primary">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>Loan Amount</div>
+            <h2>{{ loan.amount | appCurrency }}</h2>
+          </ion-col>
+          <ion-col>
+            <div>Balance Term</div>
+            <h2>{{ loan.balanceTerm }}<span style="font-size: 15px;"> months</span></h2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Total Principal Paid
+          </ion-col>
+          <ion-col size="5" class="ion-align-self-end" style="color: green;">
+            {{ loan.principalPaid | appCurrency }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Total Interest Paid
+          </ion-col>
+          <ion-col size="5" class="ion-align-self-end" style="color: red;">
+            {{ loan.interestPaid | appCurrency }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Balance Amount
+          </ion-col>
+          <ion-col size="5" class="ion-align-self-end">
+            {{ loan.balanceAmount | appCurrency }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid *ngIf="instalments && instalments.length" fixed>
+    <ion-card *ngFor="let emi of instalments; let indexOfele=index;" (click)="onEmiClick(emi)" class="speaker-card">
+      <ion-card-header color="light">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
+            </ion-col>
+            <ion-col>
+              Term: {{emi.term}}
+            </ion-col>
+            <ion-col size="2" style="text-align: end;">
+              {{ emi.interestRate }}%
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row *ngIf="indexOfele==0">
+          <ion-col>EMI</ion-col>
+          <ion-col>Principal Paid</ion-col>
+          <ion-col>Interest Paid</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{ emi.amount | appCurrency }}</ion-col>
+          <ion-col style="color: green;">{{ emi.principalPaid | appCurrency }}</ion-col>
+          <ion-col style="color: red;">{{ emi.interestPaid | appCurrency }}</ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row *ngIf="emi.topupAmount > 0">
+          <ion-col class="ion-align-self-start">
+            Topup Amount
+          </ion-col>
+          <ion-col size="5" class="ion-align-self-end">
+            {{ emi.topupAmount | appCurrency }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </ion-grid>
+</ion-content>

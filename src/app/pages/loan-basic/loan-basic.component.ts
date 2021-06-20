@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { AppUtils } from '../../services/app.utils';
@@ -13,9 +14,11 @@ import { AppService } from '../../services/app.services';
   styleUrls: ['./loan-basic.component.scss'],
 })
 export class LoanBasicComponent implements OnInit {
+  _id: string;
   loanForm: FormGroup;
   submitted = false;
-  defaultHref = '';
+  minEmi = null;
+  defaultHref = 'home';
   maxDate = moment().endOf('month').format("YYYY-MM-DD");
   days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
 
@@ -23,6 +26,7 @@ export class LoanBasicComponent implements OnInit {
     public formBuilder: FormBuilder,
     private storage: AppStorage,
     private service: AppService,
+    private router: Router
   ) { }
 
   ionViewDidEnter() {
@@ -30,9 +34,8 @@ export class LoanBasicComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     this.loanForm = this.formBuilder.group({
-      interest: new FormControl('', Validators.compose([
+      interestRate: new FormControl('', Validators.compose([
         Validators.max(50),
         Validators.min(0.1),
         Validators.required
@@ -57,23 +60,24 @@ export class LoanBasicComponent implements OnInit {
       //   Validators.required
       // ])),
     });
-
-    const loans = await this.storage.getLoans();
-    console.log("loans", loans);
   }
 
   async save(loanForm: FormGroup) {
     this.submitted = true;
     if (!loanForm.valid) return;
 
+    this.minEmi = null;
     const loan = loanForm.value;
+    const interest = (loan.interestRate / (100 * 12)) * loan.amount;
+    this.minEmi = interest * 1.1;
+    if (this.minEmi > loan.emi) return
+
     loan._id = AppUtils.getUid();
     loan.startDate = (new Date(loan.startDate)).toISOString();
     loan.isAllInfoCollected = false;
     LoanUtils.fillInstalments(loan);
-    console.log(loan);
     await this.storage.createLoan(loan);
     this.service.showToast('Your Loan details is saved successfully');
+    this.router.navigateByUrl('home/' + loan._id, { skipLocationChange: true });
   }
-
 }

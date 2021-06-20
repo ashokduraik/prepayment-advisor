@@ -1,0 +1,126 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Prepayment Advisor
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Prepayment Advisor</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
+      refreshingSpinner="circles" refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-grid *ngIf="loans && loans.length" fixed>
+    <ion-card *ngFor="let loan of loans" (click)="loanOther(loan)" class="speaker-card">
+      <ion-card-header color="primary">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <div>Loan Amount</div>
+              <h2>{{ loan.amount | appCurrency }}</h2>
+            </ion-col>
+            <ion-col>
+              <div>Rate of Interest</div>
+              <h2>{{loan.interestRate}}%</h2>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              EMI
+            </ion-col>
+            <ion-col size="5" class="ion-align-self-end">
+              {{ loan.emi | appCurrency }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              Principal Paid
+            </ion-col>
+            <ion-col size="5" class="ion-align-self-end" style="color: green;">
+              {{ loan.principalPaid | appCurrency }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              Interest Paid
+            </ion-col>
+            <ion-col size="5" class="ion-align-self-end" style="color: red;">
+              {{ loan.interestPaid | appCurrency }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              Balance Term
+            </ion-col>
+            <ion-col size="5" class="ion-align-self-end">
+              {{ loan.balanceTerm }} months
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-align-self-start">
+              Balance Amount
+            </ion-col>
+            <ion-col size="5" class="ion-align-self-end">
+              {{ loan.balanceAmount | appCurrency }}
+            </ion-col>
+          </ion-row>
+          <!-- <ion-row>
+            <ion-col>
+              <ion-button (click)="loanBasic(loan)">Edit Basic Details</ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button >Edit Other Details</ion-button>
+            </ion-col>
+          </ion-row> -->
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </ion-grid>
+
+  <div *ngIf="!loans || !loans.length" id="container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Why Prepayment?</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        A small prepayment can significantly reduce the loan term or EMI amount
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card style="margin-top: 40px;">
+      <ion-card-header>
+        <ion-card-title>Ready to get advice for your loan?</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        Please provide the basic information about your loan.
+      </ion-card-content>
+
+      <div style="margin: 20px 0 20px 0;">
+        <ion-button (click)="newLoan()" color="primary">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          <span style="padding-left: 10px;">Loan</span>
+        </ion-button>
+      </div>
+    </ion-card>
+     
+  </div>
+</ion-content>

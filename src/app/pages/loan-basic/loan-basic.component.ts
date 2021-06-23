@@ -56,9 +56,10 @@ export class LoanBasicComponent implements OnInit {
       startDate: new FormControl(null, Validators.compose([
         Validators.required
       ])),
-      // emiDay: new FormControl(null, Validators.compose([
-      //   Validators.required
-      // ])),
+      emiDay: new FormControl(null, Validators.compose([
+        Validators.required
+      ])),
+      name: new FormControl(null),
     });
   }
 
@@ -78,6 +79,6 @@ export class LoanBasicComponent implements OnInit {
     LoanUtils.fillInstalments(loan);
     await this.storage.createLoan(loan);
     this.service.showToast('Your Loan details is saved successfully');
-    this.router.navigateByUrl('home/' + loan._id, { skipLocationChange: true });
+    this.router.navigateByUrl('home');
   }
 }

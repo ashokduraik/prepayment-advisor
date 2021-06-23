@@ -1,38 +1,34 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ActionSheetController, AlertController } from '@ionic/angular';
+import { ActionSheetController, AlertController, PopoverController } from '@ionic/angular';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
-import { AppService } from '../../services/app.services';
+import { PopoverPage } from '../loan-option-popover/loan-option-popover';
 
 @Component({
   selector: 'app-loan-details',
   templateUrl: './loan-details.page.html',
   styleUrls: ['./loan-details.page.scss'],
 })
-export class LoanDetailsPage implements OnInit {
+export class LoanDetailsPage {
   loan: any;
   instalments: any;
-  defaultHref = '';
+  defaultHref = 'home';
 
   constructor(
     private storage: AppStorage,
     private router: Router,
     private datePipe: DatePipe,
-    private service: AppService,
+    public popoverCtrl: PopoverController,
     private activatedRoute: ActivatedRoute,
     public alertController: AlertController,
     public actionSheetController: ActionSheetController
   ) { }
 
-  ionViewDidEnter() {
-    this.defaultHref = `home`;
-  }
-
-  async ngOnInit() {
+  async ionViewWillEnter() {
     const _id = this.activatedRoute.snapshot.paramMap.get('id');
     if (!_id) {
       this.router.navigateByUrl("home");
@@ -40,39 +36,26 @@ export class LoanDetailsPage implements OnInit {
     }
 
     this.loan = await this.storage.getLoan(_id);
-    LoanUtils.calculateLoanDetails(this.loan);
-    console.log("loans", this.loan);
     if (!this.loan) {
       this.router.navigateByUrl("home");
       return;
     }
 
+    LoanUtils.calculateLoanDetails(this.loan);
     this.instalments = (Object.assign([], this.loan.instalments)).reverse();
-    console.log("this.instalments", this.instalments);
   }
 
-  async deleteLoan() {
-    const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
-      header: 'Confirmation',
-      message: 'Are you sure want to delete this loan details?',
-      buttons: [{
-        text: 'No',
-        role: 'No',
-      }, {
-        text: 'Yes',
-        role: 'Yes',
-      }]
+  async presentPopover(event: Event) {
+    const popover = await this.popoverCtrl.create({
+      component: PopoverPage,
+      componentProps: {_id: this.loan._id},
+      event
     });
+    await popover.present();
+  }
 
-    await alert.present();
-    const { role } = await alert.onDidDismiss();
-  
-    if (role == 'Yes') {
-      await this.storage.deleteLoan(this.loan);
-      this.service.showToast('Your Loan details is deleted successfully');
-      this.router.navigateByUrl(`home`, { skipLocationChange: true });
-    }
+  playArea() {
+    this.router.navigateByUrl(`play-area/${this.loan._id}`);
   }
 
   async onEmiClick(emi) {
@@ -86,6 +69,12 @@ export class LoanDetailsPage implements OnInit {
 
     if (role === 'topup') {
       this.router.navigateByUrl(`loan-topup/${this.loan._id}/${emi._id}`);
+    } else if (role === 'callogic') {
+      this.router.navigateByUrl(`calculation-logic/${this.loan._id}/${emi._id}`);
+    } else if (role === 'edit') {
+      this.router.navigateByUrl(`emi-edit/${this.loan._id}/${emi._id}`);
+    } else if (role === 'prepayment') {
+      this.router.navigateByUrl(`prepayment/${this.loan._id}/${emi._id}`);
     }
   }
 
@@ -101,11 +90,17 @@ export class LoanDetailsPage implements OnInit {
         role: 'topup',
         text: 'Loan topup details',
         icon: 'bag-handle-outline',
-        cssClass: 'ion-color-danger',
+        cssClass: 'action-sheet-danger',
       }, {
         role: 'prepayment',
         text: 'Prepayment details',
         icon: 'cash-outline',
+        cssClass: 'action-sheet-primary',
+      }, {
+        role: 'callogic',
+        text: 'Calculation Logic',
+        icon: 'calculator-outline',
+        cssClass: 'action-sheet-primary',
       }, {
         text: 'Cancel',
         icon: 'close',

@@ -14,9 +14,9 @@ import { AppService } from '../../services/app.services';
 export class LoanTopupPage implements OnInit {
   emi: any;
   loan: any;
+  newEmi = 0;
   noEmi = false;
   topups: any = [];
-  newEmi = 0;
   emiIndex = null;
   submitted = false;
   loanDetails: any;
@@ -40,13 +40,13 @@ export class LoanTopupPage implements OnInit {
     this.defaultHref = _id ? 'loan-details/' + _id : 'home';
 
     if (!_id || !emiid) {
-      this.router.navigateByUrl(this.defaultHref, { skipLocationChange: true });
+      this.router.navigateByUrl(this.defaultHref);
       return;
     }
 
     this.loan = await this.storage.getLoan(_id);
     if (!this.loan) {
-      this.router.navigateByUrl(this.defaultHref, { skipLocationChange: true });
+      this.router.navigateByUrl(this.defaultHref);
       return;
     }
 
@@ -56,7 +56,7 @@ export class LoanTopupPage implements OnInit {
       return true;
     });
     if (!this.emi) {
-      this.router.navigateByUrl(this.defaultHref, { skipLocationChange: true });
+      this.router.navigateByUrl(this.defaultHref);
       return;
     }
 
@@ -65,12 +65,14 @@ export class LoanTopupPage implements OnInit {
     this.minDate = moment(this.emi.emiDate).startOf('month').format("YYYY-MM-DD");
     this.maxDate = moment(this.emi.emiDate).endOf('month').format("YYYY-MM-DD");
     this.topups = JSON.parse(JSON.stringify(this.emi.topups || []));
-    this.topups.forEach(t => this.onDateChange(t));
+    this.newEmiAmount = this.emi.newEmiAmount;
 
-    this.topups.push({
-      amount: '',
-      topupDate: (new Date(this.emi.emiDate)).toISOString()
-    });
+    if (!this.topups.length) {
+      this.topups.push({
+        amount: '',
+        topupDate: (new Date(this.emi.emiDate)).toISOString()
+      });
+    }
   }
 
   valueChanged() {
@@ -84,7 +86,7 @@ export class LoanTopupPage implements OnInit {
     this.topupChanged = true;
     topups.forEach(t => topupAmount += t.amount);
     const emiDetails = this.loanDetails.instalments.find(e => e._id === this.emi._id);
-    const balanceTerm = this.loanDetails.balanceTerm + this.loan.instalments.length - emiDetails.term + 5;
+    const balanceTerm = this.loanDetails.balanceTerm + this.loan.instalments.length - emiDetails.term + 1;
     const emiAdd = LoanUtils.getEMIAmount(topupAmount, balanceTerm, this.emi.interestRate);
     this.approximateEmi = emiAdd + this.loan.instalments[this.emiIndex - 1].amount;
   }
@@ -104,34 +106,31 @@ export class LoanTopupPage implements OnInit {
     return false;
   }
 
-  onDateChange(topup) {
-    topup.interest = 0;
-    if (!topup.amount || !topup.topupDate) return;
-
-    const mInterest = this.emi.interestRate / (12 * 100);
-    const dInterest = mInterest / moment(this.emi.emiDate).daysInMonth();
-    const noOfDay = moment(topup.topupDate).endOf('month').diff(topup.topupDate, 'days') + 1;
-    topup.interest = topup.amount * noOfDay * dInterest;
-  }
-
   async save() {
     this.submitted = true;
     const topups = this.topups.filter(t => t.amount && t.topupDate);
     if (topups.length && this.topupChanged && !this.noEmi && !this.newEmiAmount) return;
-    let topupInterest = 0;
 
-    topups.forEach(t => {
-      topupInterest += t.interest;
-    });
+    const lastMonthEmi = this.loan.instalments[this.emiIndex - 1].amount;
 
-    if (this.topupChanged && !this.noEmi && this.newEmiAmount) {
+    if (!this.noEmi && this.newEmiAmount && topups.length) {
       this.loan.emi = this.newEmiAmount;
-      this.emi.amount = this.newEmiAmount + topupInterest;
+      this.emi.newEmiAmount = this.newEmiAmount;
+      const topupDate = topups[0].topupDate;
+      
+      /** if topup were added before the emi day then new emi will be applied in the current month itself */
+      if (this.emi.emiDay > moment(topupDate).get('date')) {
+        this.emi.amount = this.newEmiAmount;
+      } else {
+        this.emi.amount = lastMonthEmi;
+      }
     } else if (!topups.length) {
-      this.loan.emi = this.loan.instalments[this.emiIndex - 1].amount;
-      this.emi.amount = this.loan.emi;
+      this.emi.newEmiAmount = 0;
+      this.loan.emi = lastMonthEmi;
+      this.emi.amount = lastMonthEmi;
     }
 
+    /** if any change in EMI, that has to be applied in the all next months  */
     for (let i = this.emiIndex + 1; i < this.loan.instalments.length; i++) {
       this.loan.instalments[i].amount = this.loan.emi;
       this.loan.instalments[i].topups = [];

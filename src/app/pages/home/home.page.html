@@ -16,20 +16,17 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Pull to refresh"
-      refreshingSpinner="circles" refreshingText="Refreshing...">
-    </ion-refresher-content>
-  </ion-refresher>
-
   <ion-grid *ngIf="loans && loans.length" fixed>
     <ion-card *ngFor="let loan of loans" (click)="loanOther(loan)" class="speaker-card">
       <ion-card-header color="primary">
         <ion-grid>
+          <ion-row *ngIf="loan.name">
+            <ion-col class="loan-name">{{loan.name}}</ion-col>
+          </ion-row>
           <ion-row>
             <ion-col>
               <div>Loan Amount</div>
-              <h2>{{ loan.amount | appCurrency }}</h2>
+              <h2>{{ loan.amount | appCurrency: 'noDecimal' }}</h2>
             </ion-col>
             <ion-col>
               <div>Rate of Interest</div>
@@ -67,10 +64,10 @@
           </ion-row>
           <ion-row>
             <ion-col class="ion-align-self-start">
-              Balance Term
+              Balance Terms
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.balanceTerm }} months
+              {{ loan.balanceTerm | monthToYear}}
             </ion-col>
           </ion-row>
           <ion-row>
@@ -111,7 +108,9 @@
       </ion-card-header>
 
       <ion-card-content>
-        Please provide the basic information about your loan.
+        Please provide the basic information about your loan, then click on the <ion-icon slot="icon-only"
+          name="play-circle-outline" color="success" class="play-area"></ion-icon> Play Area icon to see the prepayment
+        advantages
       </ion-card-content>
 
       <div style="margin: 20px 0 20px 0;">
@@ -121,6 +120,16 @@
         </ion-button>
       </div>
     </ion-card>
-     
+     <ion-card style="margin-top: 40px;">
+      <ion-card-header>
+        <ion-card-title>Don't want to give all info?</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>Just go to
+        <ion-button (click)="playArea();" color="success" style="margin-bottom: 15px;">
+          <ion-icon slot="icon-only" name="play-circle-outline"></ion-icon>
+        </ion-button>
+        Play Area in the menu to see the prepayment advantages
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-content>

@@ -5,6 +5,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
 
+import { AppStorage } from './services/app.storage';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,9 +18,14 @@ export class AppComponent implements OnInit {
     title: 'Add Loan',
     url: 'loan-basic',
     icon: 'add-circle'
+  }, {
+    title: 'Play Area',
+    url: 'play-area',
+    icon: 'play-circle'
   }];
+
   loggedIn = false;
-  dark = false;
+  profile: any;
 
   constructor(
     private menu: MenuController,
@@ -26,6 +33,7 @@ export class AppComponent implements OnInit {
     private router: Router,
     private storage: Storage,
     private swUpdate: SwUpdate,
+    private appStorage: AppStorage,
     private toastCtrl: ToastController,
   ) {
     this.initializeApp();
@@ -33,6 +41,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     await this.storage.create();
+    this.setProfileData();
     // this.checkLoginStatus();
     // this.listenForLoginEvents();
 
@@ -62,6 +71,14 @@ export class AppComponent implements OnInit {
       //this.statusBar.styleDefault();
       //this.splashScreen.hide();
     });
+  }
+
+  async setProfileData() {
+    this.profile = await this.appStorage.getProfile() || {};
+  }
+
+  async modeChanged() {
+    await this.appStorage.saveProfile(this.profile);
   }
 
   // checkLoginStatus() {

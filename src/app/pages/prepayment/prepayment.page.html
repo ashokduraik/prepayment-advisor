@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Prepayment
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Prepayment</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card *ngFor="let pp of prepayments;">
+    <ion-list>
+
+      <span class="label">Enter the Prepayments amount</span>
+      <ion-input [(ngModel)]="pp.amount" type="number" (change)="valueChanged();" placeholder="10000"></ion-input>
+
+      <ion-item lines="none">
+        <ion-label>Select Date</ion-label>
+        <ion-datetime displayFormat="DD MMMM YYYY" [(ngModel)]="pp.prepaymentDate" min="{{minDate}}" max="{{maxDate}}">
+        </ion-datetime>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card>
+    <ion-list>
+      <ion-item *ngIf="prepaymentChanged">
+        <ion-checkbox [(ngModel)]="noEmi" color="primary"></ion-checkbox>
+        <ion-label text-wrap>No Change in EMI. Only term needs to be decreased</ion-label>
+      </ion-item>
+
+      <div *ngIf="prepaymentChanged">
+        <!-- <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency}}, if no change in
+          term)</span> -->
+        <span class="label">Enter the new EMI amount</span>
+        <ion-input [(ngModel)]="newEmiAmount" type="number" required></ion-input>
+
+        <ion-text color="danger" *ngIf="!newEmiAmount && !noEmi && submitted == true">
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>New EMI is required
+          </p>
+        </ion-text>
+      </div>
+
+      <ion-button (click)="save()" type="submit" expand="block">Save</ion-button>
+    </ion-list>
+  </ion-card>
+</ion-content>

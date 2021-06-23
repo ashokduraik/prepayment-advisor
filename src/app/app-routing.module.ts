@@ -1,15 +1,12 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { EmiEditPage } from './pages/emi-edit/emi-edit.page';
 import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
 
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
-  },
-  {
-    path: 'home/:id',
     loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
   },
   {
@@ -29,6 +26,35 @@ const routes: Routes = [
   {
     path: 'loan-topup/:loanid/:emiid',
     loadChildren: () => import('./pages/loan-topup/loan-topup.module').then(m => m.LoanTopupPageModule)
+  },
+  {
+    path: 'calculation-logic/:loanid/:emiid',
+    loadChildren: () => import('./pages/calculation-logic/calculation-logic.module').then( m => m.CalculationLogicPageModule)
+  },
+  {
+    path: 'emi-edit/:loanid/:emiid',
+    component: EmiEditPage,
+    //loadChildren: () => import('./pages/emi-edit/emi-edit.module').then( m => m.EmiEditPageModule)
+  },
+  {
+    path: 'prepayment/:loanid/:emiid',
+    loadChildren: () => import('./pages/prepayment/prepayment.module').then( m => m.PrepaymentPageModule)
+  },
+  {
+    path: 'play-area',
+    loadChildren: () => import('./pages/play-area/play-area.module').then( m => m.PlayAreaPageModule)
+  },
+  {
+    path: 'play-area/:id',
+    loadChildren: () => import('./pages/play-area/play-area.module').then( m => m.PlayAreaPageModule)
+  },
+  {
+    path: 'statistics/:id',
+    loadChildren: () => import('./pages/statistics/statistics.module').then( m => m.StatisticsPageModule)
+  },
+  {
+    path: 'play-area-filter',
+    loadChildren: () => import('./pages/play-area-filter/play-area-filter.module').then( m => m.PlayAreaFilterPageModule)
   }
 ];
 

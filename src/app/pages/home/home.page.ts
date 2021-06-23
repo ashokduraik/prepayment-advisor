@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoanUtils } from '../../services/loan.utils';
@@ -16,7 +16,7 @@ export class HomePage {
     private storage: AppStorage,
   ) { }
 
-  async ngOnInit() {
+  async ionViewWillEnter() {
     this.loans = await this.storage.getLoans() || [];
 
     this.loans.forEach(loan => {
@@ -28,24 +28,19 @@ export class HomePage {
     this.loans.forEach(loan => {
       LoanUtils.calculateLoanDetails(loan);
     });
-    console.log("this.loans", this.loans);
+    console.log("this.loans - home", this.loans);
   }
 
   newLoan() {
     this.router.navigateByUrl("loan-basic");
   }
 
+  playArea() {
+    this.router.navigateByUrl("play-area");
+  }
+
   loanOther(loan) {
     if (!loan || !loan._id) return;
     this.router.navigateByUrl("loan-details/" + loan._id);
-  }
-
-  doRefresh(event) {
-    console.log('Begin async operation');
-
-    setTimeout(() => {
-      console.log('Async operation has ended');
-      event.target.complete();
-    }, 20000);
   }
 }

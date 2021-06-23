@@ -20,7 +20,7 @@
       <ion-list>
 
         <span class="label">Enter Rate of Interest per year</span>
-        <ion-input formControlName="interestRate" type="number" autofocus="true" required></ion-input>
+        <ion-input formControlName="interestRate" type="number" autofocus="true" placeholder="7.5" required></ion-input>
 
         <ion-text color="danger"
           *ngIf="loanForm.get('interestRate').dirty || loanForm.get('interestRate').touched || submitted == true">
@@ -36,7 +36,7 @@
         </ion-text>
 
         <span class="label">Enter EMI amount</span>
-        <ion-input formControlName="emi" type="number" required></ion-input>
+        <ion-input formControlName="emi" type="number" placeholder="30000" required></ion-input>
 
         <ion-text color="danger" *ngIf="loanForm.get('emi').dirty || loanForm.get('emi').touched || submitted == true">
           <p *ngIf="loanForm.get('emi').hasError('required')">
@@ -91,7 +91,7 @@
         <span class="label" *ngIf="loanForm.get('amountType').value == 'FULL_TRANS'">Enter Loan amount</span>
         <span class="label" *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT'">Enter Current Outstanding
           amount</span>
-        <ion-input *ngIf="loanForm.get('amountType').value" formControlName="amount" type="number" required></ion-input>
+        <ion-input *ngIf="loanForm.get('amountType').value" formControlName="amount" type="number" placeholder="500000" required></ion-input>
 
         <ion-text color="danger"
           *ngIf="loanForm.get('amount').dirty || loanForm.get('amount').touched || submitted == true">
@@ -114,7 +114,7 @@
           <ion-label *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT'">Outstanding amount as of
           </ion-label>
           <ion-datetime *ngIf="loanForm.get('amountType').value" displayFormat="MMMM YYYY" formControlName="startDate"
-            min="2010-01-01" max="{{maxDate}}" required></ion-datetime>
+            min="2010-01-01" max="{{maxDate}}" placeholder="Select Date" required></ion-datetime>
         </ion-item>
 
         <ion-text color="danger"
@@ -124,9 +124,9 @@
           </p>
         </ion-text>
 
-        <!-- <ion-item>
-          <ion-label>EMI Day</ion-label>
-          <ion-select formControlName="emiDay" placeholder="Select One" required>
+        <ion-item lines="none">
+          <ion-label>EMI debit day</ion-label>
+          <ion-select formControlName="emiDay" placeholder="Select" style="max-width: none;" required>
             <ion-select-option *ngFor="let day of days" [value]="day">{{day}} of every month</ion-select-option>
           </ion-select>
         </ion-item>
@@ -136,7 +136,10 @@
           <p *ngIf="loanForm.get('emiDay').hasError('required')">
             <ion-icon name="information-circle-outline"></ion-icon>EMI Day is required
           </p>
-        </ion-text> -->
+        </ion-text>
+
+        <span class="label">Loan Name (Optional)</span>
+        <ion-input formControlName="name" placeholder="Home Loan or Car Loan"></ion-input>
       </ion-list>
 
       <ion-row>

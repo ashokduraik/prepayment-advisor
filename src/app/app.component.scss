@@ -174,3 +174,112 @@ ion-radio {
 ion-checkbox {
   margin-right: 10px;
 }
+
+.action-sheet-danger {
+  color: var(--ion-color-danger) !important;
+  --color: var(--ion-color-danger) !important;
+}
+
+.action-sheet-success {
+  color: var(--ion-color-success) !important;
+  --color: var(--ion-color-success) !important;
+}
+
+.action-sheet-primary {
+  color: var(--ion-color-primary) !important;
+  --color: var(--ion-color-primary) !important;
+}
+
+.inner-card {
+  margin: 5px 0 0 0;
+  padding: 5px;
+}
+
+.color-primary {
+  background-color: var(--ion-color-primary) !important;
+  color: var(--ion-color-primary-contrast) !important;
+}
+
+.color-success {
+  background-color: var(--ion-color-success) !important;
+  color: var(--ion-color-primary-contrast) !important;
+}
+
+.heightlight {
+  font-size: larger;
+  font-weight: 800;
+  color: green;
+}
+
+.big-font {
+  font-size: larger;
+  font-weight: 800;
+}
+
+.bigger-font {
+  font-size: x-large;
+  font-weight: bolder;
+}
+
+.popover-viewport ion-label {
+  margin-left: 10px;
+}
+
+.ppa-tabs-container {
+  border-radius: 3px;
+  overflow: hidden;
+  input {
+    display: none;
+    &:checked + label {
+      //background: #eee;
+      color: #1E88E5;
+      &::after {
+        opacity: 1;
+      } 
+    }
+    @for $i from 1 through 4 {
+      &#tab#{$i}:checked {
+        ~ .line {
+          left: #{($i - 1) * 25%};
+        }
+        ~ .content-container #c#{$i} {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  label {
+    display: inline-block;
+    font-size: 16px;
+    height: 36px;
+    line-height: 36px;
+    min-width: 25%;
+    text-align: center;
+    color: var(--ion-color-light-contrast);
+    position: relative;
+    transition: 0.25s ease;
+    cursor: pointer;
+    padding-right: 10px;
+    &::after {
+      content: "";
+      height: 2px;
+      width: 100%;
+      position: absolute;
+      display: block;
+      background: #1E88E5;
+      bottom: 0;
+      opacity: 0;
+      left: 0;
+      transition: 0.25s ease;
+    }
+    i {
+      padding: 5px !important;
+    }
+  }
+}
+
+.loan-name {
+  text-align: center;
+  padding: 0px;
+}

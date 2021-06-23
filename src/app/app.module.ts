@@ -11,11 +11,13 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
+import { EmiEditPage } from './pages/emi-edit/emi-edit.page';
 import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    EmiEditPage,
     LoanBasicComponent,
   ],
   entryComponents: [],

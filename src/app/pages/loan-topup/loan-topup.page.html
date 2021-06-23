@@ -20,19 +20,13 @@
     <ion-list>
 
       <span class="label">Enter the topup amount</span>
-      <ion-input [(ngModel)]="topup.amount" type="number" (change)="valueChanged();onDateChange(topup);"></ion-input>
+      <ion-input [(ngModel)]="topup.amount" type="number" (change)="valueChanged();" placeholder="100000" ></ion-input>
 
       <ion-item lines="none">
         <ion-label>Select Date</ion-label>
         <ion-datetime displayFormat="DD MMMM YYYY" [(ngModel)]="topup.topupDate" min="{{minDate}}" max="{{maxDate}}"
-          (ionChange)="onDateChange(topup);" required></ion-datetime>
+           required></ion-datetime>
       </ion-item>
-
-      <ion-text color="warning" *ngIf="topup.interest > 0">
-        <p style="padding: 10px;">
-          Additional interest for {{emi.emiDate | date: 'MMMM'}} month is {{topup.interest | appCurrency}}
-        </p>
-      </ion-text>
     </ion-list>
   </ion-card>
 
@@ -40,11 +34,11 @@
     <ion-list>
       <ion-item *ngIf="topupChanged">
         <ion-checkbox [(ngModel)]="noEmi" color="primary"></ion-checkbox>
-        <ion-label text-wrap>No Change in EMI. Only term has to be increased</ion-label>
+        <ion-label text-wrap>No Change in EMI. Only term needs to be increased</ion-label>
       </ion-item>
 
       <div *ngIf="topupChanged">
-        <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency}})</span>
+        <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency}}, if no change in term)</span>
         <ion-input [(ngModel)]="newEmiAmount" type="number" required></ion-input>
 
         <ion-text color="danger" *ngIf="!newEmiAmount && !noEmi && submitted == true">

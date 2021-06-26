@@ -15,9 +15,8 @@
       <ion-title size="large">Prepayment Advisor</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <ion-grid *ngIf="loans && loans.length" fixed>
-    <ion-card *ngFor="let loan of loans" (click)="loanOther(loan)" class="speaker-card">
+    <ion-card *ngFor="let loan of loans" class="speaker-card">
       <ion-card-header color="primary">
         <ion-grid>
           <ion-row *ngIf="loan.name">
@@ -43,15 +42,15 @@
               EMI
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.emi | appCurrency }}
+              {{ loan.emi | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <ion-row>
+          <ion-row *ngIf="!loan.isCompleted">
             <ion-col class="ion-align-self-start">
               Principal Paid
             </ion-col>
             <ion-col size="5" class="ion-align-self-end" style="color: green;">
-              {{ loan.principalPaid | appCurrency }}
+              {{ loan.principalPaid | appCurrency: '' }}
             </ion-col>
           </ion-row>
           <ion-row>
@@ -59,10 +58,10 @@
               Interest Paid
             </ion-col>
             <ion-col size="5" class="ion-align-self-end" style="color: red;">
-              {{ loan.interestPaid | appCurrency }}
+              {{ loan.interestPaid | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <ion-row>
+          <ion-row *ngIf="!loan.isCompleted">
             <ion-col class="ion-align-self-start">
               Balance Terms
             </ion-col>
@@ -70,28 +69,40 @@
               {{ loan.balanceTerm | monthToYear}}
             </ion-col>
           </ion-row>
-          <ion-row>
+          <ion-row *ngIf="!loan.isCompleted">
             <ion-col class="ion-align-self-start">
               Balance Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.balanceAmount | appCurrency }}
+              {{ loan.balanceAmount | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <!-- <ion-row>
-            <ion-col>
-              <ion-button (click)="loanBasic(loan)">Edit Basic Details</ion-button>
+          <ion-row *ngIf="loan.isCompleted">
+            <ion-col class="ion-align-self-start">
+              Total Paid Amount
             </ion-col>
-            <ion-col>
-              <ion-button >Edit Other Details</ion-button>
+            <ion-col size="5" class="ion-align-self-end">
+              {{ loan.amount + loan.interestPaid | appCurrency: '' }}
             </ion-col>
-          </ion-row> -->
+          </ion-row>
+          <ion-row *ngIf="loan.isCompleted" style="color: red;">
+            <ion-col>
+              You have paid {{((loan.interestPaid/(loan.amount + loan.interestPaid)) * 100).toFixed(2)}}% for interest.
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="loan.isCompleted" style="color: green;">
+            <ion-col>
+              <strong>The Loan is completed on {{loan.completedAt | date: 'MMMM YYYY'}}</strong>
+            </ion-col>
+          </ion-row>
         </ion-grid>
       </ion-card-content>
+      <ion-button (click)="loanOther(loan)" expand="block" color="light" style="margin: 0px;">Details</ion-button>
     </ion-card>
   </ion-grid>
-
-  <div *ngIf="!loans || !loans.length" id="container">
+  <!-- </ion-content>
+<ion-content *ngIf="!loans || !loans.length"> -->
+  <div *ngIf="!loans || !loans.length" id="container" id="container">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Why Prepayment?</ion-card-title>
@@ -108,8 +119,9 @@
       </ion-card-header>
 
       <ion-card-content>
-        Please provide the basic information about your loan, then click on the <ion-icon slot="icon-only"
-          name="play-circle-outline" color="success" class="play-area"></ion-icon> Play Area icon to see the prepayment
+        Please provide the basic information about your loan, then click on the
+        <ion-icon slot="icon-only" name="play-circle-outline" color="success" class="play-area"></ion-icon>
+        Play Area icon to see the prepayment
         advantages
       </ion-card-content>
 
@@ -125,10 +137,9 @@
         <ion-card-title>Don't want to give all info?</ion-card-title>
       </ion-card-header>
       <ion-card-content>Just go to
-        <ion-button (click)="playArea();" color="success" style="margin-bottom: 15px;">
-          <ion-icon slot="icon-only" name="play-circle-outline"></ion-icon>
-        </ion-button>
-        Play Area in the menu to see the prepayment advantages
+        <ion-icon (click)="playArea();" slot="icon-only" name="play-circle-outline" color="success" class="play-area">
+        </ion-icon>
+        Play Area in the left side menu to see the prepayment advantages
       </ion-card-content>
     </ion-card>
   </div>

@@ -7,7 +7,7 @@
       Loan Details
     </ion-title>
     <ion-buttons *ngIf="loan && loan._id" slot="end">
-      <ion-button (click)="playArea();" color="success" class="blink_me">
+      <ion-button *ngIf="!loan.isCompleted" (click)="playArea();" color="success" class="blink_me">
         <ion-icon slot="icon-only" name="play-circle-outline"></ion-icon>
       </ion-button>
       <ion-button (click)="presentPopover($event)">
@@ -50,7 +50,7 @@
             Total Principal Paid
           </ion-col>
           <ion-col size="4" class="ion-align-self-end" style="color: green;">
-            {{ loan.principalPaid | appCurrency }}
+            {{ loan.principalPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -58,15 +58,25 @@
             Total Interest Paid
           </ion-col>
           <ion-col size="4" class="ion-align-self-end" style="color: red;">
-            {{ loan.interestPaid | appCurrency }}
+            {{ loan.interestPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
-        <ion-row>
+        <ion-row *ngIf="!loan.isCompleted">
           <ion-col class="ion-align-self-start">
             Balance Amount
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ loan.balanceAmount | appCurrency }}
+            {{ loan.balanceAmount | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="loan.isCompleted" style="color: red;">
+          <ion-col>
+            You have paid {{((loan.interestPaid/(loan.amount + loan.interestPaid)) * 100).toFixed(2)}}% for interest.
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="loan.isCompleted" style="color: green;">
+          <ion-col>
+            <strong>The Loan is completed on {{loan.completedAt | date: 'MMMM YYYY'}}</strong>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -74,8 +84,8 @@
   </ion-card>
 
   <ion-grid *ngIf="instalments && instalments.length" fixed>
-    <ion-card *ngFor="let emi of instalments; let indexOfele=index;" (click)="onEmiClick(emi)" class="speaker-card">
-      <ion-card-header color="light">
+    <ion-card *ngFor="let emi of instalments; let indexOfele=index;" class="speaker-card">
+      <ion-card-header color="light" (click)="onEmiClick(emi)">
         <ion-grid>
           <ion-row>
             <ion-col>
@@ -87,6 +97,9 @@
             <ion-col size="2" style="text-align: end;">
               {{ emi.interestRate }}%
             </ion-col>
+            <ion-col size="1">
+              <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card-header>
@@ -94,12 +107,16 @@
         <ion-row *ngIf="indexOfele==0">
           <ion-col>EMI</ion-col>
           <ion-col>Principal Paid</ion-col>
-          <ion-col>Interest Paid</ion-col>
+          <ion-col style="text-align: end;">Interest Paid</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>{{ emi.amount | appCurrency: 'noDecimal' }}</ion-col>
-          <ion-col style="color: green;">{{ emi.principalPaid | appCurrency }}</ion-col>
-          <ion-col style="color: red;">{{ emi.interestPaid | appCurrency }}</ion-col>
+          <ion-col style="color: green;">
+            {{ emi.principalPaid | appCurrency: '' }}
+          </ion-col>
+          <ion-col style="color: red; text-align: end;">
+            {{ emi.interestPaid | appCurrency: '' }}
+          </ion-col>
         </ion-row>
       </ion-grid>
       <ion-grid>
@@ -108,7 +125,7 @@
             Prepayment Amount
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.prepaymentTotal | appCurrency }}
+            {{ emi.prepaymentTotal | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="emi.topupTotal > 0" style="color: red;">
@@ -116,7 +133,7 @@
             Topup Amount
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.topupTotal | appCurrency }}
+            {{ emi.topupTotal | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -124,7 +141,7 @@
             Closing Balance
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.closingBalance | appCurrency }}
+            {{ emi.closingBalance | appCurrency: '' }}
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -134,7 +151,7 @@
             Principal Paid for FY {{emi.financialYear}}
           </ion-col>
           <ion-col style="color: green;" size="4" class="ion-align-self-end">
-            {{ emi.fyPrincipal | appCurrency }}
+            {{ emi.fyPrincipal | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -142,7 +159,7 @@
             Interest Paid for FY {{emi.financialYear}}
           </ion-col>
           <ion-col style="color: red;" size="4" class="ion-align-self-end">
-            {{ emi.fyInterest | appCurrency }}
+            {{ emi.fyInterest | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -150,10 +167,11 @@
             Total for FY {{emi.financialYear}}
           </ion-col>
           <ion-col style="color: red;" size="4" class="ion-align-self-end">
-            {{ emi.fyInterest + emi.fyPrincipal | appCurrency }}
+            {{ emi.fyInterest + emi.fyPrincipal | appCurrency: '' }}
           </ion-col>
         </ion-row>
       </ion-card>
+      <!-- <ion-button expand="block" color="light" style="margin: 0px;">Options</ion-button> -->
     </ion-card>
   </ion-grid>
 </ion-content>

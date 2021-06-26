@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ModalController } from '@ionic/angular';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
+import { AppService } from '../../services/app.services';
 import { PlayAreaFilterPage } from '../play-area-filter/play-area-filter.page';
 
 @Component({
@@ -12,15 +13,16 @@ import { PlayAreaFilterPage } from '../play-area-filter/play-area-filter.page';
   templateUrl: './play-area.page.html',
   styleUrls: ['./play-area.page.scss'],
 })
-export class PlayAreaPage {
+export class PlayAreaPage implements OnInit {
+  loan: any;
   advice: any;
   defaultHref = 'home';
   filterNotGiven = false;
   outstanding: Outstanding;
 
   constructor(
-    private router: Router,
     private storage: AppStorage,
+    private appService: AppService,
     private activatedRoute: ActivatedRoute,
     public modalController: ModalController,
   ) { }
@@ -34,6 +36,7 @@ export class PlayAreaPage {
 
     this.defaultHref = 'loan-details/' + _id;
     const loan = await this.storage.getLoan(_id);
+    this.loan = loan;
     if (!loan) {
       this.showFilter();
       return;
@@ -48,6 +51,10 @@ export class PlayAreaPage {
       loan.interestPayable,
     );
     this.prepaymentSelected();
+  }
+
+  ngOnInit() {
+    this.appService.showInterstitialAds();
   }
 
   prepaymentSelected() {

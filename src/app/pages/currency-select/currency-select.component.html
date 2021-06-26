@@ -1,0 +1,23 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>
+      Select Currency
+    </ion-title>
+
+    <ion-buttons *ngIf="currency" slot="end">
+      <ion-button (click)="updateProfile()" strong>Done</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list style="padding-top: 20px !important;">
+    <ion-input [(ngModel)]="searchCurrency" placeholder="Type to search" (keyup)="filterCurrency()"></ion-input>
+
+    <ion-radio-group [(ngModel)]="currency">
+      <ion-item lines="none" *ngFor="let cur of currencies;">
+        <ion-label text-wrap>{{cur.label}}</ion-label>
+        <ion-radio slot="start" [value]="cur.value"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>

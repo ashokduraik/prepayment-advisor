@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { StatisticsPageRoutingModule } from './statistics-routing.module';
-import { StatisticsPage } from './statistics.page';
 import { PipesModule } from '../../pipes.module';
+import { StatisticsPage } from './statistics.page';
+import { AppCurrencyPipe } from '../../services/app.pipe';
+import { StatisticsPageRoutingModule } from './statistics-routing.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { PipesModule } from '../../pipes.module';
     PipesModule,
     StatisticsPageRoutingModule
   ],
-  declarations: [StatisticsPage]
+  declarations: [StatisticsPage],
+  providers: [AppCurrencyPipe],
 })
-export class StatisticsPageModule {}
+export class StatisticsPageModule { }

@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.starter",
-	"appName": "ppa",
+	"appId": "com.altooxs.prepaymentadvisor",
+	"appName": "PrepaymentAdvisor",
 	"webDir": "www",
 	"bundledWebRuntime": false
 }

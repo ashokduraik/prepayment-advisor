@@ -50,7 +50,6 @@ export class AppStorage {
 
     async getLoans() {
         try {
-            //this.storage.clear();
             const loans = await this.storage.get('loans');
             return loans;
         } catch (e) {
@@ -117,6 +116,7 @@ export class AppStorage {
 
     async getProfile() {
         try {
+            //this.storage.clear();
             const profile = await this.storage.get('profile');
             return profile;
         } catch (e) {

@@ -14,11 +14,20 @@ import { environment } from '../environments/environment';
 import { EmiEditPage } from './pages/emi-edit/emi-edit.page';
 import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
 
+import { CurrencySelectComponent } from './pages/currency-select/currency-select.component';
+import { LoanDetailsPopoverComponent } from './pages/loan-details-popover/loan-details-popover.component';
+
+export const myComponents = [
+  CurrencySelectComponent,
+  LoanDetailsPopoverComponent,
+];
+
 @NgModule({
   declarations: [
     AppComponent,
     EmiEditPage,
     LoanBasicComponent,
+    ...myComponents,
   ],
   entryComponents: [],
   imports: [
@@ -40,10 +49,12 @@ import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
       enabled: environment.production
     }),
   ],
-  providers: [{
-    provide: RouteReuseStrategy,
-    useClass: IonicRouteStrategy
-  }],
+  providers: [
+    {
+      provide: RouteReuseStrategy,
+      useClass: IonicRouteStrategy,
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

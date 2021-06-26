@@ -4,8 +4,11 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { Storage } from '@ionic/storage-angular';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
+//import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
 import { AppStorage } from './services/app.storage';
+import { AppService } from './services/app.services';
+import { AppCurrencyPipe } from './services/app.pipe';
 
 @Component({
   selector: 'app-root',
@@ -24,8 +27,9 @@ export class AppComponent implements OnInit {
     icon: 'play-circle'
   }];
 
-  loggedIn = false;
+  darkMode = false;
   profile: any;
+  loggedIn = false;
 
   constructor(
     private menu: MenuController,
@@ -34,7 +38,9 @@ export class AppComponent implements OnInit {
     private storage: Storage,
     private swUpdate: SwUpdate,
     private appStorage: AppStorage,
+    private appService: AppService,
     private toastCtrl: ToastController,
+    //  private lottieSplashScreen: LottieSplashScreen
   ) {
     this.initializeApp();
   }
@@ -67,17 +73,32 @@ export class AppComponent implements OnInit {
   }
 
   initializeApp() {
+    //this.lottieSplashScreen.show('www/assets/splash.json', false);
+
     this.platform.ready().then(() => {
       //this.statusBar.styleDefault();
-      //this.splashScreen.hide();
+      // setTimeout(_ => {
+      //   this.lottieSplashScreen.hide();
+      // }, 2000)
+      this.appService.showBannerAds();
+    });
+  }
+
+  goToUrl(url) {
+    this.router.navigateByUrl(url, {
+      skipLocationChange: url === 'loan-basic'
     });
   }
 
   async setProfileData() {
     this.profile = await this.appStorage.getProfile() || {};
+    this.darkMode = this.profile.darkMode;
+    AppCurrencyPipe.setCurrency(this.profile.currency);
   }
 
-  async modeChanged() {
+  async updateProfile() {
+    this.profile = await this.appStorage.getProfile();
+    this.profile.darkMode = this.darkMode;
     await this.appStorage.saveProfile(this.profile);
   }
 

@@ -19,6 +19,7 @@ export class EmiEditPage implements OnInit {
   loanForm: FormGroup;
   submitted = false;
   minEmi = null;
+  saveInProgress = false;
   days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
 
   constructor(
@@ -80,27 +81,28 @@ export class EmiEditPage implements OnInit {
       charges: this.emi.charges,
       interestAdjustment: this.emi.interestAdjustment,
     });
-    
+
     const interest = (this.loan.interestRate / (100 * 12)) * this.loan.amount;
     this.minEmi = interest * 1.1;
   }
 
   async save(loanForm: FormGroup) {
     this.submitted = true;
-    if (!loanForm.valid) return;
+    if (!loanForm.valid || this.saveInProgress) return;
 
     const loanDetails = loanForm.value;
     const interest = (loanDetails.interestRate / (100 * 12)) * this.loan.amount;
     this.minEmi = interest * 1.1;
     if (this.minEmi > loanDetails.emi) return
 
+    this.saveInProgress = true;
     this.loan.emi = loanDetails.emi;
     this.loan.emiDay = loanDetails.emiDay;
     this.loan.interestRate = loanDetails.interestRate;
     this.emi.charges = loanDetails.charges;
     this.emi.interestAdjustment = loanDetails.interestAdjustment;
 
-    for (let i=this.emiIndex; i< this.loan.instalments.length; i++) {
+    for (let i = this.emiIndex; i < this.loan.instalments.length; i++) {
       const emi = this.loan.instalments[i];
       emi.amount = loanDetails.emi;
       emi.emiDay = loanDetails.emiDay;

@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 
 import { HomePage } from './home.page';
 import { PipesModule } from '../../pipes.module';
+import { AppCurrencyPipe } from '../../services/app.pipe';
 import { HomePageRoutingModule } from './home-routing.module';
-
 
 @NgModule({
   declarations: [
@@ -18,6 +18,9 @@ import { HomePageRoutingModule } from './home-routing.module';
     IonicModule,
     PipesModule,
     HomePageRoutingModule
+  ],
+  providers: [
+    AppCurrencyPipe
   ]
 })
 export class HomePageModule { }

@@ -38,7 +38,7 @@
       </ion-item>
 
       <div *ngIf="prepaymentChanged">
-        <!-- <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency}}, if no change in
+        <!-- <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency: '' }}, if no change in
           term)</span> -->
         <span class="label">Enter the new EMI amount</span>
         <ion-input [(ngModel)]="newEmiAmount" type="number" required></ion-input>

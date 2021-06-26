@@ -40,7 +40,7 @@
             Opening Balance
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.openingBalance | appCurrency }}
+            {{ emi.openingBalance | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -53,7 +53,7 @@
             EMI
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.amount | appCurrency }}
+            {{ emi.amount | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row class="detail-head" *ngIf="emi.previousMonthTopupPending">
@@ -61,7 +61,7 @@
             Interest due to topup from previous month
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.previousMonthTopupPending.interest | appCurrency }}
+            {{ emi.previousMonthTopupPending.interest | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="emi.previousMonthTopupPending">
@@ -77,13 +77,14 @@
         </ion-row>
         <ion-row *ngIf="emi.previousMonthTopupPending">
           <ion-col class="logic-det">
-            = {{ emi.previousMonthTopupPending.amount | appCurrency }} * {{ emi.previousMonthTopupPending.noOfDay }} *
+            = {{ emi.previousMonthTopupPending.amount | appCurrency: '' }} * {{ emi.previousMonthTopupPending.noOfDay }}
+            *
             {{ (emi.interestRate/(100 * 12 * emi.previousMonthTopupPending.daysInMonth)).toFixed(6)}}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="emi.previousMonthTopupPending">
           <ion-col class="logic-det">
-            = {{ emi.previousMonthTopupPending.interest| appCurrency }}
+            = {{ emi.previousMonthTopupPending.interest| appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row class="detail-head" *ngIf="emi.topupInterest > 0">
@@ -91,7 +92,7 @@
             Topup Interest
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.topupInterest | appCurrency }}
+            {{ emi.topupInterest | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="emi.topupInterest > 0">
@@ -101,13 +102,13 @@
         </ion-row>
         <ion-row *ngIf="emi.topupInterest > 0">
           <ion-col class="logic-det">
-            = {{ emi.topupAmount | appCurrency }} * {{ emi.topupAmountNoOfDay }} *
+            = {{ emi.topupAmount | appCurrency: '' }} * {{ emi.topupAmountNoOfDay }} *
             {{ (emi.interestRate/(100 * 12 * emi.daysInMonth)).toFixed(6)}}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="emi.topupInterest > 0">
           <ion-col class="logic-det">
-            = {{ emi.topupInterest | appCurrency }}
+            = {{ emi.topupInterest | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row class="detail-head">
@@ -115,12 +116,12 @@
             Interest Amount
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.interestPaid | appCurrency }}
+            {{ emi.interestPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = (Opening Balance * Inerest rate per month)
+            = (Opening Balance * Interest rate per month)
             <span *ngIf="emi.previousMonthTopupPending"> + Interest due to topup from previous month</span>
             <span *ngIf="emi.topupInterest > 0"> + Topup Interest</span>
             <span *ngIf="emi.interestAdjustment != null"> + Interest Adjustment</span>
@@ -128,25 +129,25 @@
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = ({{ emi.openingBalance | appCurrency }} * ({{ emi.interestRate}} / (100*12)))
+            = ({{ emi.openingBalance | appCurrency: '' }} * ({{ emi.interestRate}} / (100*12)))
             <span *ngIf="emi.previousMonthTopupPending"> + {{ emi.previousMonthTopupPending.interest |
-              appCurrency }}</span>
-            <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency }}</span>
-            <span *ngIf="emi.interestAdjustment != null"> + {{ emi.interestAdjustment | appCurrency }}</span>
+              appCurrency: '' }}</span>
+            <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency: '' }}</span>
+            <span *ngIf="emi.interestAdjustment != null"> + {{ emi.interestAdjustment | appCurrency: '' }}</span>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = ({{ emi.openingBalance | appCurrency }} * {{ (emi.interestRate/(100*12)).toFixed(6)}})
+            = ({{ emi.openingBalance | appCurrency: '' }} * {{ (emi.interestRate/(100*12)).toFixed(6)}})
             <span *ngIf="emi.previousMonthTopupPending"> + {{ emi.previousMonthTopupPending.interest |
-              appCurrency }}</span>
-            <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency }}</span>
-            <span *ngIf="emi.interestAdjustment != null"> + {{ emi.interestAdjustment | appCurrency }}</span>
+              appCurrency: '' }}</span>
+            <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency: '' }}</span>
+            <span *ngIf="emi.interestAdjustment != null"> + {{ emi.interestAdjustment | appCurrency: '' }}</span>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = {{ emi.interestPaid | appCurrency }}
+            = {{ emi.interestPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row class="detail-head">
@@ -154,24 +155,24 @@
             Principal Amount
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.principalPaid | appCurrency }}
+            {{ emi.principalPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = EMI - Interest Amount 
+            = EMI - Interest Amount
             <span *ngIf="emi.charges > 0">- Charges</span>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = {{ emi.amount | appCurrency }} - {{ emi.interestPaid | appCurrency }}
-            <span *ngIf="emi.charges > 0">- {{ emi.charges | appCurrency }}</span>
+            = {{ emi.amount | appCurrency: '' }} - {{ emi.interestPaid | appCurrency: '' }}
+            <span *ngIf="emi.charges > 0">- {{ emi.charges | appCurrency: '' }}</span>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = {{ emi.principalPaid | appCurrency }}
+            = {{ emi.principalPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row class="detail-head">
@@ -179,7 +180,7 @@
             Closing Balance
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.closingBalance | appCurrency }}
+            {{ emi.closingBalance | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row>
@@ -191,14 +192,14 @@
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = {{ emi.openingBalance | appCurrency }} - {{ emi.principalPaid | appCurrency }}
-            <span *ngIf="emi.topupTotal > 0">+ {{ emi.topupTotal | appCurrency }}</span>
-            <span *ngIf="emi.prepaymentTotal > 0">+ {{ emi.prepaymentTotal | appCurrency }}</span>
+            = {{ emi.openingBalance | appCurrency: '' }} - {{ emi.principalPaid | appCurrency: '' }}
+            <span *ngIf="emi.topupTotal > 0">+ {{ emi.topupTotal | appCurrency: '' }}</span>
+            <span *ngIf="emi.prepaymentTotal > 0">+ {{ emi.prepaymentTotal | appCurrency: '' }}</span>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = {{ emi.closingBalance | appCurrency }}
+            = {{ emi.closingBalance | appCurrency: '' }}
           </ion-col>
         </ion-row>
       </ion-grid>

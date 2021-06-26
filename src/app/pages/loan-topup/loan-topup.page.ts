@@ -25,6 +25,8 @@ export class LoanTopupPage implements OnInit {
   topupChanged = false;
   defaultHref = 'home';
   minDate = '2010-01-01';
+  saveInProgress = false;
+  valueChangedPromise = null;
   maxDate = moment().endOf('month').format("YYYY-MM-DD");
 
   constructor(
@@ -76,6 +78,11 @@ export class LoanTopupPage implements OnInit {
   }
 
   valueChanged() {
+    if (this.valueChangedPromise) {
+      clearTimeout(this.valueChangedPromise);
+      this.valueChangedPromise = null;
+    }
+
     const topups = this.topups.filter(t => t.amount && t.topupDate);
     const emiTopups = (this.emi.topups || []).filter(t => t.amount && t.topupDate);
     let topupChanged = this.isTopupChanged(topups, emiTopups);
@@ -89,6 +96,10 @@ export class LoanTopupPage implements OnInit {
     const balanceTerm = this.loanDetails.balanceTerm + this.loan.instalments.length - emiDetails.term + 1;
     const emiAdd = LoanUtils.getEMIAmount(topupAmount, balanceTerm, this.emi.interestRate);
     this.approximateEmi = emiAdd + this.loan.instalments[this.emiIndex - 1].amount;
+
+    this.valueChangedPromise = setTimeout(_ => {
+      this.valueChanged();
+    }, 1000);
   }
 
   isTopupChanged(topups, emiTopups) {
@@ -107,17 +118,19 @@ export class LoanTopupPage implements OnInit {
   }
 
   async save() {
+    if (this.saveInProgress) return;
     this.submitted = true;
     const topups = this.topups.filter(t => t.amount && t.topupDate);
     if (topups.length && this.topupChanged && !this.noEmi && !this.newEmiAmount) return;
 
+    this.saveInProgress = true;
     const lastMonthEmi = this.loan.instalments[this.emiIndex - 1].amount;
 
     if (!this.noEmi && this.newEmiAmount && topups.length) {
       this.loan.emi = this.newEmiAmount;
       this.emi.newEmiAmount = this.newEmiAmount;
       const topupDate = topups[0].topupDate;
-      
+
       /** if topup were added before the emi day then new emi will be applied in the current month itself */
       if (this.emi.emiDay > moment(topupDate).get('date')) {
         this.emi.amount = this.newEmiAmount;

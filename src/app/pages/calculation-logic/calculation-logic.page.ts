@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
+import { AppService } from '../../services/app.services';
 
 @Component({
   selector: 'app-calculation-logic',
@@ -18,6 +19,7 @@ export class CalculationLogicPage implements OnInit {
   constructor(
     private router: Router,
     private storage: AppStorage,
+    private appService: AppService,
     private activatedRoute: ActivatedRoute,
   ) { }
 
@@ -48,6 +50,7 @@ export class CalculationLogicPage implements OnInit {
     }
 
     LoanUtils.calculateLoanDetails(this.loan);
+    this.appService.showInterstitialAds();
   }
 
 }

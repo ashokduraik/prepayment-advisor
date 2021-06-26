@@ -29,7 +29,7 @@ const routes: Routes = [
   },
   {
     path: 'calculation-logic/:loanid/:emiid',
-    loadChildren: () => import('./pages/calculation-logic/calculation-logic.module').then( m => m.CalculationLogicPageModule)
+    loadChildren: () => import('./pages/calculation-logic/calculation-logic.module').then(m => m.CalculationLogicPageModule)
   },
   {
     path: 'emi-edit/:loanid/:emiid',
@@ -38,23 +38,35 @@ const routes: Routes = [
   },
   {
     path: 'prepayment/:loanid/:emiid',
-    loadChildren: () => import('./pages/prepayment/prepayment.module').then( m => m.PrepaymentPageModule)
+    loadChildren: () => import('./pages/prepayment/prepayment.module').then(m => m.PrepaymentPageModule)
   },
   {
     path: 'play-area',
-    loadChildren: () => import('./pages/play-area/play-area.module').then( m => m.PlayAreaPageModule)
+    loadChildren: () => import('./pages/play-area/play-area.module').then(m => m.PlayAreaPageModule)
   },
   {
     path: 'play-area/:id',
-    loadChildren: () => import('./pages/play-area/play-area.module').then( m => m.PlayAreaPageModule)
+    loadChildren: () => import('./pages/play-area/play-area.module').then(m => m.PlayAreaPageModule)
   },
   {
     path: 'statistics/:id',
-    loadChildren: () => import('./pages/statistics/statistics.module').then( m => m.StatisticsPageModule)
+    loadChildren: () => import('./pages/statistics/statistics.module').then(m => m.StatisticsPageModule)
   },
   {
     path: 'play-area-filter',
-    loadChildren: () => import('./pages/play-area-filter/play-area-filter.module').then( m => m.PlayAreaFilterPageModule)
+    loadChildren: () => import('./pages/play-area-filter/play-area-filter.module').then(m => m.PlayAreaFilterPageModule)
+  },
+  {
+    path: 'support',
+    loadChildren: () => import('./pages/support/support.module').then(m => m.SupportPageModule)
+  },
+  {
+    path: 'currency-select',
+    loadChildren: () => import('./pages/currency-select/currency-select-routing.module').then(m => m.CurrencySelectRoutingModule)
+  },
+  {
+    path: 'timeline/:id',
+    loadChildren: () => import('./pages/timeline/timeline.module').then(m => m.TimelinePageModule)
   }
 ];
 

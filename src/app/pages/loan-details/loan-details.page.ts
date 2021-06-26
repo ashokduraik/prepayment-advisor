@@ -1,19 +1,20 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ActionSheetController, AlertController, PopoverController } from '@ionic/angular';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
-import { PopoverPage } from '../loan-option-popover/loan-option-popover';
+import { AppService } from '../../services/app.services';
+import { LoanDetailsPopoverComponent } from '../loan-details-popover/loan-details-popover.component';
 
 @Component({
   selector: 'app-loan-details',
   templateUrl: './loan-details.page.html',
   styleUrls: ['./loan-details.page.scss'],
 })
-export class LoanDetailsPage {
+export class LoanDetailsPage implements OnInit {
   loan: any;
   instalments: any;
   defaultHref = 'home';
@@ -22,6 +23,7 @@ export class LoanDetailsPage {
     private storage: AppStorage,
     private router: Router,
     private datePipe: DatePipe,
+    private appService: AppService,
     public popoverCtrl: PopoverController,
     private activatedRoute: ActivatedRoute,
     public alertController: AlertController,
@@ -45,10 +47,14 @@ export class LoanDetailsPage {
     this.instalments = (Object.assign([], this.loan.instalments)).reverse();
   }
 
+  ngOnInit() {
+    this.appService.showInterstitialAds();
+  }
+
   async presentPopover(event: Event) {
     const popover = await this.popoverCtrl.create({
-      component: PopoverPage,
-      componentProps: {_id: this.loan._id},
+      component: LoanDetailsPopoverComponent,
+      componentProps: { _id: this.loan._id },
       event
     });
     await popover.present();
@@ -68,21 +74,26 @@ export class LoanDetailsPage {
     if (!role) return;
 
     if (role === 'topup') {
-      this.router.navigateByUrl(`loan-topup/${this.loan._id}/${emi._id}`);
+      this.router.navigateByUrl(`loan-topup/${this.loan._id}/${emi._id}`, {
+        skipLocationChange: true
+      });
     } else if (role === 'callogic') {
       this.router.navigateByUrl(`calculation-logic/${this.loan._id}/${emi._id}`);
     } else if (role === 'edit') {
-      this.router.navigateByUrl(`emi-edit/${this.loan._id}/${emi._id}`);
+      this.router.navigateByUrl(`emi-edit/${this.loan._id}/${emi._id}`, {
+        skipLocationChange: true
+      });
     } else if (role === 'prepayment') {
-      this.router.navigateByUrl(`prepayment/${this.loan._id}/${emi._id}`);
+      this.router.navigateByUrl(`prepayment/${this.loan._id}/${emi._id}`, {
+        skipLocationChange: true
+      });
     }
   }
 
   async getActionSheet(emi) {
-    return await this.actionSheetController.create({
-      header: this.datePipe.transform(emi.emiDate, 'MMMM YYYY'),
-      cssClass: 'my-custom-class',
-      buttons: [{
+    const buttons = [];
+    if (!this.loan.isCompleted) {
+      buttons.push({
         text: 'Edit',
         role: 'edit',
         icon: 'create-outline',
@@ -96,15 +107,23 @@ export class LoanDetailsPage {
         text: 'Prepayment details',
         icon: 'cash-outline',
         cssClass: 'action-sheet-primary',
-      }, {
-        role: 'callogic',
-        text: 'Calculation Logic',
-        icon: 'calculator-outline',
-        cssClass: 'action-sheet-primary',
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-      }]
+      });
+    }
+
+    buttons.push({
+      role: 'callogic',
+      text: 'Calculation Logic',
+      icon: 'calculator-outline',
+      cssClass: 'action-sheet-primary',
+    }, {
+      text: 'Cancel',
+      icon: 'close',
+    });
+
+    return await this.actionSheetController.create({
+      header: this.datePipe.transform(emi.emiDate, 'MMMM YYYY'),
+      cssClass: 'my-custom-class',
+      buttons,
     });
   }
 }

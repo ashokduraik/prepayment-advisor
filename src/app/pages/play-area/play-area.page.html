@@ -6,7 +6,7 @@
     <ion-title>
       Play Area
     </ion-title>
-    <ion-buttons slot="end">
+    <ion-buttons *ngIf="!loan" slot="end">
       <ion-button (click)="showFilter()">
         <ion-icon name="filter-outline"></ion-icon>
       </ion-button>
@@ -22,10 +22,10 @@
   </ion-header>
 
   <ion-card *ngIf="filterNotGiven" style="padding: 10px;">
-    Please provide basic information by
+    Please provide basic information by clicking
     <ion-button (click)="showFilter()">
       <ion-icon name="filter-outline"></ion-icon>
-    </ion-button> icon
+    </ion-button> icon.
   </ion-card>
 
   <ion-card class="speaker-card" *ngIf="outstanding && !filterNotGiven">
@@ -34,7 +34,7 @@
         <ion-row>
           <ion-col>
             <div>Outstanding Amount</div>
-            <h2>{{ outstanding.amount | appCurrency }}</h2>
+            <h2>{{ outstanding.amount | appCurrency: '' }}</h2>
           </ion-col>
           <ion-col>
             <div>Balance Term</div>
@@ -59,8 +59,8 @@
           <ion-col class="ion-align-self-start">
             Total Interest Payable
           </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ outstanding.interestPayable | appCurrency }}
+          <ion-col size="5" class="ion-align-self-end">
+            {{ outstanding.interestPayable | appCurrency: '' }}
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -90,7 +90,7 @@
       <ion-card *ngIf="advice.type == 'emi' && advice.noEmiChange" color="light" class="inner-card">
         There is no change in the EMI
       </ion-card>
-      <ion-card *ngIf="advice.gereated" color="light" class="inner-card">
+      <ion-card *ngIf="advice.gereated" class="inner-card">
         <div>
           <ion-row>
             <ion-col>
@@ -98,30 +98,32 @@
                 reduce</span>
               <div *ngIf="advice.type == 'emi'">
                 <span *ngIf="!advice.noEmiChange && this.advice.increaseEmi">By increasing
-                  {{this.advice.increaseEmiPer}}% ({{(advice.emi - outstanding.emi) | appCurrency}}) of EMI, you can
+                  {{this.advice.increaseEmiPer}}% ({{(advice.emi - outstanding.emi) | appCurrency: '' }}) of EMI, you
+                  can
                   reduce</span>
                 <span *ngIf="!advice.noEmiChange && !this.advice.increaseEmi">By decreasing
-                  {{this.advice.decreaseEmiPer}}% ({{(outstanding.emi - advice.emi) | appCurrency}}) of EMI, you can
+                  {{this.advice.decreaseEmiPer}}% ({{(outstanding.emi - advice.emi) | appCurrency: '' }}) of EMI, you
+                  can
                   increase</span>
               </div>
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col class="color-primary">
+            <ion-col class="card-light">
               <span class="big-font">{{ advice.reducedTerm | monthToYear}}</span> EMI and <span
-                class="big-font">{{advice.reducedInterestTerm | appCurrency}}</span> of total Interest
+                class="big-font">{{advice.reducedInterestTerm | appCurrency: '' }}</span> of total Interest
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>Revised Term</ion-col>
-            <ion-col size="4" class="ion-align-self-end">
+            <ion-col size="5" class="ion-align-self-end">
               {{advice.newTerm | monthToYear}}
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>Revised Interest Payable</ion-col>
-            <ion-col size="4" class="ion-align-self-end">
-              {{advice.newInterestTerm | appCurrency}}
+            <ion-col size="5" class="ion-align-self-end">
+              {{advice.newInterestTerm | appCurrency: '' }}
             </ion-col>
           </ion-row>
         </div>
@@ -132,29 +134,29 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col class="color-primary">
-              <span class="big-font">{{ advice.reducedEMI | appCurrency}}</span> per months and <span
-                class="big-font">{{advice.reducedInterestEmi | appCurrency}}</span> of total Interest
+            <ion-col class="card-light">
+              <span class="big-font">{{ advice.reducedEMI | appCurrency: '' }}</span> per months and <span
+                class="big-font">{{advice.reducedInterestEmi | appCurrency: '' }}</span> of total Interest
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>Revised EMI</ion-col>
-            <ion-col size="4" class="ion-align-self-end">
-              {{advice.newEMI | appCurrency}}
+            <ion-col size="5" class="ion-align-self-end">
+              {{advice.newEMI | appCurrency: '' }}
             </ion-col>
           </ion-row>
           <ion-row>
             <ion-col>Revised Interest Payable</ion-col>
-            <ion-col size="4" class="ion-align-self-end">
-              {{advice.newInterestEmi | appCurrency}}
+            <ion-col size="5" class="ion-align-self-end">
+              {{advice.newInterestEmi | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="advice.diff > 0" class="color-primary">
+          <ion-row *ngIf="advice.diff > 0" class="card-light">
             <ion-col>
               Our advice is to go with <span class="big-font">{{advice.reducedInterestTerm > advice.reducedInterestEmi ?
                 'Term' : 'EMI'}} reduction</span> because you can save approximately <span
                 class="big-font">{{advice.diff
-                | appCurrency}}</span> compare to <span class="big-font">{{advice.reducedInterestTerm >
+                | appCurrency: '' }}</span> compare to <span class="big-font">{{advice.reducedInterestTerm >
                 advice.reducedInterestEmi ?
                 'EMI' : 'Term'}} reduction</span>
             </ion-col>

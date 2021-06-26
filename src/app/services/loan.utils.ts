@@ -7,7 +7,7 @@ export class LoanUtils {
     const currentMonth = moment();
     const currentDay = currentMonth.get("date");
     let emiMonth = moment(loan.startDate);
-    let balance = loan.amount;
+    let balance = loan.balanceAmount != null ? loan.balanceAmount : loan.amount;
     const mInterest = loan.interestRate / (12 * 100);
     const lastInstalments = loan.instalments[loan.instalments.length - 1];
 
@@ -21,7 +21,7 @@ export class LoanUtils {
       }
     }
 
-    while (balance > 0 && (currentMonth.isAfter(emiMonth, 'month') || (currentMonth.isSame(emiMonth, "month") && currentDay > Number(loan.emiDay)))) {
+    while (balance > 0 && ((currentMonth.isAfter(emiMonth, 'month') || (currentMonth.isSame(emiMonth, "month") && currentDay > Number(loan.emiDay))))) {
       let emi: any;
       emi = {
         _id: AppUtils.getUid(),
@@ -33,9 +33,18 @@ export class LoanUtils {
 
       const interestPaid = balance * mInterest;
       balance -= loan.emi - interestPaid;
+
+      /** then this is the last month and last month emi is less then the actual  */
+      if (balance < 0) {
+        emi.amount += balance;
+        balance = 0;
+      }
+
       loan.instalments.push(emi);
       emiMonth = emiMonth.add(1, 'month');
     }
+
+    loan.balanceAmount = balance;
   }
 
   static calculateLoanDetails(loan) {
@@ -101,7 +110,7 @@ export class LoanUtils {
       });
 
       emi.prepayments = emi.prepayments || [];
-      emi.prepayments.forEach(pp=> {
+      emi.prepayments.forEach(pp => {
         if (!pp || !pp.amount || !pp.prepaymentDate) return;
         emi.prepaymentTotal += pp.amount;
         const noOfDay = moment(pp.prepaymentDate).endOf('month').diff(pp.prepaymentDate, 'days') + 1;
@@ -114,7 +123,7 @@ export class LoanUtils {
       emi.openingBalance = loan.balanceAmount;
       emi.amount += topupInterest;
       emi.interestPaid = (loan.balanceAmount * mInterest) + topupInterest;
-      if (emi.interestAdjustment != null && !isNaN(emi.interestAdjustment))  {
+      if (emi.interestAdjustment != null && !isNaN(emi.interestAdjustment)) {
         emi.interestPaid += emi.interestAdjustment;
       }
 
@@ -145,13 +154,18 @@ export class LoanUtils {
     });
 
     const temp = LoanUtils.getBalanceTermAndInterest(
-      loan.balanceAmount, 
-      loan.emi, 
+      loan.balanceAmount,
+      loan.emi,
       loan.interestRate
     );
 
     loan.balanceTerm = temp.balanceTerm;
     loan.interestPayable = temp.interestPayable;
+
+    if (loan.balanceAmount <= 0) {
+      loan.isCompleted = true;
+      loan.completedAt = loan.instalments[loan.instalments.length - 1].emiDate;
+    }
   }
 
   static getBalanceTermAndInterest(balanceAmount, emi, interestRate) {
@@ -170,7 +184,7 @@ export class LoanUtils {
       }
     }
 
-    return { balanceTerm, interestPayable};
+    return { balanceTerm, interestPayable };
   }
 
   static getEMIAmount(amount, term, interestRate) {

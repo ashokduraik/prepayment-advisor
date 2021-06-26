@@ -17,7 +17,15 @@
   </ion-header>
   <ion-card class="welcome-card">
     <ion-card-content>
-      <canvas #doughnutCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      <div [style.display]="showPaidCanvas ? 'block' : 'none'">
+        <canvas #paidCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </div>
+      <div style="margin-top: 30px;" [style.display]="showPayableCanvas ? 'block' : 'none'">
+        <canvas #payableCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </div>
+      <div style="margin-top: 30px;" [style.display]="showFinalCanvas ? 'block' : 'none'">
+        <canvas #finalCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

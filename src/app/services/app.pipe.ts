@@ -1,20 +1,35 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+import { Currency } from '../services/currency-map';
+
 @Pipe({ name: 'appCurrency' })
 
 export class AppCurrencyPipe implements PipeTransform {
+
+  private static currency: any;
+
+  public static setCurrency(code) {
+    AppCurrencyPipe.currency = code && Currency[code] || null;
+  }
+
   transform(value: number, option): string {
 
     if (!isNaN(value)) {
-      const currencySymbol = '₹';
+      const currency = AppCurrencyPipe.currency;
+      const currencySymbol = currency && currency.symbol || '₹';
+      const commaForEvery = currency && currency.commaForEvery || 3;
       const noDecimal = option == 'noDecimal';
       const result = value.toFixed(!noDecimal ? 2 : 0).split('.');
 
       let lastThree = result[0].substring(result[0].length - 3);
       const otherNumbers = result[0].substring(0, result[0].length - 3);
-      if (otherNumbers != '')
+      let output = result[0];
+
+      if (otherNumbers != '' && otherNumbers != '-') {
         lastThree = ',' + lastThree;
-      let output = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        const reg = new RegExp(`\\B(?=(\\d{${commaForEvery}})+(?!\\d))`, 'g');
+        output = otherNumbers.replace(reg, ",") + lastThree;
+      }
 
       if (result.length > 1) {
         output += "." + result[1];

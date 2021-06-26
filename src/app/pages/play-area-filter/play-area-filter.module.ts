@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { PlayAreaFilterPageRoutingModule } from './play-area-filter-routing.module';
-
 import { PlayAreaFilterPage } from './play-area-filter.page';
 
 @NgModule({
@@ -17,4 +16,4 @@ import { PlayAreaFilterPage } from './play-area-filter.page';
   ],
   declarations: [PlayAreaFilterPage]
 })
-export class PlayAreaFilterPageModule {}
+export class PlayAreaFilterPageModule { }

@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Timeline
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Timeline</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div *ngIf="timeLine && timeLine.length" class="timeline">
+    <div *ngFor="let line of timeLine;" class="timeline-item">
+      <div class="timeline-time">
+        <span>{{line.date}}</span>
+      </div>
+      <ion-icon name="calendar-outline"></ion-icon>
+      <ion-card>
+        {{line.changes}}
+      </ion-card>
+    </div>
+  </div>
+
+
+  <div class="rb-container">
+    <ul class="rb">
+      <li class="rb-item" ng-repeat="itembx">
+        <div class="rb-body">
+          <div class="timestamp">
+            3rd May 2020
+          </div>
+          <div class="item-title">Chris Serrano posted a photo on your wall.</div>
+        </div>
+      </li>
+      <li class="rb-item" ng-repeat="itembx">
+        <div class="rb-body">
+          <div class="timestamp">
+            19th May 2020
+          </div>
+          <div class="item-title">Mia Redwood commented on your last post.</div>
+        </div>
+      </li>
+
+      <li class="rb-item" ng-repeat="itembx">
+        <div class="rb-body">
+          <div class="timestamp">
+            17st June 2020
+          </div>
+          <div class="item-title">Lucas McAlister just send you a message.</div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</ion-content>

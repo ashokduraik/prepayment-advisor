@@ -1,6 +1,6 @@
 {
   "name": "prepayment-advisor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Prepayment Advisor",
   "author": {
     "name": "Ashok Durai K",
@@ -12,7 +12,10 @@
     "Loan",
     "EMI",
     "EMI tracker",
-    "part payment"
+    "part payment",
+    "Home Loan",
+    "Care Loan",
+    "loan planner"
   ],
   "scripts": {
     "ng": "ng",
@@ -24,6 +27,7 @@
   },
   "private": true,
   "dependencies": {
+    "@admob-plus/capacitor": "^1.14.0",
     "@angular/common": "~12.0.1",
     "@angular/core": "~12.0.1",
     "@angular/forms": "~12.0.1",
@@ -45,8 +49,8 @@
     "@ionic/storage-angular": "^3.0.6",
     "chart.js": "^3.3.2",
     "moment": "^2.29.1",
-    "ng2-charts": "^2.4.2",
     "rxjs": "~6.6.0",
+    "rxjs-compat": "^6.6.7",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
   },

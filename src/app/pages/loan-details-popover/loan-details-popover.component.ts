@@ -2,25 +2,16 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AlertController, PopoverController } from '@ionic/angular';
+
 import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
-
 @Component({
-  template: `
-    <ion-list>
-      <ion-item button (click)="statistics()">
-        <ion-icon name="pie-chart-outline"></ion-icon>
-        <ion-label>Statistics</ion-label>
-      </ion-item>
-      <ion-item button (click)="deleteLoan()">
-        <ion-icon color="danger" name="trash-outline"></ion-icon>
-        <ion-label>Delete Loan</ion-label>
-      </ion-item>
-    </ion-list>
-  `
+  selector: 'app-loan-details-popover',
+  templateUrl: './loan-details-popover.component.html',
+  styleUrls: ['./loan-details-popover.component.scss'],
 })
-export class PopoverPage implements OnInit {
+export class LoanDetailsPopoverComponent implements OnInit {
   @Input("_id") _id;
   constructor(
     private storage: AppStorage,
@@ -31,12 +22,18 @@ export class PopoverPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    
+
   }
 
   statistics() {
     if (!this._id) return;
     this.router.navigateByUrl(`statistics/${this._id}`);
+    this.popoverCtrl.dismiss();
+  }
+
+  timeline() {
+    if (!this._id) return;
+    this.router.navigateByUrl(`timeline/${this._id}`);
     this.popoverCtrl.dismiss();
   }
 
@@ -58,7 +55,7 @@ export class PopoverPage implements OnInit {
     await alert.present();
     const { role } = await alert.onDidDismiss();
     this.popoverCtrl.dismiss();
-  
+
     if (role == 'Yes') {
       await this.storage.deleteLoan(this._id);
       this.service.showToast('Your Loan details is deleted successfully');
@@ -70,4 +67,5 @@ export class PopoverPage implements OnInit {
     window.open(url, '_blank');
     this.popoverCtrl.dismiss();
   }
+
 }

@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { Platform } from '@ionic/angular';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
+import { AppService } from '../../services/app.services';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +13,22 @@ import { AppStorage } from '../../services/app.storage';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  profile = null;
   loans: any = [];
+  backButtonSubscription;
+
   constructor(
     public router: Router,
+    private platform: Platform,
     private storage: AppStorage,
+    private appService: AppService,
   ) { }
 
   async ionViewWillEnter() {
+    this.initializeHome();
+  }
+
+  async initializeHome() {
     this.loans = await this.storage.getLoans() || [];
 
     this.loans.forEach(loan => {
@@ -28,11 +40,22 @@ export class HomePage {
     this.loans.forEach(loan => {
       LoanUtils.calculateLoanDetails(loan);
     });
-    console.log("this.loans - home", this.loans);
   }
 
+  // ngAfterViewInit() {
+  //   this.backButtonSubscription = this.platform.backButton.subscribe(() => {
+  //     navigator['app'].exitApp();
+  //   });
+  // }
+
+  // ngOnDestroy() {
+  //   this.backButtonSubscription.unsubscribe();
+  // }
+
   newLoan() {
-    this.router.navigateByUrl("loan-basic");
+    this.router.navigateByUrl("loan-basic", {
+      skipLocationChange: true
+    });
   }
 
   playArea() {

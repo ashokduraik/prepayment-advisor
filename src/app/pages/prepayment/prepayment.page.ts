@@ -24,7 +24,9 @@ export class PrepaymentPage implements OnInit {
   defaultHref = 'home';
   approximateEmi = null;
   minDate = '2010-01-01';
+  saveInProgress = false;
   prepaymentChanged = false;
+  valueChangedPromise = null;
   maxDate = moment().endOf('month').format("YYYY-MM-DD");
 
   constructor(
@@ -74,6 +76,11 @@ export class PrepaymentPage implements OnInit {
   }
 
   valueChanged() {
+    if (this.valueChangedPromise) {
+      clearTimeout(this.valueChangedPromise);
+      this.valueChangedPromise = null;
+    }
+
     const prepayments = this.prepayments.filter(t => t.amount && t.prepaymentDate);
     const emiPrepayments = (this.emi.prepayments || []).filter(t => t.amount && t.prepaymentDate);
     let prepaymentChanged = this.isPrepaymentChanged(prepayments, emiPrepayments);
@@ -86,7 +93,11 @@ export class PrepaymentPage implements OnInit {
     const emiDetails = this.loanDetails.instalments.find(e => e._id === this.emi._id);
     const balanceTerm = this.loanDetails.balanceTerm + this.loan.instalments.length - emiDetails.term + 1;
     const emiAdd = LoanUtils.getEMIAmount(prepaymentAmount, balanceTerm, this.emi.interestRate);
-    this.approximateEmi =  this.loan.instalments[this.emiIndex - 1].amount - emiAdd;
+    this.approximateEmi = this.loan.instalments[this.emiIndex - 1].amount - emiAdd;
+
+    this.valueChangedPromise = setTimeout(_ => {
+      this.valueChanged();
+    }, 1000);
   }
 
   isPrepaymentChanged(prepayments, emiPrepayments) {
@@ -105,17 +116,19 @@ export class PrepaymentPage implements OnInit {
   }
 
   async save() {
+    if (this.saveInProgress) return;
     this.submitted = true;
     const prepayments = this.prepayments.filter(t => t.amount && t.prepaymentDate);
     if (prepayments.length && this.prepaymentChanged && !this.noEmi && !this.newEmiAmount) return;
 
+    this.saveInProgress = true;
     const lastMonthEmi = this.loan.instalments[this.emiIndex - 1].amount;
 
     if (!this.noEmi && this.newEmiAmount && prepayments.length) {
       this.loan.emi = this.newEmiAmount;
       this.emi.newEmiAmount = this.newEmiAmount;
       const prepaymentDate = prepayments[0].prepaymentDate;
-      
+
       /** if prepayments were added before the emi day then new emi will be applied in the current month itself */
       if (this.emi.emiDay > moment(prepaymentDate).get('date')) {
         this.emi.amount = this.newEmiAmount;

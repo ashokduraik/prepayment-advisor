@@ -21,8 +21,12 @@ export class LoanDetailsPopoverComponent implements OnInit {
     public alertController: AlertController,
   ) { }
 
-  async ngOnInit() {
+  async ngOnInit() { }
 
+  claculationLogic() {
+    if (!this._id) return;
+    this.router.navigateByUrl(`calculation-logic/${this._id}`);
+    this.popoverCtrl.dismiss();
   }
 
   statistics() {

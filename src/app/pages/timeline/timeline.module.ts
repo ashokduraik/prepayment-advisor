@@ -3,7 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 
 import { IonicModule } from '@ionic/angular';
+
 import { TimelinePage } from './timeline.page';
+import { PipesModule } from '../../pipes.module';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 import { TimelinePageRoutingModule } from './timeline-routing.module';
 
@@ -12,6 +14,7 @@ import { TimelinePageRoutingModule } from './timeline-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
+    PipesModule,
     TimelinePageRoutingModule
   ],
   declarations: [TimelinePage],

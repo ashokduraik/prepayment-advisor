@@ -16,7 +16,7 @@
 <ion-content>
   <ion-list>
     <span class="label">Enter Rate of Interest per year</span>
-    <ion-input [(ngModel)]="outstanding.interestRate" type="number" autofocus="true" placeholder="7.5" required>
+    <ion-input [(ngModel)]="outstanding.interestRate" type="number" autofocus="true" placeholder="8" required>
     </ion-input>
 
     <ion-text color="danger" *ngIf="submitted == true">
@@ -32,7 +32,7 @@
     </ion-text>
 
     <span class="label">Enter EMI amount</span>
-    <ion-input [(ngModel)]="outstanding.emi" type="number" placeholder="30000" required></ion-input>
+    <ion-input [(ngModel)]="outstanding.emi" type="number" placeholder="7000" required></ion-input>
 
     <ion-text color="danger" *ngIf="submitted == true">
       <p *ngIf="!outstanding.emi">

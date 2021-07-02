@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Backup and Restore
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Backup and Restore</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card>
+    <ion-card-content style="font-size: 17px;">
+      <ion-item>
+        <span>Backup into local storage</span>
+        <ion-button style="margin: 0 0 0 17px;" (click)="backup()" color="primary">
+          <ion-icon slot="icon-only" name="arrow-down-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+
+      <ion-item lines="none">
+        <span>Restore from local storage</span>
+        <ion-button style="margin: 0 10px;" (click)="restore()" color="primary">
+          <ion-icon slot="icon-only" name="arrow-up-circle-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -32,6 +32,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/calculation-logic/calculation-logic.module').then(m => m.CalculationLogicPageModule)
   },
   {
+    path: 'calculation-logic/:loanid',
+    loadChildren: () => import('./pages/calculation-logic/calculation-logic.module').then(m => m.CalculationLogicPageModule)
+  },
+  {
     path: 'emi-edit/:loanid/:emiid',
     component: EmiEditPage,
     //loadChildren: () => import('./pages/emi-edit/emi-edit.module').then( m => m.EmiEditPageModule)
@@ -67,6 +71,18 @@ const routes: Routes = [
   {
     path: 'timeline/:id',
     loadChildren: () => import('./pages/timeline/timeline.module').then(m => m.TimelinePageModule)
+  },
+  {
+    path: 'backup-restore',
+    loadChildren: () => import('./pages/backup-restore/backup-restore.module').then(m => m.BackupRestorePageModule)
+  },
+  {
+    path: 'emi-calculator',
+    loadChildren: () => import('./pages/emi-calculator/emi-calculator.module').then(m => m.EmiCalculatorPageModule)
+  },
+  {
+    path: 'fixed-chit-fund',
+    loadChildren: () => import('./pages/fixed-chit-fund/fixed-chit-fund.module').then(m => m.FixedChitFundPageModule)
   }
 ];
 

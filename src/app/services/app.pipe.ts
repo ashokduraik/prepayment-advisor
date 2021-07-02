@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { Currency } from '../services/currency-map';
 
@@ -17,10 +18,15 @@ export class AppCurrencyPipe implements PipeTransform {
     if (!isNaN(value)) {
       const currency = AppCurrencyPipe.currency;
       const currencySymbol = currency && currency.symbol || '₹';
-      const commaForEvery = currency && currency.commaForEvery || 3;
+      let commaForEvery = 2;
+      if (currency && currency.commaForEvery) {
+        commaForEvery = currency && currency.commaForEvery
+      } else if (currency) {
+        commaForEvery = 3;
+      }
+
       const noDecimal = option == 'noDecimal';
       const result = value.toFixed(!noDecimal ? 2 : 0).split('.');
-
       let lastThree = result[0].substring(result[0].length - 3);
       const otherNumbers = result[0].substring(0, result[0].length - 3);
       let output = result[0];
@@ -53,5 +59,13 @@ export class monthToYearPipe implements PipeTransform {
     }
 
     return (value || "").toString();
+  }
+}
+
+@Pipe({ name: 'safeHtml' })
+export class SafeHtmlPipe implements PipeTransform {
+  constructor(private sanitized: DomSanitizer) { }
+  transform(value) {
+    return this.sanitized.bypassSecurityTrustHtml(value);
   }
 }

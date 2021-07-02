@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 import { Currency } from '../../services/currency-map';
+import { LoanUtils } from 'src/app/services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 
@@ -80,6 +81,7 @@ export class CurrencySelectComponent implements OnInit {
     this.profile.currency = this.currency;
     await this.storage.saveProfile(this.profile);
     AppCurrencyPipe.setCurrency(this.profile.currency);
+    LoanUtils.setFinancialYearEnd(this.profile.currency);
 
     if (!this.comeFromMenu) {
       this.modalController.dismiss();

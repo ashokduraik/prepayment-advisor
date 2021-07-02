@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Drivers } from '@ionic/storage';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -53,7 +54,8 @@ export const myComponents = [
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy,
-    }
+    },
+    FileChooser,
   ],
   bootstrap: [AppComponent],
 })

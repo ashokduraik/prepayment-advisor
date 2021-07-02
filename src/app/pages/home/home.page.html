@@ -100,9 +100,8 @@
       <ion-button (click)="loanOther(loan)" expand="block" color="light" style="margin: 0px;">Details</ion-button>
     </ion-card>
   </ion-grid>
-  <!-- </ion-content>
-<ion-content *ngIf="!loans || !loans.length"> -->
-  <div *ngIf="!loans || !loans.length" id="container" id="container">
+
+  <div *ngIf="!loans || !loans.length">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Why Prepayment?</ion-card-title>
@@ -132,7 +131,7 @@
         </ion-button>
       </div>
     </ion-card>
-     <ion-card style="margin-top: 40px;">
+     <ion-card>
       <ion-card-header>
         <ion-card-title>Don't want to give all info?</ion-card-title>
       </ion-card-header>

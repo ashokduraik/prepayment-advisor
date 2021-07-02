@@ -21,45 +21,11 @@
           </ion-menu-toggle>
         </ion-list>
 
-        <!-- <ion-list *ngIf="loggedIn" lines="none">
-          <ion-list-header>
-            Account
-          </ion-list-header>
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/account" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="person"></ion-icon>
-              <ion-label>
-                Account
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle> --
-
-         
-
-          <ion-menu-toggle autoHide="false">
-            <ion-item button (click)="logout()" detail="false">
-              <ion-icon slot="start" name="log-out"></ion-icon>
-              <ion-label>
-                Logout
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-        </ion-list> -->
-
         <ion-list lines="none">
 
           <ion-menu-toggle autoHide="false">
-            <ion-item routerLink="/support" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="help-circle-outline"></ion-icon>
-              <ion-label>Support / Feedback</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-          <ion-menu-toggle autoHide="false">
             <ion-item routerLink="/currency-select" routerLinkActive="active" routerDirection="root" detail="false">
-              <ion-icon slot="start" name="wallet-outline"></ion-icon>
+              <ion-icon slot="start" name="cash-outline"></ion-icon>
               <ion-label>
                 Change Currency
               </ion-label>
@@ -91,6 +57,19 @@
             <ion-toggle [(ngModel)]="darkMode" (click)="updateProfile()"></ion-toggle>
           </ion-item>
 
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/support" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+              <ion-label>Support / Feedback</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle autoHide="false">
+            <ion-item routerLink="/backup-restore" routerLinkActive="active" routerDirection="root" detail="false">
+              <ion-icon slot="start" name="download-outline"></ion-icon>
+              <ion-label>Backup and Restore</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
       </ion-content>
     </ion-menu>

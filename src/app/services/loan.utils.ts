@@ -1,7 +1,18 @@
 import * as moment from 'moment';
+
 import { AppUtils } from './app.utils';
+import { Currency } from '../services/currency-map';
 
 export class LoanUtils {
+  private static financialYearEnd = 3;
+
+  static setFinancialYearEnd(currencyCode) {
+    const currency = currencyCode && Currency[currencyCode] || null;
+    if (currency) {
+      LoanUtils.financialYearEnd = currency.financialYearEnd || 12;
+    }
+  }
+
   static fillInstalments(loan) {
     loan.instalments = loan.instalments || [];
     const currentMonth = moment();
@@ -52,8 +63,10 @@ export class LoanUtils {
     loan.principalPaid = 0;
     loan.interestPaid = 0;
     loan.balanceAmount = 0;
+    loan.totalPrepayment = 0;
     let term = 1;
     loan.balanceAmount = loan.amount;
+    const fyStart = LoanUtils.financialYearEnd - 1;
     const mInterest = loan.interestRate / (12 * 100);
     let fyInterest = 0;
     let fyPrincipal = 0;
@@ -129,19 +142,23 @@ export class LoanUtils {
 
       emi.principalPaid = emi.amount - emi.interestPaid;
       emi.amount += (emi.charges || 0);
-      loan.principalPaid += emi.principalPaid;
+      loan.principalPaid += emi.principalPaid + emi.prepaymentTotal;
       loan.interestPaid += emi.interestPaid;
-      fyPrincipal += emi.principalPaid;
+      fyPrincipal += emi.principalPaid + emi.prepaymentTotal;
       fyInterest += emi.interestPaid;
-      loan.amount += emi.topupTotal - emi.prepaymentTotal;
+      loan.amount += emi.topupTotal;
       term++;
       loan.balanceAmount -= emi.principalPaid - emi.topupTotal + emi.prepaymentTotal;
       emi.closingBalance = loan.balanceAmount;
+      loan.totalPrepayment += emi.prepaymentTotal;
 
       /** if the month is march or this is last element then the financial Year info will be shown */
-      if (moment(emi.emiDate).get('month') == 2 || !loan.instalments[ei + 1]) {
+      if (moment(emi.emiDate).get('month') == fyStart || !loan.instalments[ei + 1]) {
         let year = moment(emi.emiDate).get('year')
-        if (moment(emi.emiDate).get('month') == 2) {
+
+        if (fyStart == 11) {
+          emi.financialYear = year;
+        } else if (moment(emi.emiDate).get('month') == fyStart) {
           emi.financialYear = (year - 1) + '-' + year.toString().slice(-2);
         } else {
           emi.financialYear = year + '-' + (year + 1).toString().slice(-2);

@@ -6,6 +6,7 @@ export const Currency = {
     "decimal_digits": 2,
     "code": "INR",
     "commaForEvery": 2,
+    "financialYearEnd": 3,
     "name_plural": "Indian rupees"
   },
   "USD": {
@@ -14,6 +15,7 @@ export const Currency = {
     "symbol_native": "$",
     "decimal_digits": 2,
     "code": "USD",
+    "financialYearEnd": 9,
     "name_plural": "US dollars"
   },
   "CAD": {
@@ -22,6 +24,7 @@ export const Currency = {
     "symbol_native": "$",
     "decimal_digits": 2,
     "code": "CAD",
+    "financialYearEnd": 3,
     "name_plural": "Canadian dollars"
   },
   "EUR": {
@@ -78,6 +81,7 @@ export const Currency = {
     "symbol_native": "$",
     "decimal_digits": 2,
     "code": "AUD",
+    "financialYearEnd": 6,
     "name_plural": "Australian dollars"
   },
   "AZN": {
@@ -102,6 +106,7 @@ export const Currency = {
     "symbol_native": "৳",
     "decimal_digits": 2,
     "code": "BDT",
+    "financialYearEnd": 6,
     "name_plural": "Bangladeshi takas"
   },
   "BGN": {
@@ -286,6 +291,7 @@ export const Currency = {
     "symbol_native": "ج.م.‏",
     "decimal_digits": 2,
     "code": "EGP",
+    "financialYearEnd": 6,
     "name_plural": "Egyptian pounds"
   },
   "ERN": {
@@ -302,6 +308,7 @@ export const Currency = {
     "symbol_native": "Br",
     "decimal_digits": 2,
     "code": "ETB",
+    "financialYearEnd": 6,
     "name_plural": "Ethiopian birrs"
   },
   "GBP": {
@@ -310,6 +317,7 @@ export const Currency = {
     "symbol_native": "£",
     "decimal_digits": 2,
     "code": "GBP",
+    "financialYearEnd": 3,
     "name_plural": "British pounds sterling"
   },
   "GEL": {
@@ -350,6 +358,7 @@ export const Currency = {
     "symbol_native": "$",
     "decimal_digits": 2,
     "code": "HKD",
+    "financialYearEnd": 3,
     "name_plural": "Hong Kong dollars"
   },
   "HNL": {
@@ -406,6 +415,7 @@ export const Currency = {
     "symbol_native": "﷼",
     "decimal_digits": 0,
     "code": "IRR",
+    "financialYearEnd": 3,
     "name_plural": "Iranian rials"
   },
   "ISK": {
@@ -422,6 +432,7 @@ export const Currency = {
     "symbol_native": "$",
     "decimal_digits": 2,
     "code": "JMD",
+    "financialYearEnd": 3,
     "name_plural": "Jamaican dollars"
   },
   "JOD": {
@@ -438,6 +449,7 @@ export const Currency = {
     "symbol_native": "￥",
     "decimal_digits": 0,
     "code": "JPY",
+    "financialYearEnd": 3,
     "name_plural": "Japanese yen"
   },
   "KES": {
@@ -446,6 +458,7 @@ export const Currency = {
     "symbol_native": "Ksh",
     "decimal_digits": 2,
     "code": "KES",
+    "financialYearEnd": 6,
     "name_plural": "Kenyan shillings"
   },
   "KHR": {
@@ -478,6 +491,7 @@ export const Currency = {
     "symbol_native": "د.ك.‏",
     "decimal_digits": 3,
     "code": "KWD",
+    "financialYearEnd": 3,
     "name_plural": "Kuwaiti dinars"
   },
   "KZT": {
@@ -614,6 +628,7 @@ export const Currency = {
     "symbol_native": "N$",
     "decimal_digits": 2,
     "code": "NAD",
+    "financialYearEnd": 3,
     "name_plural": "Namibian dollars"
   },
   "NGN": {
@@ -646,6 +661,7 @@ export const Currency = {
     "symbol_native": "नेरू",
     "decimal_digits": 2,
     "code": "NPR",
+    "financialYearEnd": 6,
     "name_plural": "Nepalese rupees"
   },
   "NZD": {
@@ -694,6 +710,7 @@ export const Currency = {
     "symbol_native": "₨",
     "decimal_digits": 0,
     "code": "PKR",
+    "financialYearEnd": 6,
     "name_plural": "Pakistani rupees"
   },
   "PLN": {
@@ -718,6 +735,7 @@ export const Currency = {
     "symbol_native": "ر.ق.‏",
     "decimal_digits": 2,
     "code": "QAR",
+    "financialYearEnd": 3,
     "name_plural": "Qatari rials"
   },
   "RON": {
@@ -782,6 +800,7 @@ export const Currency = {
     "symbol_native": "$",
     "decimal_digits": 2,
     "code": "SGD",
+    "financialYearEnd": 3,
     "name_plural": "Singapore dollars"
   },
   "SOS": {
@@ -806,6 +825,7 @@ export const Currency = {
     "symbol_native": "฿",
     "decimal_digits": 2,
     "code": "THB",
+    "financialYearEnd": 9,
     "name_plural": "Thai baht"
   },
   "TND": {
@@ -838,6 +858,7 @@ export const Currency = {
     "symbol_native": "$",
     "decimal_digits": 2,
     "code": "TTD",
+    "financialYearEnd": 9,
     "name_plural": "Trinidad and Tobago dollars"
   },
   "TWD": {
@@ -854,6 +875,7 @@ export const Currency = {
     "symbol_native": "TSh",
     "decimal_digits": 0,
     "code": "TZS",
+    "financialYearEnd": 6,
     "name_plural": "Tanzanian shillings"
   },
   "UAH": {
@@ -870,6 +892,7 @@ export const Currency = {
     "symbol_native": "USh",
     "decimal_digits": 0,
     "code": "UGX",
+    "financialYearEnd": 6,
     "name_plural": "Ugandan shillings"
   },
   "UYU": {
@@ -934,6 +957,7 @@ export const Currency = {
     "symbol_native": "R",
     "decimal_digits": 2,
     "code": "ZAR",
+    "financialYearEnd": 3,
     "name_plural": "South African rand"
   },
   "ZMK": {

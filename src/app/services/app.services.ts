@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController, AlertController } from '@ionic/angular';
 
 import * as moment from 'moment';
 import { AdMobPlus, BannerAd, InterstitialAd } from '@admob-plus/capacitor';
@@ -14,6 +14,7 @@ import { environment } from '../../environments/environment';
 export class AppService {
   lastInterstitialAdsTime = null;
   constructor(
+    public alertController: AlertController,
     private toastController: ToastController,
   ) { }
 
@@ -59,5 +60,17 @@ export class AppService {
     } catch (e) {
       AppUtils.errorLog(e);
     }
+  }
+
+  async presentAlert(header, message) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+
+    return await alert.onDidDismiss();
   }
 }

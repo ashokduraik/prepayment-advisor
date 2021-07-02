@@ -1,0 +1,95 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Fixed Chit Fund
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Fixed Chit Fund</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-card class="speaker-card">
+    <ion-list lines="none" style="border: none;">
+
+      <span class="label">Installment Amount</span>
+      <ion-input [(ngModel)]="chitFund.installment" type="number" placeholder="10000" autofocus="true"
+        (keyup)="doCalc()">
+      </ion-input>
+
+      <span class="label">Total no. of Installment</span>
+      <ion-input [(ngModel)]="chitFund.noOfInstallment" type="number" placeholder="20" (keyup)="doCalc()">
+      </ion-input>
+
+      <span class="label">Maturity Amount, If you didn't take the chit fund</span>
+      <ion-input [(ngModel)]="chitFund.maturityAmount" type="number" placeholder="232000" (keyup)="doCalc()">
+      </ion-input>
+
+      <span class="label">Final Amount, If you take the chit in the middle</span>
+      <ion-input [(ngModel)]="chitFund.loanAmount" type="number" placeholder="190000" (keyup)="doCalc()">
+      </ion-input>
+
+      <span class="label">Additional Amount per Installment, If you take the chit in the middle</span>
+      <ion-input [(ngModel)]="chitFund.interest" type="number" placeholder="2000" (keyup)="doCalc()">
+      </ion-input>
+
+    </ion-list>
+  </ion-card>
+  <ion-grid *ngIf="projections && projections.length" fixed>
+    <ion-card *ngFor="let proj of projections;" class="speaker-card">
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-align-self-center">
+            <strong>If you take the chit in the {{proj.index}} Installment</strong>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Total Amount Payable
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ proj.paid | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="proj.interest > 0">
+          <ion-col class="ion-align-self-start">
+            Additional amount, You pay
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end" style="color: red;">
+            {{ proj.interest | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="proj.interest > 0">
+          <ion-col class="ion-align-self-start">
+            Additional amount interest %
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end" style="color: red;">
+            {{ proj.interestPerct }}%
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="proj.interest < 0">
+          <ion-col class="ion-align-self-start">
+            Extra amount, You get
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end" style="color: green;">
+            {{ proj.interest * -1 | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="proj.interest < 0">
+          <ion-col class="ion-align-self-start">
+            Extra amount interest %
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end" style="color: green;">
+            {{ proj.interestPerct * -1 }}%
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </ion-grid>
+</ion-content>

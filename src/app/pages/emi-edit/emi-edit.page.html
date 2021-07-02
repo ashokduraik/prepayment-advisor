@@ -35,7 +35,8 @@
         <ion-list>
 
           <span class="label">Enter Rate of Interest per year</span>
-          <ion-input formControlName="interestRate" type="number" autofocus="true" placeholder="7.5"  required></ion-input>
+          <ion-input formControlName="interestRate" type="number" autofocus="true" placeholder="8" required>
+          </ion-input>
 
           <ion-text color="danger"
             *ngIf="loanForm.get('interestRate').dirty || loanForm.get('interestRate').touched || submitted == true">
@@ -51,7 +52,7 @@
           </ion-text>
 
           <span class="label">Enter EMI amount</span>
-          <ion-input formControlName="emi" type="number" placeholder="30000"  required></ion-input>
+          <ion-input formControlName="emi" type="number" placeholder="7000" required></ion-input>
 
           <ion-text color="danger"
             *ngIf="loanForm.get('emi').dirty || loanForm.get('emi').touched || submitted == true">

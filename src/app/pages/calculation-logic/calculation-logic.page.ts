@@ -14,6 +14,8 @@ export class CalculationLogicPage implements OnInit {
   emi: any;
   loan: any;
   emiIndex = null;
+  nextMonth = null;
+  previousMonth = null;
   defaultHref = 'home';
 
   constructor(
@@ -28,7 +30,7 @@ export class CalculationLogicPage implements OnInit {
     const emiid = this.activatedRoute.snapshot.paramMap.get('emiid');
     this.defaultHref = _id ? 'loan-details/' + _id : 'home';
 
-    if (!_id || !emiid) {
+    if (!_id) {
       this.router.navigateByUrl(this.defaultHref);
       return;
     }
@@ -39,18 +41,46 @@ export class CalculationLogicPage implements OnInit {
       return;
     }
 
-    this.emi = this.loan.instalments.find((emi, i) => {
-      if (emi._id !== emiid) return false;
-      this.emiIndex = i;
-      return true;
-    });
+    if (emiid) {
+      this.emi = this.loan.instalments.find((emi, i) => {
+        if (emi._id !== emiid) return false;
+        this.emiIndex = i;
+        return true;
+      });
+    } else {
+      this.emiIndex = this.loan.instalments.length - 1;
+      this.emi = this.loan.instalments[this.emiIndex];
+    }
+
     if (!this.emi) {
       this.router.navigateByUrl(this.defaultHref);
       return;
     }
 
+    console.log('this.emiIndex', this.emiIndex)
+    this.setPreNext();
     LoanUtils.calculateLoanDetails(this.loan);
     this.appService.showInterstitialAds();
   }
 
+  setPreNext() {
+    this.nextMonth = this.getEMIDate(this.loan.instalments[this.emiIndex + 1]);
+    this.previousMonth = this.getEMIDate(this.loan.instalments[this.emiIndex - 1]);
+  }
+
+  getEMIDate(emi) {
+    return emi && emi.emiDate;
+  }
+
+  goToPrevious() {
+    this.emi = this.loan.instalments[this.emiIndex - 1];
+    this.emiIndex--;
+    this.setPreNext();
+  }
+
+  goToNext() {
+    this.emi = this.loan.instalments[this.emiIndex + 1];
+    this.emiIndex++;
+    this.setPreNext();
+  }
 }

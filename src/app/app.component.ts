@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage-angular';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
 //import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
+import { LoanUtils } from './services/loan.utils';
 import { AppStorage } from './services/app.storage';
 import { AppService } from './services/app.services';
 import { AppCurrencyPipe } from './services/app.pipe';
@@ -25,6 +26,14 @@ export class AppComponent implements OnInit {
     title: 'Play Area',
     url: 'play-area',
     icon: 'play-circle'
+  }, {
+    title: 'EMI Calculator',
+    url: 'emi-calculator',
+    icon: 'calculator'
+  }, {
+    title: 'Fixed Chit Fund',
+    url: 'fixed-chit-fund',
+    icon: 'wallet'
   }];
 
   darkMode = false;
@@ -94,6 +103,7 @@ export class AppComponent implements OnInit {
     this.profile = await this.appStorage.getProfile() || {};
     this.darkMode = this.profile.darkMode;
     AppCurrencyPipe.setCurrency(this.profile.currency);
+    LoanUtils.setFinancialYearEnd(this.profile.currency);
   }
 
   async updateProfile() {

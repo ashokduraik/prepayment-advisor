@@ -46,15 +46,16 @@ export class TimelinePage {
     const timeLine = [];
     let lastInterest = null;
     this.loan.instalments = this.loan.instalments || [];
+    let iStyle = `style="font-size: 17px; font-weight: 600;"`;
 
-    this.loan.instalments.forEach(emi => {
+    this.loan.instalments.forEach((emi, i) => {
       const changes = [];
       const date = this.datePipe.transform(emi.emiDate, 'MMM YYYY');
-      const amount = this.currencyPipe.transform(emi.amount, 'noDecimal');
+      let amount = this.getAmount(emi.amount);
 
       if (!lastEMI || !lastInterest) {
         timeLine.push({
-          changes: `EMI started with ${amount} per month and ${emi.interestRate}% Rate of Interest`,
+          changes: `EMI started with <span ${iStyle}>${amount}</span> per month and <span ${iStyle}>${emi.interestRate}%</span> Rate of Interest`,
           date,
         });
         lastEMI = emi.amount;
@@ -62,20 +63,53 @@ export class TimelinePage {
         return;
       }
 
+      if (i == this.loan.instalments.length - 1 && this.loan.isCompleted) {
+        timeLine.push({
+          changes: `Loan is completed`,
+          date,
+        });
+        return;
+      }
+
+      if (emi.topupTotal > 0) {
+        changes.push(`<span ${iStyle}>${this.getAmount(emi.topupTotal)}</span> is added to the loan`);
+        if (emi.newEmiAmount) {
+          emi.amount = emi.newEmiAmount;
+        }
+      }
+
+      if (emi.previousMonthTopupPending && emi.previousMonthTopupPending.interest) {
+        emi.amount -= emi.previousMonthTopupPending.interest;
+      }
+
+      if (emi.prepaymentTotal > 0) {
+        changes.push(`<span ${iStyle}>${this.getAmount(emi.prepaymentTotal)}</span> is paid as prepayment`);
+        if (emi.newEmiAmount) {
+          emi.amount = emi.newEmiAmount;
+        }
+      }
+
+      amount = this.getAmount(emi.amount);
       if (lastEMI != emi.amount) {
-        const emiAmt = this.currencyPipe.transform(lastEMI, 'noDecimal');
-        changes.push(`EMI is changed from ${emiAmt} to ${amount}`);
+        const emiAmt = this.getAmount(lastEMI);
+        changes.push(`EMI is changed from <span ${iStyle}>${emiAmt} to ${amount}</span>`);
       }
 
       if (lastInterest != emi.interestRate) {
-        changes.push(`Rate of Interest changed from ${lastInterest}% to ${emi.interestRate}`);
+        changes.push(`Rate of Interest changed from <span ${iStyle}>${lastInterest}% to ${emi.interestRate}</span>`);
       }
 
       if (!changes.length) return;
 
+      const opening = LoanUtils.getBalanceTermAndInterest(emi.openingBalance, lastEMI, lastInterest);
+      const closing = LoanUtils.getBalanceTermAndInterest(emi.closingBalance, emi.amount, emi.interestRate);
+
+
       timeLine.push({
-        changes: changes.join('and'),
         date,
+        changes: changes.join(' and '),
+        termChange: closing.balanceTerm - opening.balanceTerm,
+        interestChange: closing.interestPayable - opening.interestPayable
       });
 
       lastEMI = emi.amount;
@@ -85,4 +119,7 @@ export class TimelinePage {
     this.timeLine = timeLine.reverse();
   }
 
+  getAmount(amount) {
+    return this.currencyPipe.transform(amount, 'noDecimal')
+  }
 }

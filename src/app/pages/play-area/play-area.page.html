@@ -23,9 +23,9 @@
 
   <ion-card *ngIf="filterNotGiven" style="padding: 10px;">
     Please provide basic information by clicking
-    <ion-button (click)="showFilter()">
-      <ion-icon name="filter-outline"></ion-icon>
-    </ion-button> icon.
+    <ion-icon (click)="showFilter()" name="filter-outline" style="font-size: 20px;
+    vertical-align: middle;"></ion-icon>
+    icon.
   </ion-card>
 
   <ion-card class="speaker-card" *ngIf="outstanding && !filterNotGiven">

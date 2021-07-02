@@ -53,6 +53,14 @@
             {{ loan.principalPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="loan.totalPrepayment > 0">
+          <ion-col class="ion-align-self-start">
+            Total Prepayment Paid
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end" style="color: green;">
+            {{ loan.totalPrepayment | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
         <ion-row>
           <ion-col class="ion-align-self-start">
             Total Interest Paid
@@ -67,6 +75,14 @@
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
             {{ loan.balanceAmount | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!loan.isCompleted">
+          <ion-col class="ion-align-self-start">
+            Interest Payable Amount
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ loan.interestPayable | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="loan.isCompleted" style="color: red;">

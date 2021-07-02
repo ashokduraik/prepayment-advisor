@@ -16,17 +16,24 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-card *ngIf="previousMonth" class="speaker-card" style="margin: -10px 10px 15px 10px;">
+    <ion-button (click)="goToPrevious()" expand="block" color="light" style="margin: 0px; text-transform: none;">
+      <ion-icon name="arrow-up-outline" style="margin-right: 5px;"></ion-icon>
+      Go to {{previousMonth | date: 'MMMM YYYY'}} EMI
+    </ion-button>
+  </ion-card>
+
   <ion-card *ngIf="emi" class="speaker-card">
     <ion-card-header color="primary">
       <ion-grid>
         <ion-row>
-          <ion-col>
-            <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
-          </ion-col>
-          <ion-col>
+          <ion-col size="3" class="ion-align-self-center">
             Term: {{emi.term}}
           </ion-col>
-          <ion-col size="2" style="text-align: end;">
+          <ion-col>
+            <h2 style="font-size: 20px;">{{emi.emiDate | date: 'MMMM YYYY'}}</h2>
+          </ion-col>
+          <ion-col size="2" style="text-align: end;" class="ion-align-self-center">
             {{ emi.interestRate }}%
           </ion-col>
         </ion-row>
@@ -204,5 +211,12 @@
         </ion-row>
       </ion-grid>
     </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="nextMonth" class="speaker-card" style="margin-top: 20px;">
+    <ion-button (click)="goToNext()" expand="block" color="light" style="margin: 0px; text-transform: none;">
+      <ion-icon name="arrow-down-outline" style="margin-right: 5px;"></ion-icon>
+      Go to {{nextMonth | date: 'MMMM YYYY'}} EMI
+    </ion-button>
   </ion-card>
 </ion-content>

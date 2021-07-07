@@ -45,6 +45,7 @@ export class EmiEditPage implements OnInit {
       emiDay: new FormControl(null, Validators.compose([
         Validators.required
       ])),
+      emiChangeCurrent: new FormControl(false),
       charges: new FormControl(null),
       interestAdjustment: new FormControl(null),
     });
@@ -75,10 +76,11 @@ export class EmiEditPage implements OnInit {
     }
 
     this.loanForm.patchValue({
-      emi: this.loan.emi,
+      emi: this.emi.amount || this.loan.emi,
       emiDay: this.loan.emiDay,
-      interestRate: this.loan.interestRate,
+      interestRate: this.emi.interestRate || this.loan.interestRate,
       charges: this.emi.charges,
+      emiChangeCurrent: this.loan.emi != this.emi.amount,
       interestAdjustment: this.emi.interestAdjustment,
     });
 
@@ -96,21 +98,42 @@ export class EmiEditPage implements OnInit {
     if (this.minEmi > loanDetails.emi) return
 
     this.saveInProgress = true;
-    this.loan.emi = loanDetails.emi;
-    this.loan.emiDay = loanDetails.emiDay;
-    this.loan.interestRate = loanDetails.interestRate;
     this.emi.charges = loanDetails.charges;
     this.emi.interestAdjustment = loanDetails.interestAdjustment;
+    const emiChanged = loanDetails.emi != this.emi.amount;
+    const interestChanged = loanDetails.interestRate != this.emi.interestRate;
+    const emiDayChanged = loanDetails.emiDay != this.emi.emiDay;
+
+    if (!loanDetails.emiChangeCurrent && emiChanged) {
+      this.loan.emi = loanDetails.emi;
+    }
+
+    if (emiDayChanged) {
+      this.loan.emiDay = loanDetails.emiDay;
+    }
+
+    if (interestChanged) {
+      this.loan.interestRate = loanDetails.interestRate;
+    }
 
     for (let i = this.emiIndex; i < this.loan.instalments.length; i++) {
       const emi = this.loan.instalments[i];
-      emi.amount = loanDetails.emi;
-      emi.emiDay = loanDetails.emiDay;
-      emi.interestRate = loanDetails.interestRate;
+      if (emiChanged || i == this.emiIndex) {
+        emi.amount = loanDetails.emi;
+      }
+
+      if (emiDayChanged || i == this.emiIndex) {
+        emi.emiDay = loanDetails.emiDay;
+      }
+
+      if (interestChanged || i == this.emiIndex) {
+        emi.interestRate = loanDetails.interestRate;
+      }
     }
 
     await this.storage.updateLoan(this.loan);
     this.service.showToast('Your EMI details is updated successfully');
     this.router.navigateByUrl(this.defaultHref);
+    this.saveInProgress = false;
   }
 }

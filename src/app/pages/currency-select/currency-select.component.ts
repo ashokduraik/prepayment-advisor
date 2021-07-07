@@ -88,5 +88,6 @@ export class CurrencySelectComponent implements OnInit {
     } else {
       this.router.navigateByUrl("home");
     }
+    this.saveInProgress = false;
   }
 }

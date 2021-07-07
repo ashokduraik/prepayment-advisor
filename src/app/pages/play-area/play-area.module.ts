@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PlayAreaPageRoutingModule } from './play-area-routing.module';
 import { PlayAreaPage } from './play-area.page';
 import { PipesModule } from '../../pipes.module';
+import { PlayAreaPageRoutingModule } from './play-area-routing.module';
+import { AmountInputModule } from '../../directive/amount-input/amount-input.module';
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { PipesModule } from '../../pipes.module';
     FormsModule,
     IonicModule,
     PipesModule,
+    AmountInputModule,
     PlayAreaPageRoutingModule
   ],
   declarations: [PlayAreaPage]
 })
-export class PlayAreaPageModule {}
+export class PlayAreaPageModule { }

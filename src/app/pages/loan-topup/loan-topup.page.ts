@@ -153,5 +153,6 @@ export class LoanTopupPage implements OnInit {
     await this.storage.updateLoan(this.loan);
     this.service.showToast('Your Topup details is saved successfully');
     this.router.navigateByUrl(this.defaultHref);
+    this.saveInProgress = false;
   }
 }

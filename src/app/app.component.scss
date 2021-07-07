@@ -323,3 +323,17 @@ ion-checkbox {
 ::placeholder { 
   opacity: 0.25 !important; 
 }
+
+.amount-input {
+  .amount-display {
+    display: none;
+    text-align: right;
+    width: 100%;
+    margin-right: -5px;
+  }
+}
+
+input[type=number] {
+  text-align: right !important;
+   padding-right: 10px !important;
+}

@@ -7,6 +7,7 @@ import { PipesModule } from '../../pipes.module';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 import { EmiCalculatorPage } from './emi-calculator.page';
 import { EmiCalculatorPageRoutingModule } from './emi-calculator-routing.module';
+import { AmountInputModule } from '../../directive/amount-input/amount-input.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { EmiCalculatorPageRoutingModule } from './emi-calculator-routing.module'
     FormsModule,
     IonicModule,
     PipesModule,
+    AmountInputModule,
     EmiCalculatorPageRoutingModule
   ],
   providers: [

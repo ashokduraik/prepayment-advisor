@@ -4,7 +4,7 @@
       <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      Calculation Logic
+      Edit EMI
     </ion-title>
   </ion-toolbar>
 </ion-header> 
@@ -12,7 +12,7 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Calculation Logic</ion-title>
+      <ion-title size="large">Edit EMI</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -35,7 +35,7 @@
         <ion-list>
 
           <span class="label">Enter Rate of Interest per year</span>
-          <ion-input formControlName="interestRate" type="number" autofocus="true" placeholder="8" required>
+          <ion-input formControlName="interestRate" type="number" placeholder="8" required>
           </ion-input>
 
           <ion-text color="danger"
@@ -52,7 +52,7 @@
           </ion-text>
 
           <span class="label">Enter EMI amount</span>
-          <ion-input formControlName="emi" type="number" placeholder="7000" required></ion-input>
+          <ion-input formControlName="emi" type="number" placeholder="7000" amountInput required></ion-input>
 
           <ion-text color="danger"
             *ngIf="loanForm.get('emi').dirty || loanForm.get('emi').touched || submitted == true">
@@ -71,6 +71,11 @@
             </p>
           </ion-text>
 
+          <ion-item>
+            <ion-label>EMI change for this month only</ion-label>
+            <ion-toggle formControlName="emiChangeCurrent"></ion-toggle>
+          </ion-item>
+
           <ion-item lines="none">
             <ion-label>EMI debit day</ion-label>
             <ion-select formControlName="emiDay" placeholder="Select" style="max-width: none;" required>
@@ -86,10 +91,10 @@
           </ion-text>
 
           <span class="label">Charges if any</span>
-          <ion-input formControlName="charges" type="number"></ion-input>
+          <ion-input formControlName="charges" type="number" amountInput></ion-input>
 
           <span class="label">Interest Adjustment If our logic is wrong</span>
-          <ion-input formControlName="interestAdjustment" type="number"></ion-input>
+          <ion-input formControlName="interestAdjustment" type="number" amountInput></ion-input>
           <ion-text>
             <p style="padding-left: 15px;">If you want reduce the interest, enter negative number</p>
           </ion-text>

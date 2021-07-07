@@ -63,7 +63,7 @@
           </ion-row>
           <ion-row *ngIf="!loan.isCompleted">
             <ion-col class="ion-align-self-start">
-              Balance Terms
+              Balance Term
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
               {{ loan.balanceTerm | monthToYear}}
@@ -124,7 +124,7 @@
         advantages
       </ion-card-content>
 
-      <div style="margin: 20px 0 20px 0;">
+      <div style="margin: 20px 0 20px 0; text-align: center;">
         <ion-button (click)="newLoan()" color="primary">
           <ion-icon name="add-circle-outline"></ion-icon>
           <span style="padding-left: 10px;">Loan</span>

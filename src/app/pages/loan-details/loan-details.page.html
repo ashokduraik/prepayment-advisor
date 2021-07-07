@@ -36,7 +36,7 @@
             <h2>{{ loan.amount | appCurrency: 'noDecimal' }}</h2>
           </ion-col>
           <ion-col>
-            <div>Balance Terms</div>
+            <div>Balance Term</div>
             <h2>{{ loan.balanceTerm | monthToYear }}</h2>
           </ion-col>
         </ion-row>
@@ -85,6 +85,14 @@
             {{ loan.interestPayable | appCurrency: '' }}
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="!loan.isCompleted">
+          <ion-col class="ion-align-self-start">
+            Balance Term
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ loan.balanceTerm }} Months
+          </ion-col>
+        </ion-row>
         <ion-row *ngIf="loan.isCompleted" style="color: red;">
           <ion-col>
             You have paid {{((loan.interestPaid/(loan.amount + loan.interestPaid)) * 100).toFixed(2)}}% for interest.
@@ -108,7 +116,7 @@
               <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
             </ion-col>
             <ion-col>
-              Terms: {{emi.term}}
+              Term: {{emi.term}}
             </ion-col>
             <ion-col size="2" style="text-align: end;">
               {{ emi.interestRate }}%
@@ -126,12 +134,12 @@
           <ion-col style="text-align: end;">Interest Paid</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>{{ emi.amount | appCurrency: 'noDecimal' }}</ion-col>
+          <ion-col>{{ (emi.amount + (emi.charges || 0)) | appCurrency: 'noDecimal' }}</ion-col>
           <ion-col style="color: green;">
             {{ emi.principalPaid | appCurrency: '' }}
           </ion-col>
           <ion-col style="color: red; text-align: end;">
-            {{ emi.interestPaid | appCurrency: '' }}
+            {{ (emi.interestPaid + (emi.interestAdjustment || 0)) | appCurrency: '' }}
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -163,8 +171,13 @@
       </ion-grid>
       <ion-card *ngIf="emi.financialYear" color="light" class="inner-card">
         <ion-row>
+          <ion-col class="ion-align-self-center" style="text-align: center;">
+            Financial Year <strong>{{emi.financialYear}}</strong>
+          </ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col class="ion-align-self-start">
-            Principal Paid for FY {{emi.financialYear}}
+            Principal Paid
           </ion-col>
           <ion-col style="color: green;" size="4" class="ion-align-self-end">
             {{ emi.fyPrincipal | appCurrency: '' }}
@@ -172,7 +185,7 @@
         </ion-row>
         <ion-row>
           <ion-col class="ion-align-self-start">
-            Interest Paid for FY {{emi.financialYear}}
+            Interest Paid
           </ion-col>
           <ion-col style="color: red;" size="4" class="ion-align-self-end">
             {{ emi.fyInterest | appCurrency: '' }}
@@ -180,10 +193,26 @@
         </ion-row>
         <ion-row>
           <ion-col class="ion-align-self-start">
-            Total for FY {{emi.financialYear}}
+            Total Paid Amount
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ emi.fyInterest + emi.fyPrincipal | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!loan.isCompleted && emi.fyProvisionalPrincipal">
+          <ion-col class="ion-align-self-start">
+            Provisional Principal
+          </ion-col>
+          <ion-col style="color: green;" size="4" class="ion-align-self-end">
+            {{ emi.fyProvisionalPrincipal | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!loan.isCompleted && emi.fyProvisionalInterest">
+          <ion-col class="ion-align-self-start">
+            Provisional Interest
           </ion-col>
           <ion-col style="color: red;" size="4" class="ion-align-self-end">
-            {{ emi.fyInterest + emi.fyPrincipal | appCurrency: '' }}
+            {{ emi.fyProvisionalInterest | appCurrency: '' }}
           </ion-col>
         </ion-row>
       </ion-card>

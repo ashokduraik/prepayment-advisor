@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PrepaymentPageRoutingModule } from './prepayment-routing.module';
-import { PrepaymentPage } from './prepayment.page';
 import { PipesModule } from '../../pipes.module';
+import { PrepaymentPage } from './prepayment.page';
+import { PrepaymentPageRoutingModule } from './prepayment-routing.module';
+import { AmountInputModule } from '../../directive/amount-input/amount-input.module';
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { PipesModule } from '../../pipes.module';
     FormsModule,
     IonicModule,
     PipesModule,
+    AmountInputModule,
     PrepaymentPageRoutingModule
   ],
   declarations: [PrepaymentPage]
 })
-export class PrepaymentPageModule {}
+export class PrepaymentPageModule { }

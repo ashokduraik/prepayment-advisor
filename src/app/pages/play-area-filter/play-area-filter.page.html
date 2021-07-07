@@ -32,7 +32,7 @@
     </ion-text>
 
     <span class="label">Enter EMI amount</span>
-    <ion-input [(ngModel)]="outstanding.emi" type="number" placeholder="7000" required></ion-input>
+    <ion-input [(ngModel)]="outstanding.emi" type="number" placeholder="7000" amountInput required></ion-input>
 
     <ion-text color="danger" *ngIf="submitted == true">
       <p *ngIf="!outstanding.emi">
@@ -52,7 +52,7 @@
     </ion-text>
 
     <span class="label">Enter Current Outstanding Amount</span>
-    <ion-input [(ngModel)]="outstanding.amount" type="number" placeholder="500000" required></ion-input>
+    <ion-input [(ngModel)]="outstanding.amount" type="number" placeholder="500000" amountInput required></ion-input>
 
     <ion-text color="danger" *ngIf="submitted == true">
       <p *ngIf="!outstanding.amount">

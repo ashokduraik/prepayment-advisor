@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { PipesModule } from '../../pipes.module';
 import { FixedChitFundPage } from './fixed-chit-fund.page';
 import { FixedChitFundPageRoutingModule } from './fixed-chit-fund-routing.module';
+import { AmountInputModule } from '../../directive/amount-input/amount-input.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { FixedChitFundPageRoutingModule } from './fixed-chit-fund-routing.module
     FormsModule,
     IonicModule,
     PipesModule,
+    AmountInputModule,
     FixedChitFundPageRoutingModule
   ],
   declarations: [FixedChitFundPage],

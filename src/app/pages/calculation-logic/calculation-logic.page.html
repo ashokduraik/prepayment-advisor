@@ -60,7 +60,22 @@
             EMI
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
-            {{ emi.amount | appCurrency: '' }}
+            {{ emi.amount + (emi.charges || 0) | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.charges">
+          <ion-col class="logic-det">
+            = EMI + Charges
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.charges">
+          <ion-col class="logic-det">
+            = {{emi.amount | appCurrency: ''}} + {{emi.charges | appCurrency: ''}}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.charges">
+          <ion-col class="logic-det">
+            = {{ emi.amount + (emi.charges || 0) | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row class="detail-head" *ngIf="emi.previousMonthTopupPending">
@@ -182,6 +197,50 @@
             = {{ emi.principalPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
+
+        <ion-row *ngIf="emi.prepaymentTotal" class="detail-head">
+          <ion-col class="ion-align-self-start">
+            Prepayment Amount
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ emi.prepaymentActual | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.prepaymentTotal">
+          <ion-col class="logic-det">
+            = Prepayment Paid - Interest on Prepayment
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.prepaymentTotal">
+          <ion-col class="logic-det">
+            = Prepayment Paid - (Amount * Interest Per Day * No of Days)
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.prepaymentTotal">
+          <ion-col class="logic-det">
+            = <span *ngFor="let pp of emi.prepayments; let indexOfele=index;">
+              ( {{pp.amount | appCurrency: '' }} - (
+              {{pp.ppamount | appCurrency: ''}} *
+              {{(emi.interestRate /(100 * 12 * pp.daysInMonth)).toFixed(6)}} *
+              {{pp.noOfDay}} ))
+              <span *ngIf="indexOfele != emi.prepayments.length-1">+</span>
+            </span>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.prepaymentTotal">
+          <ion-col class="logic-det">
+            = <span *ngFor="let pp of emi.prepayments; let indexOfele=index;">
+              ( {{pp.amount | appCurrency: '' }} - {{pp.interest | appCurrency: '' }})
+              <span *ngIf="indexOfele != emi.prepayments.length-1">+</span>
+            </span>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="emi.prepaymentTotal">
+          <ion-col class="logic-det">
+            = {{ emi.prepaymentActual | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+
         <ion-row class="detail-head">
           <ion-col class="ion-align-self-start">
             Closing Balance
@@ -201,7 +260,7 @@
           <ion-col class="logic-det">
             = {{ emi.openingBalance | appCurrency: '' }} - {{ emi.principalPaid | appCurrency: '' }}
             <span *ngIf="emi.topupTotal > 0">+ {{ emi.topupTotal | appCurrency: '' }}</span>
-            <span *ngIf="emi.prepaymentTotal > 0">+ {{ emi.prepaymentTotal | appCurrency: '' }}</span>
+            <span *ngIf="emi.prepaymentActual > 0">- {{ emi.prepaymentActual | appCurrency: '' }}</span>
           </ion-col>
         </ion-row>
         <ion-row>

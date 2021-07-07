@@ -4,9 +4,10 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoanTopupPageRoutingModule } from './loan-topup-routing.module';
-import { LoanTopupPage } from './loan-topup.page';
 import { PipesModule } from '../../pipes.module';
+import { LoanTopupPage } from './loan-topup.page';
+import { LoanTopupPageRoutingModule } from './loan-topup-routing.module';
+import { AmountInputModule } from '../../directive/amount-input/amount-input.module';
 
 @NgModule({
   imports: [
@@ -14,8 +15,9 @@ import { PipesModule } from '../../pipes.module';
     FormsModule,
     IonicModule,
     PipesModule,
+    AmountInputModule,
     LoanTopupPageRoutingModule
   ],
   declarations: [LoanTopupPage]
 })
-export class LoanTopupPageModule {}
+export class LoanTopupPageModule { }

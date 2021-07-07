@@ -20,7 +20,7 @@
 
       <span class="label">Installment Amount</span>
       <ion-input [(ngModel)]="chitFund.installment" type="number" placeholder="10000" autofocus="true"
-        (keyup)="doCalc()">
+        (keyup)="doCalc()" amountInput>
       </ion-input>
 
       <span class="label">Total no. of Installment</span>
@@ -28,15 +28,16 @@
       </ion-input>
 
       <span class="label">Maturity Amount, If you didn't take the chit fund</span>
-      <ion-input [(ngModel)]="chitFund.maturityAmount" type="number" placeholder="232000" (keyup)="doCalc()">
+      <ion-input [(ngModel)]="chitFund.maturityAmount" type="number" placeholder="232000" (keyup)="doCalc()"
+        amountInput>
       </ion-input>
 
       <span class="label">Final Amount, If you take the chit in the middle</span>
-      <ion-input [(ngModel)]="chitFund.loanAmount" type="number" placeholder="190000" (keyup)="doCalc()">
+      <ion-input [(ngModel)]="chitFund.loanAmount" type="number" placeholder="190000" (keyup)="doCalc()" amountInput>
       </ion-input>
 
       <span class="label">Additional Amount per Installment, If you take the chit in the middle</span>
-      <ion-input [(ngModel)]="chitFund.interest" type="number" placeholder="2000" (keyup)="doCalc()">
+      <ion-input [(ngModel)]="chitFund.interest" type="number" placeholder="2000" (keyup)="doCalc()" amountInput>
       </ion-input>
 
     </ion-list>

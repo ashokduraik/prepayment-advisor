@@ -151,6 +151,7 @@ export class PrepaymentPage implements OnInit {
     await this.storage.updateLoan(this.loan);
     this.service.showToast('Your prepayment details is saved successfully');
     this.router.navigateByUrl(this.defaultHref);
+    this.saveInProgress = false;
   }
 
 }

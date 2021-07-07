@@ -16,6 +16,7 @@ export class AppCurrencyPipe implements PipeTransform {
   transform(value: number, option): string {
 
     if (!isNaN(value)) {
+      value = Number(value);
       const currency = AppCurrencyPipe.currency;
       const currencySymbol = currency && currency.symbol || '₹';
       let commaForEvery = 2;

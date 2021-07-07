@@ -78,13 +78,13 @@
       <ion-list *ngIf="advice.type == 'prepayment'">
         <span class="label">Prepayment Amount</span>
         <ion-input [(ngModel)]="advice.prepayment" type="number" autofocus="true" (keyup)="generateAdvice()"
-          (change)="generateAdvice()" placeholder="10000">
+          (change)="generateAdvice()" placeholder="10000" amountInput>
         </ion-input>
       </ion-list>
       <ion-list *ngIf="advice.type == 'emi'">
         <span class="label">New EMI</span>
         <ion-input [(ngModel)]="advice.emi" type="number" autofocus="true" (keyup)="generateEmiAdvice()"
-          placeholder="10000" (change)="generateEmiAdvice()">
+          placeholder="10000" (change)="generateEmiAdvice()" amountInput>
         </ion-input>
       </ion-list>
       <ion-card *ngIf="advice.type == 'emi' && advice.noEmiChange" color="light" class="inner-card">

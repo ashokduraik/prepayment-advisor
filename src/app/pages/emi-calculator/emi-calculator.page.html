@@ -18,14 +18,14 @@
   <ion-list lines="none" style="border: none;">
 
     <span class="label">Loan Amount</span>
-    <ion-input [(ngModel)]="amount" type="number" placeholder="500000" autofocus="true" (keyup)="doCalc()">
+    <ion-input [(ngModel)]="amount" type="number" placeholder="500000" autofocus="true" amountInput (keyup)="doCalc()">
     </ion-input>
 
     <span class="label">Enter Rate of Interest per year</span>
     <ion-input [(ngModel)]="interestRate" type="number" placeholder="8" (keyup)="doCalc()"></ion-input>
 
     <span class="label">Enter EMI amount</span>
-    <ion-input [(ngModel)]="emi" type="number" placeholder="7000" (keyup)="emiChanged()"></ion-input>
+    <ion-input [(ngModel)]="emi" type="number" placeholder="7000" (keyup)="emiChanged()" amountInput></ion-input>
 
     <span class="label">Term (Months)</span>
     <ion-input [(ngModel)]="term" type="number" placeholder="98" (keyup)="termChanged()"></ion-input>

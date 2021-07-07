@@ -20,7 +20,8 @@
     <ion-list>
 
       <span class="label">Enter the Prepayments amount</span>
-      <ion-input [(ngModel)]="pp.amount" type="number" (change)="valueChanged();" placeholder="10000"></ion-input>
+      <ion-input [(ngModel)]="pp.amount" type="number" (change)="valueChanged();" placeholder="10000" amountInput>
+      </ion-input>
 
       <ion-item lines="none">
         <ion-label>Select Date</ion-label>
@@ -41,7 +42,7 @@
         <!-- <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency: '' }}, if no change in
           term)</span> -->
         <span class="label">Enter the new EMI amount</span>
-        <ion-input [(ngModel)]="newEmiAmount" type="number" required></ion-input>
+        <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
 
         <ion-text color="danger" *ngIf="!newEmiAmount && !noEmi && submitted == true">
           <p>

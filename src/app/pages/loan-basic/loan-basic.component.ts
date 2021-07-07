@@ -112,5 +112,6 @@ export class LoanBasicComponent implements OnInit {
     await this.storage.createLoan(loan);
     this.service.showToast('Your Loan details is saved successfully');
     this.router.navigateByUrl('home');
+    this.saveInProgress = false;
   }
 }

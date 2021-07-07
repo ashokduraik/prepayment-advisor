@@ -32,7 +32,7 @@ export class LoanUtils {
       }
     }
 
-    while (balance > 0 && ((currentMonth.isAfter(emiMonth, 'month') || (currentMonth.isSame(emiMonth, "month") && currentDay > Number(loan.emiDay))))) {
+    while (balance > 0 && ((currentMonth.isAfter(emiMonth, 'month') || (currentMonth.isSame(emiMonth, "month") && currentDay >= Number(loan.emiDay))))) {
       let emi: any;
       emi = {
         _id: AppUtils.getUid(),
@@ -65,9 +65,9 @@ export class LoanUtils {
     loan.balanceAmount = 0;
     loan.totalPrepayment = 0;
     let term = 1;
+    let emiMonth = null;
     loan.balanceAmount = loan.amount;
     const fyStart = LoanUtils.financialYearEnd - 1;
-    const mInterest = loan.interestRate / (12 * 100);
     let fyInterest = 0;
     let fyPrincipal = 0;
     let topupPending = {
@@ -84,8 +84,10 @@ export class LoanUtils {
       emi.topupInterest = 0;
       emi.topupTotal = 0;
       emi.prepaymentTotal = 0;
+      emi.prepaymentInterest = 0;
       emi.topups = emi.topups || [];
-      const daysInMonth = moment(emi.emiDate).daysInMonth()
+      const daysInMonth = moment(emi.emiDate).daysInMonth();
+      const mInterest = emi.interestRate / (12 * 100);
       const interestPerDay = mInterest / daysInMonth;
       let topupInterest = topupPending.interest;
 
@@ -126,39 +128,37 @@ export class LoanUtils {
       emi.prepayments.forEach(pp => {
         if (!pp || !pp.amount || !pp.prepaymentDate) return;
         emi.prepaymentTotal += pp.amount;
-        const noOfDay = moment(pp.prepaymentDate).endOf('month').diff(pp.prepaymentDate, 'days') + 1;
-
-        if (emi.emiDay < moment(pp.prepaymentDate).get('date')) {
-
-        }
+        let noOfDay = moment(pp.prepaymentDate).startOf('month').diff(pp.prepaymentDate, 'days');
+        pp.noOfDay = noOfDay * -1;
+        pp.interest = LoanUtils.getPrepaymentInterest(pp.amount, pp.noOfDay, interestPerDay);
+        emi.prepaymentInterest += pp.interest;
+        pp.ppamount = pp.amount - pp.interest;
+        pp.daysInMonth = daysInMonth;
       });
 
+      emi.prepaymentActual = emi.prepaymentTotal - emi.prepaymentInterest;
       emi.openingBalance = loan.balanceAmount;
       emi.amount += topupInterest;
       emi.interestPaid = (loan.balanceAmount * mInterest) + topupInterest;
-      if (emi.interestAdjustment != null && !isNaN(emi.interestAdjustment)) {
-        emi.interestPaid += emi.interestAdjustment;
-      }
-
-      emi.principalPaid = emi.amount - emi.interestPaid;
-      emi.amount += (emi.charges || 0);
-      loan.principalPaid += emi.principalPaid + emi.prepaymentTotal;
-      loan.interestPaid += emi.interestPaid;
-      fyPrincipal += emi.principalPaid + emi.prepaymentTotal;
-      fyInterest += emi.interestPaid;
+      emi.principalPaid = emi.amount - emi.interestPaid - (emi.interestAdjustment || 0);
+      loan.principalPaid += emi.principalPaid + emi.prepaymentActual;
+      loan.interestPaid += emi.interestPaid + (emi.interestAdjustment || 0);
+      fyPrincipal += emi.principalPaid + emi.prepaymentActual;
+      fyInterest += emi.interestPaid + (emi.interestAdjustment || 0);;
       loan.amount += emi.topupTotal;
       term++;
-      loan.balanceAmount -= emi.principalPaid - emi.topupTotal + emi.prepaymentTotal;
+      loan.balanceAmount -= emi.principalPaid - emi.topupTotal + emi.prepaymentActual;
       emi.closingBalance = loan.balanceAmount;
-      loan.totalPrepayment += emi.prepaymentTotal;
+      loan.totalPrepayment += emi.prepaymentActual;
+      emiMonth = moment(emi.emiDate).get('month');
 
       /** if the month is march or this is last element then the financial Year info will be shown */
-      if (moment(emi.emiDate).get('month') == fyStart || !loan.instalments[ei + 1]) {
+      if (emiMonth == fyStart || !loan.instalments[ei + 1]) {
         let year = moment(emi.emiDate).get('year')
 
         if (fyStart == 11) {
           emi.financialYear = year;
-        } else if (moment(emi.emiDate).get('month') == fyStart) {
+        } else if (emiMonth == fyStart) {
           emi.financialYear = (year - 1) + '-' + year.toString().slice(-2);
         } else {
           emi.financialYear = year + '-' + (year + 1).toString().slice(-2);
@@ -170,10 +170,17 @@ export class LoanUtils {
       }
     });
 
+    let fyPendingMonth = null;
+    const lastEMI = loan.instalments[loan.instalments.length - 1];
+    if (emiMonth > -1 && emiMonth < 11) {
+      fyPendingMonth = 12 - emiMonth + fyStart;
+    }
+
     const temp = LoanUtils.getBalanceTermAndInterest(
       loan.balanceAmount,
       loan.emi,
-      loan.interestRate
+      loan.interestRate,
+      fyPendingMonth,
     );
 
     loan.balanceTerm = temp.balanceTerm;
@@ -182,26 +189,50 @@ export class LoanUtils {
     if (loan.balanceAmount <= 0) {
       loan.isCompleted = true;
       loan.completedAt = loan.instalments[loan.instalments.length - 1].emiDate;
+    } else if (fyPendingMonth > 0 && lastEMI && temp.fyPendingInterest && temp.fyPendingPrincipal) {
+      lastEMI.fyProvisionalInterest = temp.fyPendingInterest + lastEMI.fyInterest;
+      lastEMI.fyProvisionalPrincipal = temp.fyPendingPrincipal + lastEMI.fyPrincipal;
     }
   }
 
-  static getBalanceTermAndInterest(balanceAmount, emi, interestRate) {
+  static getPrepaymentInterest(amount, noOfDay, interestPerDay) {
+    const interest = amount * noOfDay * interestPerDay;
+    let ppamount = amount - interest;
+    const newInterst = ppamount * noOfDay * interestPerDay;
+    return newInterst;
+  }
+
+  static getBalanceTermAndInterest(balanceAmount, emi, interestRate, fyPendingMonth?: number) {
     let balance = balanceAmount || 0;
     const mInterest = interestRate / (12 * 100);
     let balanceTerm = 0;
     let interestPayable = 0;
+    let fyPendingInterest = 0;
+    let fyPendingPrincipal = 0;
 
     while (balance > 0) {
       const interest = balance * mInterest
       balanceTerm++;
-      balance -= emi - interest;
+      const principal = emi - interest;
+      balance -= principal;
       interestPayable += interest;
+
+      if (fyPendingMonth > 0 && fyPendingMonth >= balanceTerm) {
+        fyPendingInterest += interest;
+        fyPendingPrincipal += principal;
+      }
+
       if (balanceTerm > 5000) {
         break;
       }
     }
 
-    return { balanceTerm, interestPayable };
+    return {
+      balanceTerm,
+      interestPayable,
+      fyPendingInterest,
+      fyPendingPrincipal,
+    };
   }
 
   static getEMIAmount(amount, term, interestRate) {

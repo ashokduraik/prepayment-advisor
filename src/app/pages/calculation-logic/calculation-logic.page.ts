@@ -57,7 +57,6 @@ export class CalculationLogicPage implements OnInit {
       return;
     }
 
-    console.log('this.emiIndex', this.emiIndex)
     this.setPreNext();
     LoanUtils.calculateLoanDetails(this.loan);
     this.appService.showInterstitialAds();

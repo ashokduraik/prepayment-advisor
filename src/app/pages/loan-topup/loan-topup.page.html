@@ -20,7 +20,8 @@
     <ion-list>
 
       <span class="label">Enter the topup amount</span>
-      <ion-input [(ngModel)]="topup.amount" type="number" (change)="valueChanged();" placeholder="100000"></ion-input>
+      <ion-input [(ngModel)]="topup.amount" type="number" (change)="valueChanged();" placeholder="100000" amountInput>
+      </ion-input>
 
       <ion-item lines="none">
         <ion-label>Select Date</ion-label>
@@ -40,7 +41,7 @@
       <div *ngIf="topupChanged">
         <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency: '' }}, if no change
           in term)</span>
-        <ion-input [(ngModel)]="newEmiAmount" type="number" required></ion-input>
+        <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
 
         <ion-text color="danger" *ngIf="!newEmiAmount && !noEmi && submitted == true">
           <p>

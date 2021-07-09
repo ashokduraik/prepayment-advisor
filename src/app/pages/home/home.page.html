@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -10,11 +10,6 @@
 </ion-header> 
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Prepayment Advisor</ion-title>
-    </ion-toolbar>
-  </ion-header>
   <ion-grid *ngIf="loans && loans.length" fixed>
     <ion-card *ngFor="let loan of loans" class="speaker-card">
       <ion-card-header color="primary">

@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
@@ -10,12 +10,6 @@
 </ion-header> 
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Timeline</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <div class="rb-container" *ngIf="timeLine && timeLine.length">
     <ul class="rb">
       <li *ngFor="let line of timeLine;" class="rb-item" ng-repeat="itembx">

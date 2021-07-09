@@ -64,7 +64,7 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-menu-toggle autoHide="false">
+          <ion-menu-toggle *ngIf="isAndroid" autoHide="false">
             <ion-item routerLink="/backup-restore" routerLinkActive="active" routerDirection="root" detail="false">
               <ion-icon slot="start" name="download-outline"></ion-icon>
               <ion-label>Backup and Restore</ion-label>

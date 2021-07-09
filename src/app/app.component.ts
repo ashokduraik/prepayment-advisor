@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
   darkMode = false;
   profile: any;
   loggedIn = false;
+  isAndroid = false;
 
   constructor(
     private menu: MenuController,
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit {
     private toastCtrl: ToastController,
     //  private lottieSplashScreen: LottieSplashScreen
   ) {
+    this.isAndroid = this.platform.is('android');
     this.initializeApp();
   }
 

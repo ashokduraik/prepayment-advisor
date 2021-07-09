@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
+import { AppRate } from '@ionic-native/app-rate/ngx';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
@@ -19,6 +20,7 @@ export class HomePage {
 
   constructor(
     public router: Router,
+    private appRate: AppRate,
     private platform: Platform,
     private storage: AppStorage,
     private appService: AppService,
@@ -40,6 +42,17 @@ export class HomePage {
     this.loans.forEach(loan => {
       LoanUtils.calculateLoanDetails(loan);
     });
+  }
+
+  ngOnInit() {
+    this.appRate.preferences = {
+      storeAppURL: {
+        //ios: '<app_id>',
+        android: 'market://details?id=com.altooxs.prepaymentadvisor',
+      }
+    }
+
+    this.appRate.promptForRating();
   }
 
   // ngAfterViewInit() {

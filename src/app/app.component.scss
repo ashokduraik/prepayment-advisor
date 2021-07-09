@@ -318,6 +318,7 @@ ion-checkbox {
   border-right: none;
   border-left: none;
   margin: 5px 0;
+  border-bottom: none;
 }
 
 ::placeholder { 
@@ -335,5 +336,28 @@ ion-checkbox {
 
 input[type=number] {
   text-align: right !important;
-   padding-right: 10px !important;
+  padding-right: 10px !important;
+}
+
+.plt-ios ion-menu ion-header ion-title {
+  padding: 0px;
+  text-align: center;
+}
+
+input {
+  padding-left: 10px !important;
+}
+
+.card-content-ios {
+  font-size: unset;
+  line-height: unset;
+}
+
+.action-sheet-button-inner.sc-ion-action-sheet-ios {
+  justify-content: left;
+  font-size: 17px;
+
+  ion-icon {
+    margin-right: 10px !important;
+  }
 }

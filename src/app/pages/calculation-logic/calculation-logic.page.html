@@ -137,7 +137,12 @@
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = (Opening Balance * Interest rate per month)
+            <span *ngIf="!emi.noOfDays">
+              = (Opening Balance * Interest rate per month)
+            </span>
+            <span *ngIf="emi.noOfDays">
+              = (Opening Balance * no of days * interest per day)
+            </span>
             <span *ngIf="emi.previousMonthTopupPending"> + Interest due to topup from previous month</span>
             <span *ngIf="emi.topupInterest > 0"> + Topup Interest</span>
             <span *ngIf="emi.interestAdjustment != null"> + Interest Adjustment</span>
@@ -145,7 +150,13 @@
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = ({{ emi.openingBalance | appCurrency: '' }} * ({{ emi.interestRate}} / (100*12)))
+            <span *ngIf="!emi.noOfDays">
+              = ({{ emi.openingBalance | appCurrency: '' }} * ({{ emi.interestRate}} / (100 * 12)))
+            </span>
+            <span *ngIf="emi.noOfDays">
+              = ({{ emi.openingBalance | appCurrency: '' }} * {{emi.noOfDays}} * ({{ emi.interestRate}} / (100 * 12 *
+              {{emi.daysInMonth}})))
+            </span>
             <span *ngIf="emi.previousMonthTopupPending"> + {{ emi.previousMonthTopupPending.interest |
               appCurrency: '' }}</span>
             <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency: '' }}</span>
@@ -154,7 +165,13 @@
         </ion-row>
         <ion-row>
           <ion-col class="logic-det">
-            = ({{ emi.openingBalance | appCurrency: '' }} * {{ (emi.interestRate/(100*12)).toFixed(6)}})
+            <span *ngIf="!emi.noOfDays">
+              = ({{ emi.openingBalance | appCurrency: '' }} * {{ (emi.interestRate/(100*12)).toFixed(6)}})
+            </span>
+            <span *ngIf="emi.noOfDays">
+              = ({{ emi.openingBalance | appCurrency: '' }} * {{emi.noOfDays}} * {{ (emi.interestRate / (100 * 12 *
+              emi.daysInMonth)).toFixed(8) }})
+            </span>
             <span *ngIf="emi.previousMonthTopupPending"> + {{ emi.previousMonthTopupPending.interest |
               appCurrency: '' }}</span>
             <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency: '' }}</span>

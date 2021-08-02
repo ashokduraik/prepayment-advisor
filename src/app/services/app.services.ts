@@ -46,9 +46,9 @@ export class AppService {
 
   async showInterstitialAds() {
     try {
-      if (this.lastInterstitialAdsTime && moment().diff(this.lastInterstitialAdsTime, 'minutes') < 5) {
-        return;
-      }
+      // if (this.lastInterstitialAdsTime && moment().diff(this.lastInterstitialAdsTime, 'minutes') < 5) {
+      //   return;
+      // }
 
       await AdMobPlus.start();
       const interstitial = new InterstitialAd({
@@ -56,7 +56,7 @@ export class AppService {
       });
       await interstitial.load();
       await interstitial.show();
-      this.lastInterstitialAdsTime = new Date();
+      //this.lastInterstitialAdsTime = new Date();
     } catch (e) {
       AppUtils.errorLog(e);
     }

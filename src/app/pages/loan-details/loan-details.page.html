@@ -41,15 +41,31 @@
       <ion-grid>
         <ion-row>
           <ion-col class="ion-align-self-start">
-            Total Principal Paid
+            Principal Paid
           </ion-col>
           <ion-col size="4" class="ion-align-self-end" style="color: green;">
             {{ loan.principalPaid | appCurrency: '' }}
           </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Interest Paid
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end" style="color: red;">
+            {{ loan.interestPaid | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
         <ion-row *ngIf="loan.totalPrepayment > 0">
           <ion-col class="ion-align-self-start">
-            Total Prepayment Paid
+            EMI Paid
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ loan.emiPaid | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="loan.totalPrepayment > 0">
+          <ion-col class="ion-align-self-start">
+            Prepayment Paid
           </ion-col>
           <ion-col size="4" class="ion-align-self-end" style="color: green;">
             {{ loan.totalPrepayment | appCurrency: '' }}
@@ -57,15 +73,15 @@
         </ion-row>
         <ion-row>
           <ion-col class="ion-align-self-start">
-            Total Interest Paid
+            Total Paid
           </ion-col>
-          <ion-col size="4" class="ion-align-self-end" style="color: red;">
-            {{ loan.interestPaid | appCurrency: '' }}
+          <ion-col size="4" class="ion-align-self-end">
+            {{ (loan.emiPaid + loan.totalPrepayment) | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="!loan.isCompleted">
           <ion-col class="ion-align-self-start">
-            Balance Amount
+            Principal Payable
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
             {{ loan.balanceAmount | appCurrency: '' }}
@@ -73,10 +89,18 @@
         </ion-row>
         <ion-row *ngIf="!loan.isCompleted">
           <ion-col class="ion-align-self-start">
-            Interest Payable Amount
+            Interest Payable
           </ion-col>
           <ion-col size="4" class="ion-align-self-end">
             {{ loan.interestPayable | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!loan.isCompleted">
+          <ion-col class="ion-align-self-start">
+            Total Payable
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ (loan.balanceAmount + loan.interestPayable) | appCurrency: '' }}
           </ion-col>
         </ion-row>
         <ion-row *ngIf="!loan.isCompleted">
@@ -112,7 +136,7 @@
             <ion-col>
               Term: {{emi.term}}
             </ion-col>
-            <ion-col size="2" style="text-align: end;">
+            <ion-col size="2.5" style="text-align: end;">
               {{ emi.interestRate }}%
             </ion-col>
             <ion-col size="1">

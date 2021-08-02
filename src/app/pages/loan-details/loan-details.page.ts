@@ -16,6 +16,7 @@ import { LoanDetailsPopoverComponent } from '../loan-details-popover/loan-detail
   styleUrls: ['./loan-details.page.scss'],
 })
 export class LoanDetailsPage implements OnInit {
+  _id: String;
   loan: any;
   instalments: any;
   defaultHref = 'home';
@@ -39,18 +40,23 @@ export class LoanDetailsPage implements OnInit {
       return;
     }
 
+    this.init(_id);
+  }
+
+  async init(_id) {
     this.loan = await this.storage.getLoan(_id);
     if (!this.loan) {
       this.router.navigateByUrl("home");
       return;
     }
 
+    this._id = _id;
     LoanUtils.calculateLoanDetails(this.loan);
     this.instalments = (Object.assign([], this.loan.instalments)).reverse();
   }
 
   ngOnInit() {
-    this.appService.showInterstitialAds();
+    //this.appService.showInterstitialAds();
 
     this.appRate.setPreferences({
       displayAppName: 'Prepayment Advisor',
@@ -75,7 +81,12 @@ export class LoanDetailsPage implements OnInit {
       componentProps: { _id: this.loan._id },
       event
     });
+
     await popover.present();
+    const { data } = await popover.onDidDismiss();
+    if (data && data.reload) {
+      this.init(this._id);
+    }
   }
 
   playArea() {

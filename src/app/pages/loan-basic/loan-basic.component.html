@@ -108,11 +108,12 @@
         </ion-text>
 
         <ion-item lines="none">
-          <ion-label *ngIf="loanForm.get('amountType').value == 'FULL_TRANS'">EMI started month and year</ion-label>
+          <ion-label *ngIf="loanForm.get('amountType').value == 'FULL_TRANS'">EMI start date</ion-label>
           <ion-label *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT'">Outstanding amount as of
           </ion-label>
-          <ion-datetime *ngIf="loanForm.get('amountType').value" displayFormat="MMMM YYYY" formControlName="startDate"
-            min="2010-01-01" max="{{maxDate}}" placeholder="Select Date" required></ion-datetime>
+          <ion-datetime *ngIf="loanForm.get('amountType').value" displayFormat="DD MMMM YYYY"
+            formControlName="startDate" min="2010-01-01" max="{{maxDate}}" placeholder="Select Date" required>
+          </ion-datetime>
         </ion-item>
 
         <ion-text color="danger"

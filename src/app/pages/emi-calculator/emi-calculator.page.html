@@ -25,6 +25,9 @@
     <span class="label">Term (Months)</span>
     <ion-input [(ngModel)]="term" type="number" placeholder="98" (keyup)="termChanged()"></ion-input>
 
+    <span class="label">Term (Years)</span>
+    <ion-input [(ngModel)]="termInYear" type="number" placeholder="8.17" (keyup)="yearChanged()"></ion-input>
+
   </ion-list>
 
   <ion-card *ngIf="calculationDone" class="speaker-card">

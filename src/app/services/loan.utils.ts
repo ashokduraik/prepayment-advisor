@@ -15,35 +15,48 @@ export class LoanUtils {
 
   static fillInstalments(loan) {
     loan.instalments = loan.instalments || [];
+    let noOfDays = null;
+    let lastMonthInterest = 0;
     const currentMonth = moment();
     const currentDay = currentMonth.get("date");
-    let emiMonth = moment(loan.startDate);
+    const previousMonth = moment().add(-1, 'month');
+    let emiDate = moment(loan.startDate);
     let balance = loan.balanceAmount != null ? loan.balanceAmount : loan.amount;
     const mInterest = loan.interestRate / (12 * 100);
     const lastInstalments = loan.instalments[loan.instalments.length - 1];
 
     if (lastInstalments) {
-      emiMonth = moment(lastInstalments.emiDate).add(1, 'month');
+      emiDate = moment(lastInstalments.emiDate).add(1, 'month');
     } else {
-      if (loan.amountType === 'FULL_TRANS') {
-        emiMonth = moment(loan.startDate).startOf('month');
-      } else if (loan.amountType === 'OUTSTANDING_AMOUNT') {
-        emiMonth = moment(loan.startDate).add(1, 'month').startOf('month');
-      }
+      emiDate = moment(loan.startDate);
     }
 
-    while (balance > 0 && ((currentMonth.isAfter(emiMonth, 'month') || (currentMonth.isSame(emiMonth, "month") && currentDay >= Number(loan.emiDay))))) {
+    while (balance > 0 && ((currentMonth.isAfter(emiDate, 'month') || (currentMonth.isSame(emiDate, "month") && currentDay >= Number(loan.emiDay))))) {
+      if (!loan.instalments.length && !lastMonthInterest && moment(emiDate).get("date") != 1) {
+        const days = moment(emiDate).daysInMonth();
+        noOfDays = (days - emiDate.get("date") + 1);
+        lastMonthInterest = balance * (mInterest / days) * noOfDays;
+
+        if (emiDate.get("date") >= Number(loan.emiDay)) {
+          emiDate = emiDate.add(1, 'month');
+          continue;
+        }
+      }
+
       let emi: any;
       emi = {
         _id: AppUtils.getUid(),
         amount: loan.emi,
         emiDay: loan.emiDay,
+        noOfDays,
         interestRate: loan.interestRate,
-        emiDate: emiMonth.toISOString(),
+        emiDate: emiDate.toISOString(),
       };
 
-      const interestPaid = balance * mInterest;
+      const interestPaid = lastMonthInterest || (balance * mInterest);
       balance -= loan.emi - interestPaid;
+      lastMonthInterest = 0;
+      noOfDays = null;
 
       /** then this is the last month and last month emi is less then the actual  */
       if (balance < 0) {
@@ -52,7 +65,7 @@ export class LoanUtils {
       }
 
       loan.instalments.push(emi);
-      emiMonth = emiMonth.add(1, 'month');
+      emiDate = emiDate.add(1, 'month');
     }
 
     loan.balanceAmount = balance;
@@ -60,6 +73,7 @@ export class LoanUtils {
 
   static calculateLoanDetails(loan) {
     loan.instalments = loan.instalments || [];
+    loan.emiPaid = 0;
     loan.principalPaid = 0;
     loan.interestPaid = 0;
     loan.balanceAmount = 0;
@@ -90,6 +104,7 @@ export class LoanUtils {
       const mInterest = emi.interestRate / (12 * 100);
       const interestPerDay = mInterest / daysInMonth;
       let topupInterest = topupPending.interest;
+      emi.daysInMonth = daysInMonth;
 
       if (topupPending.interest > 0) {
         emi.previousMonthTopupPending = topupPending;
@@ -139,17 +154,18 @@ export class LoanUtils {
       emi.prepaymentActual = emi.prepaymentTotal - emi.prepaymentInterest;
       emi.openingBalance = loan.balanceAmount;
       emi.amount += topupInterest;
-      emi.interestPaid = (loan.balanceAmount * mInterest) + topupInterest;
+      loan.emiPaid += emi.amount;
+      emi.interestPaid = (emi.noOfDays ? loan.balanceAmount * emi.noOfDays * interestPerDay : loan.balanceAmount * mInterest) + topupInterest;
       emi.principalPaid = emi.amount - emi.interestPaid - (emi.interestAdjustment || 0);
       loan.principalPaid += emi.principalPaid + emi.prepaymentActual;
-      loan.interestPaid += emi.interestPaid + (emi.interestAdjustment || 0);
+      loan.interestPaid += emi.interestPaid + (emi.interestAdjustment || 0) + emi.prepaymentInterest;
       fyPrincipal += emi.principalPaid + emi.prepaymentActual;
-      fyInterest += emi.interestPaid + (emi.interestAdjustment || 0);;
+      fyInterest += emi.interestPaid + (emi.interestAdjustment || 0);
       loan.amount += emi.topupTotal;
       term++;
       loan.balanceAmount -= emi.principalPaid - emi.topupTotal + emi.prepaymentActual;
       emi.closingBalance = loan.balanceAmount;
-      loan.totalPrepayment += emi.prepaymentActual;
+      loan.totalPrepayment += emi.prepaymentTotal;
       emiMonth = moment(emi.emiDate).get('month');
 
       /** if the month is march or this is last element then the financial Year info will be shown */

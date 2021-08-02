@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 
 import { LoanUtils } from '../../services/loan.utils';
 
@@ -10,6 +10,7 @@ import { LoanUtils } from '../../services/loan.utils';
 export class EmiCalculatorPage implements OnInit {
   emi = 7000;
   term = null;
+  termInYear = null;
   amount = 500000;
   interest = null;
   totalAmount = null;
@@ -25,7 +26,7 @@ export class EmiCalculatorPage implements OnInit {
     this.doCalc();
   }
 
-  doCalc() {
+  doCalc(isYearChanged?: Boolean) {
     this.calculationDone = false;
     if (!this.amount || !this.interestRate || (!this.emi && !this.term)) {
       return;
@@ -72,15 +73,21 @@ export class EmiCalculatorPage implements OnInit {
     this.totalAmount = this.interest + this.amount;
     this.interestPercentage = ((this.interest / this.totalAmount) * 100).toFixed(2);
     this.calculationDone = true;
+
+    if (!isYearChanged) {
+      this.termInYear = null;
+      if (this.term) this.termInYear = parseFloat((this.term / 12).toFixed(2));
+    }
+
     this.calcPromise = setTimeout(_ => {
       this.doCalc();
     }, 1000);
   }
 
-  termChanged() {
+  termChanged(isYearChanged?: Boolean) {
     this.emi = null;
     this.toConsider = 'TERM';
-    this.doCalc();
+    this.doCalc(isYearChanged);
   }
 
   emiChanged() {
@@ -89,4 +96,11 @@ export class EmiCalculatorPage implements OnInit {
     this.doCalc();
   }
 
+  yearChanged() {
+    if (!this.termInYear)
+      this.term = null;
+    else
+      this.term = (this.termInYear * 12).toFixed(0);
+    this.termChanged(true);
+  }
 }

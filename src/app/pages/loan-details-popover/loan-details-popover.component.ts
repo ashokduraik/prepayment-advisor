@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AlertController, PopoverController } from '@ionic/angular';
 
+import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
@@ -65,6 +66,16 @@ export class LoanDetailsPopoverComponent implements OnInit {
       this.service.showToast('Your Loan details is deleted successfully');
       this.router.navigateByUrl(`home`);
     }
+  }
+
+  async recalCulateLoan() {
+    const loan = await this.storage.getLoan(this._id);
+    if (!loan) return;
+
+    loan.instalments = [];
+    LoanUtils.fillInstalments(loan);
+    await this.storage.updateLoan(loan);
+    this.popoverCtrl.dismiss({ reload: true });
   }
 
   close(url: string) {

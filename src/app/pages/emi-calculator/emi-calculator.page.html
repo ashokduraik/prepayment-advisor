@@ -13,30 +13,38 @@
   <ion-list lines="none" style="border: none;">
 
     <span class="label">Loan Amount</span>
-    <ion-input [(ngModel)]="amount" type="number" placeholder="500000" autofocus="true" amountInput (keyup)="doCalc()">
+    <ion-input [(ngModel)]="amount" type="number" placeholder="500000" autofocus="true" amountInput
+      (keyup)="triggerFn(onValChange)" (focusout)="onValChange()">
     </ion-input>
 
     <span class="label">Enter Rate of Interest per year</span>
-    <ion-input [(ngModel)]="interestRate" type="number" placeholder="8" (keyup)="doCalc()"></ion-input>
+    <ion-input [(ngModel)]="interestRate" type="number" placeholder="8" (keyup)="triggerFn(onValChange)"
+      (focusout)="onValChange()">
+    </ion-input>
 
     <span class="label">Enter EMI amount</span>
-    <ion-input [(ngModel)]="emi" type="number" placeholder="7000" (keyup)="emiChanged()" amountInput></ion-input>
+    <ion-input [(ngModel)]="emi" type="number" placeholder="7000" (keyup)="triggerFn(emiChanged)"
+      (focusout)="emiChanged()" amountInput></ion-input>
 
     <span class="label">Term (Months)</span>
-    <ion-input [(ngModel)]="term" type="number" placeholder="98" (keyup)="termChanged()"></ion-input>
+    <ion-input [(ngModel)]="term" type="number" placeholder="98" (keyup)="triggerFn(termChanged)"
+      (focusout)="termChanged()">
+    </ion-input>
 
     <span class="label">Term (Years)</span>
-    <ion-input [(ngModel)]="termInYear" type="number" placeholder="8.17" (keyup)="yearChanged()"></ion-input>
+    <ion-input [(ngModel)]="termInYear" type="number" placeholder="8.17" (keyup)="triggerFn(yearChanged)"
+      (focusout)="yearChanged()">
+    </ion-input>
 
   </ion-list>
 
-  <ion-card *ngIf="calculationDone" class="speaker-card">
+  <ion-card *ngIf="calculationDone" class="speaker-card" id="projection">
     <ion-card-header color="primary">
       <ion-grid>
         <ion-row>
           <ion-col>
             <div>Total Interest Payable</div>
-            <h2>{{ interest | appCurrency: '' }}</h2>
+            <h2>{{ interest | appCurrency: 'noDecimal' }}</h2>
           </ion-col>
           <ion-col>
             <div>Total Interest Payable %</div>
@@ -45,7 +53,7 @@
         </ion-row>
       </ion-grid>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content *ngIf="amount && interestRate && emi && term">
       <ion-grid>
         <ion-row>
           <ion-col class="ion-align-self-start">
@@ -57,14 +65,52 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-row>
-        <ion-col class="ion-align-self-start">
-          Loan Tenure
-        </ion-col>
-        <ion-col size="5" class="ion-align-self-end">
-          {{ term | monthToYear }}
-        </ion-col>
-      </ion-row>
+      <div style="text-align: center; padding-bottom: 15px;">
+        <ion-button color="success" fill="outline" (click)="projection()">
+          <ion-icon name="albums-outline"></ion-icon>
+          <ion-label style="margin-left: 10px;">Show EMI Projection</ion-label>
+        </ion-button>
+      </div>
     </ion-card-content>
   </ion-card>
+
+  <ion-grid *ngIf="loanProjection && loanProjection.instalments && loanProjection.instalments.length">
+    <ion-card *ngFor="let emi of loanProjection.instalments; let indexOfele=index;" class="speaker-card">
+      <ion-card-header color="light">
+        <ion-grid>
+          <ion-row>
+            <ion-col style="text-align: center;">
+              <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Principal
+          </ion-col>
+          <ion-col size="4" style="color: green;" class="ion-align-self-end">
+            {{ emi.principalPaid | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Interest
+          </ion-col>
+          <ion-col size="4" style="color: red;" class="ion-align-self-end">
+            {{ emi.interestPaid | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Closing Balance
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ emi.closingBalance | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </ion-grid>
 </ion-content>

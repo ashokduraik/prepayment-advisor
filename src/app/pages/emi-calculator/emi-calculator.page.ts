@@ -1,6 +1,9 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonContent, LoadingController } from '@ionic/angular';
+import * as moment from 'moment';
 
 import { LoanUtils } from '../../services/loan.utils';
+import { AppService } from '../../services/app.services';
 
 @Component({
   selector: 'app-emi-calculator',
@@ -8,6 +11,7 @@ import { LoanUtils } from '../../services/loan.utils';
   styleUrls: ['./emi-calculator.page.scss'],
 })
 export class EmiCalculatorPage implements OnInit {
+  @ViewChild(IonContent, { static: false }) content: IonContent;
   emi = 7000;
   term = null;
   termInYear = null;
@@ -20,24 +24,47 @@ export class EmiCalculatorPage implements OnInit {
   defaultHref = 'home';
   calculationDone = false;
   interestPercentage = null;
-  constructor() { }
+  loanProjection = null;
+  constructor(
+    private appService: AppService,
+    public loadingController: LoadingController,
+  ) { }
 
   ngOnInit() {
+    this.doCalc();
+    this.appService.showInterstitialAds();
+  }
+
+  triggerFn(fn) {
+    if (this.calcPromise) {
+      clearTimeout(this.calcPromise);
+      this.calcPromise = null;
+    }
+
+    this.calcPromise = setTimeout(_ => {
+      fn.call(this);
+    }, 500);
+  }
+
+  onValChange() {
+    if (!this.amount || !this.interestRate) return;
+    const interest = (this.interestRate / (100 * 12)) * this.amount;
+    const minEmi = interest * 1.05;
+
+    if (minEmi > this.emi) {
+      this.emi = Math.round(minEmi);
+    }
     this.doCalc();
   }
 
   doCalc(isYearChanged?: Boolean) {
     this.calculationDone = false;
+    this.loanProjection = null;
     if (!this.amount || !this.interestRate || (!this.emi && !this.term)) {
       return;
     }
     if (this.toConsider === 'TERM' && !this.term) return;
     if (this.toConsider !== 'TERM' && !this.emi) return;
-
-    if (this.calcPromise) {
-      clearTimeout(this.calcPromise);
-      this.calcPromise = null;
-    }
 
     if (this.emi && this.term) {
       if (this.toConsider == 'TERM') {
@@ -78,10 +105,6 @@ export class EmiCalculatorPage implements OnInit {
       this.termInYear = null;
       if (this.term) this.termInYear = parseFloat((this.term / 12).toFixed(2));
     }
-
-    this.calcPromise = setTimeout(_ => {
-      this.doCalc();
-    }, 1000);
   }
 
   termChanged(isYearChanged?: Boolean) {
@@ -100,7 +123,42 @@ export class EmiCalculatorPage implements OnInit {
     if (!this.termInYear)
       this.term = null;
     else
-      this.term = (this.termInYear * 12).toFixed(0);
+      this.term = Math.round(this.termInYear * 12);
     this.termChanged(true);
+  }
+
+  async projection() {
+    if (!this.amount || !this.interestRate || !this.emi) {
+      return;
+    }
+
+    const loading = await this.loadingController.create({
+      message: 'Please wait...',
+    });
+    await loading.present();
+    this.doCalc();
+
+    this.loanProjection = {
+      emi: this.emi,
+      amount: this.amount,
+      interestRate: this.interestRate,
+      amountType: 'FULL_TRANS',
+      startDate: moment().add(1, 'month').startOf('month'),
+      emiDay: 28,
+    };
+
+    LoanUtils.fillInstalments(this.loanProjection, true);
+    let balanceAmount = this.loanProjection.balanceAmount || this.loanProjection.amount;
+    this.loanProjection.instalments.forEach(emi => {
+      emi.principalPaid = emi.amount - emi.interestPaid;
+      emi.closingBalance = balanceAmount -= emi.principalPaid;
+    });
+
+    let y = document.getElementById('projection').offsetTop;
+    this.content.scrollToPoint(0, y, 1500);
+
+    setTimeout(_ => {
+      loading.dismiss();
+    })
   }
 }

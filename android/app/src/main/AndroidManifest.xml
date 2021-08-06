@@ -15,7 +15,7 @@
         <!-- add by me start-->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7843964225913123~7232783024" />
+            android:value="ca-app-pub-6101654154624331~3461944429" />
 
         <meta-data
             android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT"

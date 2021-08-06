@@ -289,4 +289,8 @@
       Go to {{nextMonth | date: 'MMMM YYYY'}} EMI
     </ion-button>
   </ion-card>
+
+  <div *ngIf="noInstalment" style="text-align: center;">
+    <ion-text color="danger">No Instalment found</ion-text>
+  </div>
 </ion-content>

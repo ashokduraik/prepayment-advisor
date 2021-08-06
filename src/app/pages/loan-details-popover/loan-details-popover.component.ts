@@ -78,6 +78,12 @@ export class LoanDetailsPopoverComponent implements OnInit {
     this.popoverCtrl.dismiss({ reload: true });
   }
 
+  projection() {
+    if (!this._id) return;
+    this.router.navigateByUrl(`emi-projection/${this._id}`);
+    this.popoverCtrl.dismiss();
+  }
+
   close(url: string) {
     window.open(url, '_blank');
     this.popoverCtrl.dismiss();

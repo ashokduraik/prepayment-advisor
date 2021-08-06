@@ -107,7 +107,6 @@ export class LoanBasicComponent implements OnInit {
     this.saveInProgress = true;
     loan._id = AppUtils.getUid();
     loan.startDate = (new Date(loan.startDate)).toISOString();
-    loan.isAllInfoCollected = false;
     LoanUtils.fillInstalments(loan);
     await this.storage.createLoan(loan);
     this.service.showToast('Your Loan details is saved successfully');

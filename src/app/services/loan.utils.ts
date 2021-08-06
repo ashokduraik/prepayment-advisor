@@ -13,11 +13,11 @@ export class LoanUtils {
     }
   }
 
-  static fillInstalments(loan) {
+  static fillInstalments(loan, isProjection?) {
     loan.instalments = loan.instalments || [];
     let noOfDays = null;
     let lastMonthInterest = 0;
-    const currentMonth = moment();
+    const currentMonth = isProjection ? moment().add(100, 'year') : moment();
     const currentDay = currentMonth.get("date");
     const previousMonth = moment().add(-1, 'month');
     let emiDate = moment(loan.startDate);
@@ -50,10 +50,11 @@ export class LoanUtils {
         emiDay: loan.emiDay,
         noOfDays,
         interestRate: loan.interestRate,
-        emiDate: emiDate.toISOString(),
+        emiDate: emiDate.set('date', loan.emiDay).toISOString(),
       };
 
       const interestPaid = lastMonthInterest || (balance * mInterest);
+      emi.interestPaid = interestPaid;
       balance -= loan.emi - interestPaid;
       lastMonthInterest = 0;
       noOfDays = null;
@@ -192,6 +193,10 @@ export class LoanUtils {
       fyPendingMonth = 12 - emiMonth + fyStart;
     }
 
+    const temp1 = LoanUtils.getEMIProjections(loan);
+    loan.endDate = temp1.endDate;
+    loan.balanceTerm = temp1.balanceTerm;
+    loan.emiProjection = temp1.emiProjection;
     const temp = LoanUtils.getBalanceTermAndInterest(
       loan.balanceAmount,
       loan.emi,
@@ -199,7 +204,6 @@ export class LoanUtils {
       fyPendingMonth,
     );
 
-    loan.balanceTerm = temp.balanceTerm;
     loan.interestPayable = temp.interestPayable;
 
     if (loan.balanceAmount <= 0) {
@@ -216,6 +220,20 @@ export class LoanUtils {
     let ppamount = amount - interest;
     const newInterst = ppamount * noOfDay * interestPerDay;
     return newInterst;
+  }
+
+  static getEMIProjections(loan) {
+    loan.instalments = loan.instalments || [];
+    const paidInstalments = loan.instalments.length;
+    const tempLoan = JSON.parse(JSON.stringify(loan));
+    LoanUtils.fillInstalments(tempLoan, true);
+    const lastEmi = tempLoan.instalments[tempLoan.instalments.length - 1];
+
+    return {
+      balanceTerm: tempLoan.instalments.length - paidInstalments,
+      emiProjection: tempLoan.instalments.splice(paidInstalments, tempLoan.instalments.length),
+      endDate: lastEmi && lastEmi.emiDate,
+    };
   }
 
   static getBalanceTermAndInterest(balanceAmount, emi, interestRate, fyPendingMonth?: number) {

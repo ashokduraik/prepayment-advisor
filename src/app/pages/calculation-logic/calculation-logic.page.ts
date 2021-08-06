@@ -17,6 +17,7 @@ export class CalculationLogicPage implements OnInit {
   nextMonth = null;
   previousMonth = null;
   defaultHref = 'home';
+  noInstalment = false;
 
   constructor(
     private router: Router,
@@ -38,6 +39,11 @@ export class CalculationLogicPage implements OnInit {
     this.loan = await this.storage.getLoan(_id);
     if (!this.loan) {
       this.router.navigateByUrl(this.defaultHref);
+      return;
+    }
+
+    if (!this.loan.instalments || !this.loan.instalments.length) {
+      this.noInstalment = true;
       return;
     }
 

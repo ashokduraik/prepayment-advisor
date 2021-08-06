@@ -16,6 +16,7 @@ export class TimelinePage {
   loan: any;
   timeLine = [];
   defaultHref = 'home';
+  noInstalment = false;
 
   constructor(
     private router: Router,
@@ -47,6 +48,11 @@ export class TimelinePage {
     let lastInterest = null;
     this.loan.instalments = this.loan.instalments || [];
     let iStyle = `style="font-size: 17px; font-weight: 600;"`;
+
+    if (!this.loan.instalments.length) {
+      this.noInstalment = true;
+      return;
+    }
 
     this.loan.instalments.forEach((emi, i) => {
       const changes = [];

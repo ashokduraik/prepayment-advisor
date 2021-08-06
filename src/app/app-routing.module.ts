@@ -83,6 +83,10 @@ const routes: Routes = [
   {
     path: 'fixed-chit-fund',
     loadChildren: () => import('./pages/fixed-chit-fund/fixed-chit-fund.module').then(m => m.FixedChitFundPageModule)
+  },
+  {
+    path: 'emi-projection/:id',
+    loadChildren: () => import('./pages/emi-projection/emi-projection.module').then(m => m.EmiProjectionPageModule)
   }
 ];
 

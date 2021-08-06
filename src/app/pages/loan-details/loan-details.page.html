@@ -111,6 +111,14 @@
             {{ loan.balanceTerm }} Months
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="!loan.isCompleted">
+          <ion-col class="ion-align-self-start">
+            Estimated End Date
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ loan.endDate | date: 'MMMM YYYY' }}
+          </ion-col>
+        </ion-row>
         <ion-row *ngIf="loan.isCompleted" style="color: red;">
           <ion-col>
             You have paid {{((loan.interestPaid/(loan.amount + loan.interestPaid)) * 100).toFixed(2)}}% for interest.

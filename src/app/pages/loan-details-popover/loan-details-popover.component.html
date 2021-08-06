@@ -11,12 +11,16 @@
     <ion-icon name="pie-chart-outline"></ion-icon>
     <ion-label>Statistics</ion-label>
   </ion-item>
+  <ion-item button (click)="projection()">
+    <ion-icon name="albums-outline"></ion-icon>
+    <ion-label>EMI Projection</ion-label>
+  </ion-item>
   <ion-item button (click)="deleteLoan()">
     <ion-icon color="danger" name="trash-outline"></ion-icon>
     <ion-label>Delete Loan</ion-label>
   </ion-item>
-  <ion-item button (click)="recalCulateLoan()">
+  <!-- <ion-item button (click)="recalCulateLoan()">
     <ion-icon color="danger" name="reload-outline"></ion-icon>
     <ion-label>Recalculate Everything</ion-label>
-  </ion-item>
+  </ion-item> -->
 </ion-list>

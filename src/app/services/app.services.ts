@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastController, AlertController } from '@ionic/angular';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { AdMobPlus, BannerAd, InterstitialAd } from '@admob-plus/capacitor';
 
 import { AppUtils } from './app.utils';

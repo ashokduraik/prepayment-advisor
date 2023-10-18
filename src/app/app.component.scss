@@ -18,7 +18,7 @@ ion-item.selected {
  * Material Design Menu
 */
 ion-menu.md ion-list {
-  padding:  0 0 10px 0;
+  padding: 0 0 10px 0;
 }
 
 ion-menu.md ion-list-header {
@@ -228,21 +228,26 @@ ion-checkbox {
 .ppa-tabs-container {
   border-radius: 3px;
   overflow: hidden;
+
   input {
     display: none;
-    &:checked + label {
+
+    &:checked+label {
       //background: #eee;
       color: #1E88E5;
+
       &::after {
         opacity: 1;
-      } 
+      }
     }
+
     @for $i from 1 through 4 {
       &#tab#{$i}:checked {
-        ~ .line {
+        ~.line {
           left: #{($i - 1) * 25%};
         }
-        ~ .content-container #c#{$i} {
+
+        ~.content-container #c#{$i} {
           opacity: 1;
         }
       }
@@ -261,6 +266,7 @@ ion-checkbox {
     transition: 0.25s ease;
     cursor: pointer;
     padding-right: 10px;
+
     &::after {
       content: "";
       height: 2px;
@@ -273,6 +279,7 @@ ion-checkbox {
       left: 0;
       transition: 0.25s ease;
     }
+
     i {
       padding: 5px !important;
     }
@@ -321,8 +328,8 @@ ion-checkbox {
   border-bottom: none;
 }
 
-::placeholder { 
-  opacity: 0.25 !important; 
+::placeholder {
+  opacity: 0.25 !important;
 }
 
 .amount-input {
@@ -365,7 +372,12 @@ input {
 ion-row.sub-section {
   margin-left: 10px;
   font-size: small;
+
   ion-col {
     padding-top: 0px;
   }
+}
+
+.with-error-label {
+  margin-bottom: 2px;
 }

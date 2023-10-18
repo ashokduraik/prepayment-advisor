@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent, LoadingController } from '@ionic/angular';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppService } from '../../services/app.services';

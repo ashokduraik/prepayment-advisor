@@ -1,0 +1,614 @@
+{
+  "loans": [
+    {
+      "interestRate": 8.65,
+      "emi": 45000,
+      "amount": 4500000,
+      "amountType": "FULL_TRANS",
+      "startDate": "2021-01-30T02:42:24.561Z",
+      "emiDay": 1,
+      "name": "Home Loan",
+      "_id": "60dbda270d345bdebb3e949a",
+      "isAllInfoCollected": false,
+      "instalments": [
+        {
+          "_id": "60dbda27e2880e5a9b87ca17",
+          "amount": 39025,
+          "emiDay": 5,
+          "interestRate": 7,
+          "emiDate": "2020-12-31T18:30:00.000Z"
+        },
+        {
+          "_id": "60dbda2700413ca02ad89a61",
+          "amount": 39025,
+          "emiDay": 5,
+          "interestRate": 7,
+          "emiDate": "2021-01-31T18:30:00.000Z"
+        },
+        {
+          "_id": "60dbda27af8f4bef96799492",
+          "amount": 39025,
+          "emiDay": 5,
+          "interestRate": 7,
+          "emiDate": "2021-02-28T18:30:00.000Z",
+          "newEmiAmount": 41087,
+          "topups": [
+            {
+              "amount": 276387,
+              "topupDate": "2021-03-10T00:00:00+05:30"
+            }
+          ]
+        },
+        {
+          "_id": "60dbda277bf3ade553e6b141",
+          "amount": 41087,
+          "emiDay": 5,
+          "interestRate": 7,
+          "emiDate": "2021-03-31T18:30:00.000Z",
+          "topups": []
+        },
+        {
+          "_id": "60dbda27b622cbaab4a8cddb",
+          "amount": 41087,
+          "emiDay": 5,
+          "interestRate": 7,
+          "emiDate": "2021-04-30T18:30:00.000Z",
+          "topups": []
+        },
+        {
+          "_id": "60dbda27a48b1090fee3763e",
+          "amount": 41087,
+          "emiDay": 5,
+          "interestRate": 7,
+          "emiDate": "2021-05-31T18:30:00.000Z",
+          "topups": [],
+          "newEmiAmount": 60000,
+          "prepayments": [
+            {
+              "amount": 85000,
+              "prepaymentDate": "2021-06-17T00:00:00+05:30"
+            }
+          ]
+        },
+        {
+          "_id": "616b9cda369a7265343c823c",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2021-06-30T18:30:00.000Z"
+        },
+        {
+          "_id": "616b9cda384642133694c58b",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2021-07-31T18:30:00.000Z"
+        },
+        {
+          "_id": "616b9cdae450dbbe20559999",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2021-08-31T18:30:00.000Z"
+        },
+        {
+          "_id": "616b9cda46a51d3405fab85b",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2021-09-30T18:30:00.000Z",
+          "topups": [
+            {
+              "amount": 100000,
+              "topupDate": "2021-10-12T00:00:00+05:30"
+            }
+          ]
+        },
+        {
+          "_id": "6193310e507942206f3b82c2",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2021-11-04T18:30:00.000Z",
+          "interestPaid": 24991.20678578674,
+          "topups": [
+            {
+              "amount": 118613,
+              "topupDate": "2021-11-16T00:00:00+05:30"
+            }
+          ]
+        },
+        {
+          "_id": "61d43264807d005ad36cd495",
+          "amount": 39400,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2021-12-04T18:30:00.000Z",
+          "interestPaid": 24907.155492037164
+        },
+        {
+          "_id": "61d5c151d85ad2bcf73b3e2a",
+          "amount": 40312,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2022-01-04T18:30:00.000Z",
+          "interestPaid": 24702.447232407383
+        },
+        {
+          "_id": "620793fcf35d71f78882a0d1",
+          "amount": 40312,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2022-02-04T18:30:00.000Z",
+          "interestPaid": 24321.569520968358
+        },
+        {
+          "_id": "622a1988e955a26e0db83383",
+          "amount": 40312,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2022-03-04T18:30:00.000Z",
+          "interestPaid": 24228.958277777303
+        },
+        {
+          "_id": "624be1b252aa7d92e7879716",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2022-04-04T18:30:00.000Z",
+          "interestPaid": 24135.810661136096
+        },
+        {
+          "_id": "627335d58ecfe51cfb52d7ce",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2022-05-04T18:30:00.000Z",
+          "interestPaid": 24042.12356454851
+        },
+        {
+          "_id": "62a67784b99fedc90ed28afe",
+          "amount": 60000,
+          "emiDay": 5,
+          "interestRate": 6.95,
+          "emiDate": "2022-06-04T18:30:00.000Z",
+          "interestPaid": 23833.867530193183,
+          "prepayments": [
+            {
+              "amount": 65000,
+              "prepaymentDate": "2022-06-25T00:00:00+05:30"
+            }
+          ]
+        },
+        {
+          "_id": "62c2ba05095245c6f2a932bb",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 7.35,
+          "emiDate": "2022-06-30T18:30:00.000Z",
+          "interestPaid": 23624.405346305553
+        },
+        {
+          "_id": "62e804ab6343d9a2dd2bb56a",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 7.35,
+          "emiDate": "2022-07-31T18:30:00.000Z",
+          "interestPaid": 24761.282834594436
+        },
+        {
+          "_id": "6315997042d9ac5b0fb00b93",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.35,
+          "emiDate": "2022-08-31T18:30:00.000Z",
+          "interestPaid": 24545.445691956327
+        },
+        {
+          "_id": "633bf8e197c24e9498a9ca40",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.35,
+          "emiDate": "2022-09-30T18:30:00.000Z",
+          "interestPaid": 27638.25750557052
+        },
+        {
+          "_id": "6372573116a6cd1c10032ce0",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.35,
+          "emiDate": "2022-10-31T18:30:00.000Z",
+          "interestPaid": 27413.073714046783
+        },
+        {
+          "_id": "6388563a9cc5dfec45429c68",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.35,
+          "emiDate": "2022-11-30T18:30:00.000Z",
+          "interestPaid": 27186.323018640356
+        },
+        {
+          "_id": "63b441157d6467ffcf38e40e",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.85,
+          "emiDate": "2022-12-31T18:30:00.000Z",
+          "interestPaid": 28572.24568495315
+        },
+        {
+          "_id": "63e272b224d8a6863b3ffcea",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.85,
+          "emiDate": "2023-01-31T18:30:00.000Z",
+          "interestPaid": 28340.46599687968
+        },
+        {
+          "_id": "6402d6253e802a31df0776bb",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.85,
+          "emiDate": "2023-02-28T18:30:00.000Z",
+          "interestPaid": 28106.976933606667
+        },
+        {
+          "_id": "643c219e32bf98b86d61c901",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 9.45,
+          "emiDate": "2023-03-31T18:30:00.000Z",
+          "interestPaid": 29761.37713516944,
+          "prepayments": [
+            {
+              "amount": 201036,
+              "prepaymentDate": "2023-04-21T00:00:00+05:30"
+            }
+          ]
+        },
+        {
+          "_id": "6450f76f69f26bc32c84f0ca",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 9.45,
+          "emiDate": "2023-04-30T18:30:00.000Z",
+          "interestPaid": 29523.2479801089,
+          "prepayments": []
+        },
+        {
+          "_id": "6478b1fe550380b5081e531e",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 9.45,
+          "emiDate": "2023-05-31T18:30:00.000Z",
+          "interestPaid": 29283.243557952257
+        },
+        {
+          "_id": "649fbe4aafd884862ecf86f0",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 9.45,
+          "emiDate": "2023-06-30T18:30:00.000Z",
+          "interestPaid": 29041.34910097113
+        },
+        {
+          "_id": "64ec7a6b5b3353d460ce94d5",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 9.45,
+          "emiDate": "2023-07-31T18:30:00.000Z",
+          "interestPaid": 28797.549725141278
+        },
+        {
+          "_id": "64f102912d6866fe1cd92341",
+          "amount": 60000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.65,
+          "emiDate": "2023-08-31T18:30:00.000Z",
+          "interestPaid": 28551.830429226768
+        },
+        {
+          "_id": "651ed88e323fb65b25c9e0c5",
+          "amount": 45000,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.65,
+          "emiDate": "2023-09-30T18:30:00.000Z",
+          "interestPaid": 25908.055366334647
+        }
+      ],
+      "balanceAmount": 3560089.1466497537,
+      "createdat": "2021-06-30T02:42:47.293Z"
+    },
+    {
+      "interestRate": 11.1,
+      "emi": 29300,
+      "amount": 1006437,
+      "amountType": "FULL_TRANS",
+      "startDate": "2021-07-28T09:08:22.944Z",
+      "emiDay": 1,
+      "name": "Car Loan",
+      "_id": "616be837f0f177dddd95963b",
+      "instalments": [
+        {
+          "_id": "616be837957bfe0eac3ebb29",
+          "amount": 29300,
+          "emiDay": 5,
+          "noOfDays": 4,
+          "interestRate": 11.1,
+          "emiDate": "2021-08-05T09:08:22.944Z",
+          "interestPaid": 1201.2312580645162
+        },
+        {
+          "_id": "616be83772fdc6e27e0a7529",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2021-09-05T09:08:22.944Z",
+          "interestPaid": 9049.628639137096
+        },
+        {
+          "_id": "616be837ef93b578024e3475",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2021-10-05T09:08:22.944Z",
+          "interestPaid": 8862.312704049114
+        },
+        {
+          "_id": "6193310eb41c31f5444ccaa5",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2021-11-05T09:08:22.944Z",
+          "interestPaid": 8673.26409656157
+        },
+        {
+          "_id": "61d43265b8970fb431ebd819",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2021-12-05T09:08:22.944Z",
+          "interestPaid": 8482.466789454764
+        },
+        {
+          "_id": "61d5c151cec641492478e488",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2022-01-05T09:08:22.944Z",
+          "interestPaid": 8289.904607257222
+        },
+        {
+          "_id": "620793fca228bdec04e0fcbe",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2022-02-05T09:08:22.944Z",
+          "interestPaid": 8095.561224874351
+        },
+        {
+          "_id": "622a1988304917b67f7003e5",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2022-03-05T09:08:22.944Z",
+          "interestPaid": 7899.420166204438
+        },
+        {
+          "_id": "624be1b28c3b645314e0bdb8",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2022-04-05T09:08:22.944Z",
+          "interestPaid": 7701.46480274183
+        },
+        {
+          "_id": "627335d51321bef24c648850",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2022-05-05T09:08:22.944Z",
+          "interestPaid": 7501.678352167192
+        },
+        {
+          "_id": "62a677847cb078a5317427ee",
+          "amount": 29300,
+          "emiDay": 5,
+          "interestRate": 11.1,
+          "emiDate": "2022-06-05T09:08:22.944Z",
+          "interestPaid": 7300.043876924739
+        },
+        {
+          "_id": "62c2ba05c071933d846cbefd",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2022-07-01T09:08:22.944Z",
+          "interestPaid": 7096.5442827862935
+        },
+        {
+          "_id": "62e804ab8ae365ea062a1334",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2022-08-01T09:08:22.944Z",
+          "interestPaid": 6891.162317402067
+        },
+        {
+          "_id": "63159970802090536a84b570",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2022-09-01T09:08:22.944Z",
+          "interestPaid": 6683.880568838036
+        },
+        {
+          "_id": "633bf8e18045d9e876b43e44",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2022-10-01T09:08:22.944Z",
+          "interestPaid": 6474.681464099787
+        },
+        {
+          "_id": "63725731495adf40fd8b62e1",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2022-11-01T09:08:22.944Z",
+          "interestPaid": 6263.547267642711
+        },
+        {
+          "_id": "6388563acb03abe5b5c64051",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2022-12-01T09:08:22.944Z",
+          "interestPaid": 6050.460079868405
+        },
+        {
+          "_id": "63b441157a6c3b3379d532ba",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-01-01T09:08:22.944Z",
+          "interestPaid": 5835.401835607188
+        },
+        {
+          "_id": "63e272b20016a78b6f288f69",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-02-01T09:08:22.944Z",
+          "interestPaid": 5618.354302586554
+        },
+        {
+          "_id": "6402d625cdec165b092fb009",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-03-01T09:08:22.944Z",
+          "interestPaid": 5399.29907988548
+        },
+        {
+          "_id": "643c219e4ce4e7b0a069020d",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-04-01T09:08:22.944Z",
+          "interestPaid": 5178.21759637442
+        },
+        {
+          "_id": "6450f76f05dbaad278fb85b3",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-05-01T09:08:22.944Z",
+          "interestPaid": 4955.091109140884
+        },
+        {
+          "_id": "6478b1fe949017903074e344",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-06-01T09:08:22.944Z",
+          "interestPaid": 4729.9007019004375
+        },
+        {
+          "_id": "649fbe4a2c8b167665e87071",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-07-01T09:08:22.944Z",
+          "interestPaid": 4502.627283393016
+        },
+        {
+          "_id": "64ec7a6b6e9f2d1c690751fd",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-08-01T09:08:22.944Z",
+          "interestPaid": 4273.251585764401
+        },
+        {
+          "_id": "64f1029154b00851b976e510",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-09-01T09:08:22.944Z",
+          "interestPaid": 4041.754162932722
+        },
+        {
+          "_id": "651ed88ee674dfb7183bbd96",
+          "amount": 29300,
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-10-01T09:08:22.944Z",
+          "interestPaid": 3808.11538893985
+        }
+      ],
+      "balanceAmount": 386196.26554459933,
+      "createdat": "2021-10-17T09:09:11.700Z"
+    },
+    {
+      "interestRate": 10.5,
+      "emi": 42988,
+      "amount": 2000000,
+      "amountType": "OUTSTANDING_AMOUNT",
+      "startDate": "2023-09-06T14:09:22.967Z",
+      "emiDay": 1,
+      "name": "Personal Loan",
+      "_id": "64f8887b2c2068bfdf300a24",
+      "instalments": [
+        {
+          "_id": "651ed88e53995ff0c8644525",
+          "amount": 42988,
+          "emiDay": 1,
+          "noOfDays": 25,
+          "interestRate": 10.5,
+          "emiDate": "2023-10-01T14:09:22.967Z",
+          "interestPaid": 14583.333333333334
+        }
+      ],
+      "balanceAmount": 1971595.3333333333,
+      "createdat": "2023-09-06T14:11:07.812Z"
+    }
+  ],
+  "profile": {
+    "currency": "INR",
+    "_id": "60da9431ea38e54c4dce7643",
+    "darkMode": false
+  }
+}

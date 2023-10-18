@@ -16,6 +16,10 @@ export class HomePage {
   profile = null;
   loans: any = [];
   backButtonSubscription;
+  summary = {
+    totalLoanAmount: 0,
+    outstanding: 0
+  };
 
   constructor(
     public router: Router,
@@ -33,6 +37,8 @@ export class HomePage {
 
     this.loans.forEach(loan => {
       LoanUtils.fillInstalments(loan);
+      this.summary.totalLoanAmount += loan.amount;
+      this.summary.outstanding += loan.balanceAmount;
     });
 
     await this.storage.saveLoans(this.loans);

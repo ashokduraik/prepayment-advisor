@@ -1,8 +1,6 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+import * as Highcharts from 'highcharts';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
@@ -21,9 +19,8 @@ export class StatisticsPage implements AfterViewInit {
   showPaidCanvas = false;
   showFinalCanvas = false;
   showPayableCanvas = false;
-  @ViewChild('paidCanvas') private paidCanvas: ElementRef;
-  @ViewChild('finalCanvas') private finalCanvas: ElementRef;
-  @ViewChild('payableCanvas') private payableCanvas: ElementRef;
+  Highcharts: typeof Highcharts = Highcharts;
+  loanChartOpns: Highcharts.Options = null;
 
   constructor(
     private router: Router,
@@ -48,71 +45,87 @@ export class StatisticsPage implements AfterViewInit {
     }
 
     LoanUtils.calculateLoanDetails(this.loan);
-    if (this.loan) {
-      this.showChart();
-    }
+    if (this.loan) this.showChart();
     this.appService.showInterstitialAds();
   }
 
   showChart() {
-    this.showPaidCanvas = false;
-    this.showFinalCanvas = false;
-    this.showPayableCanvas = false;
-    let title = 'Paid amount till now is';
+    const categories = [];
+    const total = [];
+    const interest = [];
+    const principal = [];
 
-    const paidAmount = this.loan.principalPaid + this.loan.interestPaid;
-    if (!this.loan.isCompleted && paidAmount > 0) {
-      this.showPieChart(this.paidCanvas, title, paidAmount, this.loan.interestPaid);
-      this.showPaidCanvas = true;
-    }
+    this.loan.instalments.forEach(emi => {
+      if (!emi.financialYear) return;
 
-    const payableAmount = this.loan.balanceAmount + this.loan.interestPayable;
-    if (!this.loan.isCompleted && paidAmount > 0 && payableAmount > 0) {
-      title = 'Payable amount is';
-      this.showPieChart(this.payableCanvas, title, payableAmount, this.loan.interestPayable);
-      this.showPayableCanvas = true;
-    }
+      categories.push(emi.financialYear);
+      if (emi.fyProvisionalPrincipal > 0 && emi.fyProvisionalInterest > 0) {
+        total.push(emi.fyProvisionalPrincipal + emi.fyProvisionalInterest);
+        interest.push(emi.fyProvisionalInterest);
+        principal.push(emi.fyProvisionalPrincipal);
+      } else {
+        total.push(emi.fyPrincipal + emi.fyInterest);
+        interest.push(emi.fyInterest);
+        principal.push(emi.fyPrincipal);
+      }
+    });
 
-    title = 'Final amount (Principal + Interest) is';
-    this.showPieChart(this.finalCanvas, title, paidAmount + payableAmount, this.loan.interestPayable + this.loan.interestPaid);
-    this.showFinalCanvas = true;
-  }
-
-  showPieChart(canvas, title, amount, interest) {
-    title += ' ' + this.currencyPipe.transform(amount, '');
-    const interestPercentage = Number((interest / amount * 100).toFixed(2));
-    const principalPercentage = Number((100 - interestPercentage).toFixed(2));
-
-    new Chart(canvas.nativeElement, {
-      type: 'doughnut',
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: title,
-            font: {
-              weight: 'bold',
-              size: 17,
-            }
+    const currencyPipe = this.currencyPipe;
+    this.loanChartOpns = {
+      chart: {
+        type: 'column',
+        zooming: {
+          type: 'x',
+          singleTouch: true,
+        },
+      },
+      title: {
+        text: 'Year wise Payment',
+        align: 'center'
+      },
+      xAxis: {
+        categories
+      },
+      yAxis: {
+        // min: 0,
+        title: {
+          text: ''
+        },
+        labels: {
+          formatter: function () {
+            return currencyPipe.transform(Number(this.value), 'noDecimal');
           }
         },
       },
-      data: {
-        labels: [
-          `Interest - ${this.currencyPipe.transform(interest, '')} (${interestPercentage}%)`,
-          `Principal - ${this.currencyPipe.transform(amount - interest, '')} (${principalPercentage}%)`],
-        datasets: [{
-          backgroundColor: [
-            "#e74c3c",
-            "#2ecc71",
-          ],
-          data: [interestPercentage, principalPercentage]
-        }]
-      }
-    });
+      tooltip: {
+        pointFormatter: function () {
+          return '<span style="color:' + this.series.color + '">' + this.series.name + '</span>: <b>' + currencyPipe.transform(this.y, 'noDecimal') + '</b><br />'
+        },
+        shared: true
+      },
+      plotOptions: {
+        column: {
+          stacking: 'normal',
+        }
+      },
+      credits: {
+        enabled: false
+      },
+      series: [{
+        name: 'Total Paid',
+        data: total,
+        type: undefined,
+      }, {
+        name: 'Interest Paid',
+        data: interest,
+        type: undefined,
+        color: '#eb445a'
+      }, {
+        name: 'Principal Paid',
+        data: principal,
+        type: undefined,
+        color: '#2dd36f',
+      }]
+    }
   }
 }

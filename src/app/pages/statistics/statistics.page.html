@@ -12,15 +12,7 @@
 <ion-content [fullscreen]="true">
   <ion-card class="welcome-card">
     <ion-card-content>
-      <div [style.display]="showPaidCanvas ? 'block' : 'none'">
-        <canvas #paidCanvas style="position: relative; height:20vh; width:40vw"></canvas>
-      </div>
-      <div style="margin-top: 30px;" [style.display]="showPayableCanvas ? 'block' : 'none'">
-        <canvas #payableCanvas style="position: relative; height:20vh; width:40vw"></canvas>
-      </div>
-      <div style="margin-top: 30px;" [style.display]="showFinalCanvas ? 'block' : 'none'">
-        <canvas #finalCanvas style="position: relative; height:20vh; width:40vw"></canvas>
-      </div>
+      <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns" *ngIf="loanChartOpns"></highcharts-chart>
     </ion-card-content>
   </ion-card>
 </ion-content>

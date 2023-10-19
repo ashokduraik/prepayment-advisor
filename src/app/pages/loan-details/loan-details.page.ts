@@ -2,12 +2,14 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import * as Highcharts from 'highcharts';
 import { AppRate } from '@ionic-native/app-rate/ngx';
 import { ActionSheetController, AlertController, PopoverController } from '@ionic/angular';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
+import { AppCurrencyPipe } from '../../services/app.pipe';
 import { LoanDetailsPopoverComponent } from '../loan-details-popover/loan-details-popover.component';
 
 @Component({
@@ -20,6 +22,11 @@ export class LoanDetailsPage implements OnInit {
   loan: any;
   instalments: any;
   defaultHref = 'home';
+  Highcharts: typeof Highcharts = Highcharts;
+  loanChartOpns: Highcharts.Options = null;
+  repaidChartOpns: Highcharts.Options = null;
+  prinpaidChartOpns: Highcharts.Options = null;
+  payableChartOpns: Highcharts.Options = null;
 
   constructor(
     private appRate: AppRate,
@@ -27,6 +34,7 @@ export class LoanDetailsPage implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private appService: AppService,
+    private currencyPipe: AppCurrencyPipe,
     public popoverCtrl: PopoverController,
     private activatedRoute: ActivatedRoute,
     public alertController: AlertController,
@@ -53,6 +61,59 @@ export class LoanDetailsPage implements OnInit {
     this._id = _id;
     LoanUtils.calculateLoanDetails(this.loan);
     this.instalments = (Object.assign([], this.loan.instalments)).reverse();
+
+    const loanData = [{
+      name: 'Principal<br> Paid',
+      y: this.loan.principalPaid * 100 / this.loan.amount,
+      amount: this.loan.principalPaid,
+      color: '#2dd36f',
+    }, {
+      name: 'Balanace',
+      y: this.loan.balanceAmount * 100 / this.loan.amount,
+      amount: this.loan.balanceAmount,
+      color: '#eb445a',
+    }]
+    this.loanChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Total Loan<br>${this.currencyPipe.transform(this.loan.amount, 'noDecimal')}`, loanData);
+
+    const paidData = [{
+      name: 'Interest<br> Paid',
+      y: this.loan.interestPaid * 100 / (this.loan.principalPaid + this.loan.interestPaid),
+      amount: this.loan.interestPaid,
+      color: '#eb445a'
+    }, {
+      name: 'Principal<br> Paid',
+      y: this.loan.principalPaid * 100 / (this.loan.principalPaid + this.loan.interestPaid),
+      amount: this.loan.principalPaid,
+      color: '#2dd36f',
+    }];
+    this.repaidChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(this.loan.principalPaid + this.loan.interestPaid, 'noDecimal')}`, paidData);
+
+    const prinPaidData = [{
+      name: 'EMI',
+      y: this.loan.emiPaid * 100 / this.loan.principalPaid,
+      amount: this.loan.emiPaid,
+    }, {
+      name: 'Prepayment',
+      y: this.loan.totalPrepayment * 100 / this.loan.principalPaid,
+      amount: this.loan.totalPrepayment,
+      color: '#2dd36f',
+    }];
+    this.prinpaidChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Principal Paid<br>${this.currencyPipe.transform(this.loan.principalPaid, 'noDecimal')}`, prinPaidData);
+
+    const interest = this.loan.interestPaid + this.loan.interestPayable;
+    const total = this.loan.amount + interest;
+    const payableData = [{
+      name: 'Principal',
+      y: this.loan.amount * 100 / total,
+      amount: this.loan.amount,
+      color: '#2dd36f',
+    }, {
+      name: 'Interest',
+      y: interest * 100 / total,
+      amount: interest,
+      color: '#eb445a'
+    }];
+    this.payableChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Repayment Projection<br>${this.currencyPipe.transform(total, 'noDecimal')}`, payableData);
   }
 
   ngOnInit() {

@@ -10,55 +10,31 @@
 </ion-header> 
 
 <ion-content [fullscreen]="true">
-  <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
   <ion-grid *ngIf="loans && loans.length" fixed>
     <ion-card class="speaker-card" *ngIf="loans.length > 1">
       <ion-accordion-group>
         <ion-accordion value="first">
           <ion-item slot="header" color="primary">
-            <!-- <ion-label>Summary</ion-label>
-            <ion-badge slot="end" color="danger">{{loans.length}}</ion-badge> -->
-            <ion-label style="font-weight: 600;">Liability of <span
+            <ion-label style="font-weight: 600; margin-top: 0px;">Total Liability of <span
                 style="font-size: x-large; padding: 5px;">{{loans.length}}</span>
-              Loans</ion-label>
-            <ion-badge slot="end" color="danger">{{ summary.outstanding | appCurrency: 'noDecimal' }}</ion-badge>
+              Loans: </ion-label>
+            <ion-badge style="margin-left: 0px;" color="danger">{{ summary.outstanding | appCurrency: 'noDecimal'
+              }}</ion-badge>
           </ion-item>
-          <ion-grid slot="content">
-            <ion-row>
-              <ion-col>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col class="ion-align-self-start">
-                      Loan
-                    </ion-col>
-                    <ion-col size="5" class="ion-align-self-end" style="color: red;">
-                      {{ summary.totalLoanAmount | appCurrency: 'noDecimal' }}
-                    </ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col class="ion-align-self-start">
-                      Current Liability
-                    </ion-col>
-                    <ion-col size="5" class="ion-align-self-end" style="color: green;">
-                      {{ summary.outstanding | appCurrency: 'noDecimal' }}
-                    </ion-col>
-                  </ion-row>
-                  <ion-row>
-                    <ion-col class="ion-align-self-start">
-                      Outstanding
-                    </ion-col>
-                    <ion-col size="5" class="ion-align-self-end" style="color: red;">
-                      {{ summary.outstanding | appCurrency: 'noDecimal' }}
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-col>
-              <ion-col>
-
-              </ion-col>
-            </ion-row>
-
-          </ion-grid>
+          <div slot="content">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="6">
+                  <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns"
+                    *ngIf="loanChartOpns"></highcharts-chart>
+                </ion-col>
+                <ion-col size="6">
+                  <highcharts-chart [Highcharts]="Highcharts" [options]="repaidChartOpns"
+                    *ngIf="repaidChartOpns"></highcharts-chart>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
         </ion-accordion>
       </ion-accordion-group>
     </ion-card>

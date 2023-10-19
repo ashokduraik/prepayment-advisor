@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { HomePage } from './home.page';
 import { PipesModule } from '../../pipes.module';
@@ -17,7 +18,8 @@ import { HomePageRoutingModule } from './home-routing.module';
     FormsModule,
     IonicModule,
     PipesModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    HighchartsChartModule,
   ],
   providers: [
     AppCurrencyPipe

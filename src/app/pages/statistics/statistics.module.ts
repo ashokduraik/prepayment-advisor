@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { PipesModule } from '../../pipes.module';
 import { StatisticsPage } from './statistics.page';
@@ -15,6 +16,7 @@ import { StatisticsPageRoutingModule } from './statistics-routing.module';
     FormsModule,
     IonicModule,
     PipesModule,
+    HighchartsChartModule,
     StatisticsPageRoutingModule
   ],
   declarations: [StatisticsPage],

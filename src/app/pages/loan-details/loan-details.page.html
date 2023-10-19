@@ -40,67 +40,21 @@
     <ion-card-content>
       <ion-grid>
         <ion-row>
-          <ion-col class="ion-align-self-start">
-            Principal Paid
+          <ion-col size="6">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns"
+              *ngIf="loanChartOpns"></highcharts-chart>
           </ion-col>
-          <ion-col size="4" class="ion-align-self-end" style="color: green;">
-            {{ loan.principalPaid | appCurrency: '' }}
+          <ion-col size="6" *ngIf="loan.totalPrepayment > 0">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="repaidChartOpns"
+              *ngIf="repaidChartOpns"></highcharts-chart>
           </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Interest Paid
+          <ion-col size="6" *ngIf="loan.totalPrepayment > 0">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="prinpaidChartOpns"
+              *ngIf="prinpaidChartOpns"></highcharts-chart>
           </ion-col>
-          <ion-col size="4" class="ion-align-self-end" style="color: red;">
-            {{ loan.interestPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="loan.totalPrepayment > 0">
-          <ion-col class="ion-align-self-start">
-            EMI Paid
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ loan.emiPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="loan.totalPrepayment > 0">
-          <ion-col class="ion-align-self-start">
-            Prepayment Paid
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end" style="color: green;">
-            {{ loan.totalPrepayment | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Total Paid
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ (loan.emiPaid + loan.totalPrepayment) | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!loan.isCompleted">
-          <ion-col class="ion-align-self-start">
-            Principal Payable
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ loan.balanceAmount | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!loan.isCompleted">
-          <ion-col class="ion-align-self-start">
-            Interest Payable
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ loan.interestPayable | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!loan.isCompleted">
-          <ion-col class="ion-align-self-start">
-            Total Payable
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ (loan.balanceAmount + loan.interestPayable) | appCurrency: '' }}
+          <ion-col size="6">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="payableChartOpns"
+              *ngIf="payableChartOpns"></highcharts-chart>
           </ion-col>
         </ion-row>
         <ion-row *ngIf="!loan.isCompleted">

@@ -17,7 +17,6 @@ import { environment } from '../environments/environment';
 import { EmiEditPage } from './pages/emi-edit/emi-edit.page';
 import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
 
-import { DoughnutChart } from './directive/doughnut-chart/doughnut-chart.directive'
 import { AmountInputModule } from './directive/amount-input/amount-input.module';
 import { CurrencySelectComponent } from './pages/currency-select/currency-select.component';
 import { LoanDetailsPopoverComponent } from './pages/loan-details-popover/loan-details-popover.component';
@@ -38,6 +37,7 @@ export const myComponents = [
   imports: [
     FormsModule,
     BrowserModule,
+    HighchartsChartModule,
     AppRoutingModule,
     ReactiveFormsModule,
     IonicModule.forRoot(),
@@ -54,8 +54,6 @@ export const myComponents = [
       enabled: environment.production
     }),
     AmountInputModule,
-    HighchartsChartModule,
-    // DoughnutChart,
   ],
   providers: [
     {

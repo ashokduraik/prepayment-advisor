@@ -19,8 +19,14 @@
 
       <ion-item lines="none">
         <ion-label>Select Date</ion-label>
-        <ion-datetime displayFormat="DD MMMM YYYY" [(ngModel)]="pp.prepaymentDate" min="{{minDate}}" max="{{maxDate}}">
-        </ion-datetime>
+        <ion-datetime-button datetime="datetime" required></ion-datetime-button>
+
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime" [(ngModel)]="pp.prepaymentDate" min="{{minDate}}" max="{{maxDate}}"
+              presentation="date"></ion-datetime>
+          </ng-template>
+        </ion-modal>
       </ion-item>
     </ion-list>
   </ion-card>

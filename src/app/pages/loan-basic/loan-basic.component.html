@@ -121,9 +121,14 @@
               date</ion-label>
             <ion-label *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT'">Outstanding amount as of
             </ion-label>
-            <ion-datetime displayFormat="DD MMMM YYYY" formControlName="startDate" min="2010-01-01" max="{{maxDate}}"
-              placeholder="Select Date" required>
-            </ion-datetime>
+            <ion-datetime-button datetime="datetime" required></ion-datetime-button>
+
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime id="datetime" formControlName="startDate" min="2010-01-01" max="{{maxDate}}"
+                  presentation="date"></ion-datetime>
+              </ng-template>
+            </ion-modal>
           </ion-item>
 
           <ion-text color="danger"

@@ -10,48 +10,57 @@
 </ion-header> 
 
 <ion-content [fullscreen]="true">
+  <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"></highcharts-chart>
   <ion-grid *ngIf="loans && loans.length" fixed>
-    <ion-card class="speaker-card">
+    <ion-card class="speaker-card" *ngIf="loans.length > 1">
       <ion-accordion-group>
         <ion-accordion value="first">
-          <ion-item slot="header">
-            <ion-label>First Accordion</ion-label>
+          <ion-item slot="header" color="primary">
+            <!-- <ion-label>Summary</ion-label>
+            <ion-badge slot="end" color="danger">{{loans.length}}</ion-badge> -->
+            <ion-label style="font-weight: 600;">Liability of <span
+                style="font-size: x-large; padding: 5px;">{{loans.length}}</span>
+              Loans</ion-label>
+            <ion-badge slot="end" color="danger">{{ summary.outstanding | appCurrency: 'noDecimal' }}</ion-badge>
           </ion-item>
-          <div class="ion-padding" slot="content">First Content</div>
+          <ion-grid slot="content">
+            <ion-row>
+              <ion-col>
+                <ion-grid>
+                  <ion-row>
+                    <ion-col class="ion-align-self-start">
+                      Loan
+                    </ion-col>
+                    <ion-col size="5" class="ion-align-self-end" style="color: red;">
+                      {{ summary.totalLoanAmount | appCurrency: 'noDecimal' }}
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="ion-align-self-start">
+                      Current Liability
+                    </ion-col>
+                    <ion-col size="5" class="ion-align-self-end" style="color: green;">
+                      {{ summary.outstanding | appCurrency: 'noDecimal' }}
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="ion-align-self-start">
+                      Outstanding
+                    </ion-col>
+                    <ion-col size="5" class="ion-align-self-end" style="color: red;">
+                      {{ summary.outstanding | appCurrency: 'noDecimal' }}
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-col>
+              <ion-col>
+
+              </ion-col>
+            </ion-row>
+
+          </ion-grid>
         </ion-accordion>
       </ion-accordion-group>
-      <ion-button (click)="loanOther()" expand="block" style="margin: 0px;">
-        Summary
-        <ion-icon slot="end" name="moon-outline"></ion-icon>
-      </ion-button>
-      <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col class="ion-align-self-start">
-              Total Loans
-            </ion-col>
-            <ion-col size="5" class="ion-align-self-end">
-              {{loans.length}}
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col class="ion-align-self-start">
-              Total Loan Amount
-            </ion-col>
-            <ion-col size="5" class="ion-align-self-end" style="color: red;">
-              {{ summary.totalLoanAmount | appCurrency: 'noDecimal' }}
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col class="ion-align-self-start">
-              Outstanding Amount
-            </ion-col>
-            <ion-col size="5" class="ion-align-self-end" style="color: red;">
-              {{ summary.outstanding | appCurrency: 'noDecimal' }}
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
     </ion-card>
     <ion-card *ngFor="let loan of loans" class="speaker-card">
       <ion-card-header color="primary">

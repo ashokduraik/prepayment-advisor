@@ -84,7 +84,7 @@ export class StatisticsPage implements AfterViewInit {
     const principalPercentage = Number((100 - interestPercentage).toFixed(2));
 
     new Chart(canvas.nativeElement, {
-      type: 'pie',
+      type: 'doughnut',
       options: {
         responsive: true,
         plugins: {

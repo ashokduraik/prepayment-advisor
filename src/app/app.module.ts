@@ -9,6 +9,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { AppRate } from '@ionic-native/app-rate/ngx';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +17,7 @@ import { environment } from '../environments/environment';
 import { EmiEditPage } from './pages/emi-edit/emi-edit.page';
 import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
 
+import { DoughnutChart } from './directive/doughnut-chart/doughnut-chart.directive'
 import { AmountInputModule } from './directive/amount-input/amount-input.module';
 import { CurrencySelectComponent } from './pages/currency-select/currency-select.component';
 import { LoanDetailsPopoverComponent } from './pages/loan-details-popover/loan-details-popover.component';
@@ -52,6 +54,8 @@ export const myComponents = [
       enabled: environment.production
     }),
     AmountInputModule,
+    HighchartsChartModule,
+    // DoughnutChart,
   ],
   providers: [
     {

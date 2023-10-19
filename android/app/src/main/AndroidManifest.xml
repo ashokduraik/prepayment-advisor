@@ -22,6 +22,7 @@
           <!-- add by me ends-->
 
         <activity
+            android:exported="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
             android:name="io.ionic.starter.MainActivity"
             android:label="@string/title_activity_main"

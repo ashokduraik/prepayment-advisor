@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-
+import * as Highcharts from 'highcharts';
 import { Platform } from '@ionic/angular';
 
 import { LoanUtils } from '../../services/loan.utils';
@@ -18,7 +18,17 @@ export class HomePage {
   backButtonSubscription;
   summary = {
     totalLoanAmount: 0,
-    outstanding: 0
+    outstanding: 0,
+  };
+  Highcharts: typeof Highcharts = Highcharts;
+
+  chartOptions: Highcharts.Options = {
+    series: [
+      {
+        type: "line",
+        data: [1, 2, 3, 4, 5]
+      }
+    ]
   };
 
   constructor(

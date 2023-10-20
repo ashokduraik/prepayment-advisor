@@ -120,7 +120,7 @@ export class LoanDetailsPage implements OnInit {
     //this.appService.showInterstitialAds();
 
     this.appRate.setPreferences({
-      displayAppName: 'Prepayment Advisor',
+      displayAppName: 'Loan Manager',
       usesUntilPrompt: 3,
       promptAgainForEachNewVersion: false,
       storeAppURL: {

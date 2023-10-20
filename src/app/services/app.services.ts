@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ToastController, AlertController } from '@ionic/angular';
 
 import moment from 'moment';
-import { AdMobPlus, BannerAd, InterstitialAd } from '@admob-plus/capacitor';
+// import { AdMobPlus, BannerAd, InterstitialAd } from '@admob-plus/capacitor';
 
 import { AppUtils } from './app.utils';
 import { environment } from '../../environments/environment';
@@ -29,12 +29,12 @@ export class AppService {
 
   async showBannerAds() {
     try {
-      await AdMobPlus.start();
+      // await AdMobPlus.start();
 
-      const banner = new BannerAd({
-        adUnitId: environment.bannerAdId,
-      });
-      await banner.show();
+      // const banner = new BannerAd({
+      //   adUnitId: environment.bannerAdId,
+      // });
+      // await banner.show();
 
       // AdMobPlus.addListener('banner.impression', async () => {
       //   await banner.hide()
@@ -50,12 +50,12 @@ export class AppService {
       //   return;
       // }
 
-      await AdMobPlus.start();
-      const interstitial = new InterstitialAd({
-        adUnitId: environment.interstitialAdId,
-      });
-      await interstitial.load();
-      await interstitial.show();
+      // await AdMobPlus.start();
+      // const interstitial = new InterstitialAd({
+      //   adUnitId: environment.interstitialAdId,
+      // });
+      // await interstitial.load();
+      // await interstitial.show();
       //this.lastInterstitialAdsTime = new Date();
     } catch (e) {
       AppUtils.errorLog(e);

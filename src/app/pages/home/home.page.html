@@ -22,7 +22,7 @@
               }}</ion-badge>
           </ion-item>
           <div slot="content">
-            <ion-grid>
+            <ion-grid style="padding: 0 5px;">
               <ion-row>
                 <ion-col size="6">
                   <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns"
@@ -31,6 +31,12 @@
                 <ion-col size="6">
                   <highcharts-chart [Highcharts]="Highcharts" [options]="repaidChartOpns"
                     *ngIf="repaidChartOpns"></highcharts-chart>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="instaChartOpns">
+                <ion-col size="12" style="padding: 0;">
+                  <highcharts-chart [Highcharts]="Highcharts" [options]="instaChartOpns"
+                    style="height: 200px;"></highcharts-chart>
                 </ion-col>
               </ion-row>
             </ion-grid>

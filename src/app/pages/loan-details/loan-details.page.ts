@@ -11,6 +11,7 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 import { LoanDetailsPopoverComponent } from '../loan-details-popover/loan-details-popover.component';
+import { ChartUtils } from 'src/app/services/chart.utils';
 
 @Component({
   selector: 'app-loan-details',
@@ -27,6 +28,7 @@ export class LoanDetailsPage implements OnInit {
   repaidChartOpns: Highcharts.Options = null;
   prinpaidChartOpns: Highcharts.Options = null;
   payableChartOpns: Highcharts.Options = null;
+  instaChartOpns: Highcharts.Options = null;
 
   constructor(
     private appRate: AppRate,
@@ -73,7 +75,7 @@ export class LoanDetailsPage implements OnInit {
       amount: this.loan.balanceAmount,
       color: '#eb445a',
     }]
-    this.loanChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Total Loan<br>${this.currencyPipe.transform(this.loan.amount, 'noDecimal')}`, loanData);
+    this.loanChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Loan<br>${this.currencyPipe.transform(this.loan.amount, 'noDecimal')}`, loanData);
 
     const paidData = [{
       name: 'Interest<br> Paid',
@@ -86,7 +88,7 @@ export class LoanDetailsPage implements OnInit {
       amount: this.loan.principalPaid,
       color: '#2dd36f',
     }];
-    this.repaidChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(this.loan.principalPaid + this.loan.interestPaid, 'noDecimal')}`, paidData);
+    this.repaidChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(this.loan.principalPaid + this.loan.interestPaid, 'noDecimal')}`, paidData);
 
     const prinPaidData = [{
       name: 'EMI',
@@ -98,7 +100,7 @@ export class LoanDetailsPage implements OnInit {
       amount: this.loan.totalPrepayment,
       color: '#2dd36f',
     }];
-    this.prinpaidChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Principal Paid<br>${this.currencyPipe.transform(this.loan.principalPaid, 'noDecimal')}`, prinPaidData);
+    this.prinpaidChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Principal Paid<br>${this.currencyPipe.transform(this.loan.principalPaid, 'noDecimal')}`, prinPaidData);
 
     const interest = this.loan.interestPaid + this.loan.interestPayable;
     const total = this.loan.amount + interest;
@@ -113,7 +115,9 @@ export class LoanDetailsPage implements OnInit {
       amount: interest,
       color: '#eb445a'
     }];
-    this.payableChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Repayment Projection<br>${this.currencyPipe.transform(total, 'noDecimal')}`, payableData);
+
+    this.payableChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Repayment Projection<br>${this.currencyPipe.transform(total, 'noDecimal')}`, payableData);
+    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.instalments.slice(0, 4));
   }
 
   ngOnInit() {

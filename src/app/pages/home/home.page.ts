@@ -7,6 +7,7 @@ import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
+import { ChartUtils } from 'src/app/services/chart.utils';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class HomePage {
   Highcharts: typeof Highcharts = Highcharts;
   loanChartOpns: Highcharts.Options = null;
   repaidChartOpns: Highcharts.Options = null;
+  instaChartOpns: Highcharts.Options = null;
   summary = {
     outstanding: 0,
   }
@@ -44,6 +46,7 @@ export class HomePage {
 
     await this.storage.saveLoans(this.loans);
     let totalLoanAmount = 0, outstanding = 0, principalPaid = 0, interestPaid = 0;
+    let lastInstallments = null;
 
     this.loans.forEach(loan => {
       LoanUtils.calculateLoanDetails(loan);
@@ -51,6 +54,23 @@ export class HomePage {
       outstanding += loan.balanceAmount;
       principalPaid += loan.principalPaid;
       interestPaid += loan.interestPaid;
+
+      if (!lastInstallments) {
+        lastInstallments = this.getLastInstallemts(loan.instalments).map(e => {
+          return {
+            emiDate: e.emiDate,
+            interestPaid: e.interestPaid,
+            principalPaid: e.principalPaid,
+          }
+        });
+        return;
+      }
+
+      const insts = this.getLastInstallemts(loan.instalments);
+      for (let i = 0; i < insts.length; i++) {
+        lastInstallments[i].interestPaid += insts[i].interestPaid;
+        lastInstallments[i].principalPaid += insts[i].principalPaid;
+      }
     });
 
     this.summary.outstanding = outstanding;
@@ -65,7 +85,7 @@ export class HomePage {
       amount: outstanding,
       color: '#eb445a',
     }]
-    this.loanChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Total Loan<br>${this.currencyPipe.transform(totalLoanAmount, 'noDecimal')}`, loanData);
+    this.loanChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Loan<br>${this.currencyPipe.transform(totalLoanAmount, 'noDecimal')}`, loanData);
 
     const paidData = [{
       name: 'Interest<br> Paid',
@@ -78,7 +98,13 @@ export class HomePage {
       amount: principalPaid,
       color: '#2dd36f',
     }];
-    this.repaidChartOpns = LoanUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(principalPaid + interestPaid, 'noDecimal')}`, paidData);
+    this.repaidChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(principalPaid + interestPaid, 'noDecimal')}`, paidData);
+
+    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, lastInstallments);
+  }
+
+  getLastInstallemts(arr) {
+    return (Object.assign([], arr)).reverse().slice(0, 4);
   }
 
   ngOnInit() {

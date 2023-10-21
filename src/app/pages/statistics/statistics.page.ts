@@ -6,6 +6,7 @@ import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
+import { ChartUtils } from 'src/app/services/chart.utils';
 
 @Component({
   selector: 'app-statistics',
@@ -21,6 +22,7 @@ export class StatisticsPage implements AfterViewInit {
   showPayableCanvas = false;
   Highcharts: typeof Highcharts = Highcharts;
   loanChartOpns: Highcharts.Options = null;
+  instaChartOpns: Highcharts.Options = null;
 
   constructor(
     private router: Router,
@@ -51,7 +53,6 @@ export class StatisticsPage implements AfterViewInit {
 
   showChart() {
     const categories = [];
-    const total = [];
     const interest = [];
     const principal = [];
 
@@ -60,11 +61,9 @@ export class StatisticsPage implements AfterViewInit {
 
       categories.push(emi.financialYear);
       if (emi.fyProvisionalPrincipal > 0 && emi.fyProvisionalInterest > 0) {
-        total.push(emi.fyProvisionalPrincipal + emi.fyProvisionalInterest);
         interest.push(emi.fyProvisionalInterest);
         principal.push(emi.fyProvisionalPrincipal);
       } else {
-        total.push(emi.fyPrincipal + emi.fyInterest);
         interest.push(emi.fyInterest);
         principal.push(emi.fyPrincipal);
       }
@@ -79,43 +78,33 @@ export class StatisticsPage implements AfterViewInit {
           singleTouch: true,
         },
       },
-      title: {
-        text: 'Year wise Payment',
-        align: 'center'
-      },
-      xAxis: {
-        categories
-      },
+      title: { text: '' },
+      xAxis: { categories },
       yAxis: {
-        // min: 0,
-        title: {
-          text: ''
-        },
-        labels: {
-          formatter: function () {
-            return currencyPipe.transform(Number(this.value), 'noDecimal');
-          }
-        },
+        title: { text: '' },
+        labels: { enabled: false },
       },
       tooltip: {
-        pointFormatter: function () {
-          return '<span style="color:' + this.series.color + '">' + this.series.name + '</span>: <b>' + currencyPipe.transform(this.y, 'noDecimal') + '</b><br />'
+        useHTML: true,
+        formatter: function () {
+          return ChartUtils.getTooltip(this, currencyPipe);
         },
-        shared: true
+        shared: true,
       },
+      legend: ChartUtils.getLegendOption(),
       plotOptions: {
         column: {
           stacking: 'normal',
+          dataLabels: {
+            enabled: true,
+            formatter: function () {
+              return currencyPipe.transform(this.y, 'noDecimal');
+            }
+          }
         }
       },
-      credits: {
-        enabled: false
-      },
+      credits: { enabled: false },
       series: [{
-        name: 'Total Paid',
-        data: total,
-        type: undefined,
-      }, {
         name: 'Interest Paid',
         data: interest,
         type: undefined,
@@ -127,5 +116,7 @@ export class StatisticsPage implements AfterViewInit {
         color: '#2dd36f',
       }]
     }
+
+    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.loan.instalments);
   }
 }

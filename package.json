@@ -25,7 +25,8 @@
     "test": "export NODE_OPTIONS=--openssl-legacy-provider && ng test",
     "lint": "export NODE_OPTIONS=--openssl-legacy-provider && ng lint",
     "e2e": "export NODE_OPTIONS=--openssl-legacy-provider && ng e2e",
-    "android-run": "npx cap run android"
+    "android-build": "export NODE_OPTIONS=--openssl-legacy-provider && ionic capacitor build android --prod",
+    "android-build-dev": "export NODE_OPTIONS=--openssl-legacy-provider && ionic capacitor build android"
   },
   "private": true,
   "dependencies": {

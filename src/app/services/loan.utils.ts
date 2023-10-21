@@ -1,4 +1,5 @@
 import moment from 'moment';
+import * as Highcharts from 'highcharts';
 
 import { AppUtils } from './app.utils';
 import { Currency } from '../services/currency-map';
@@ -273,59 +274,5 @@ export class LoanUtils {
     const r = interestRate / (100 * 12);
     const pow = Math.pow(1 + r, term);
     return (amount * r * pow) / (pow - 1);
-  }
-
-  static getPieChartOptions(currencyPipe, title, data): Highcharts.Options {
-    data.forEach(e => {
-      e.amount = currencyPipe.transform(e.amount, 'noDecimal');
-    })
-    return {
-      chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie',
-        width: 180,
-        height: 180,
-        marginTop: 28,
-        marginLeft: -5,
-      },
-      title: {
-        text: title,
-        align: 'center',
-        style: {
-          fontSize: '12px',
-        }
-      },
-      tooltip: {
-        pointFormat: '<b>{point.amount}</b> ({point.percentage:.1f}%)'
-      },
-      accessibility: {
-        point: {
-          valueSuffix: '%'
-        }
-      },
-      plotOptions: {
-        pie: {
-          allowPointSelect: true,
-          cursor: 'pointer',
-          // colors,
-          borderRadius: 7,
-          dataLabels: {
-            enabled: true,
-            format: '<b>{point.name}</b><br>{point.percentage:.1f} %',
-            distance: -15,
-          }
-        }
-      },
-      credits: {
-        enabled: false
-      },
-      series: [{
-        name: 'Percentage',
-        type: undefined,
-        data
-      }]
-    }
   }
 }

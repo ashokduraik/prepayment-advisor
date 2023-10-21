@@ -57,6 +57,12 @@
               *ngIf="payableChartOpns"></highcharts-chart>
           </ion-col>
         </ion-row>
+        <ion-row *ngIf="instaChartOpns">
+          <ion-col size="12">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="instaChartOpns"
+              style="height: 250px;"></highcharts-chart>
+          </ion-col>
+        </ion-row>
         <ion-row *ngIf="!loan.isCompleted">
           <ion-col class="ion-align-self-start">
             Balance Term

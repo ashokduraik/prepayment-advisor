@@ -2,7 +2,10 @@ import { Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
+import * as Highcharts from 'highcharts';
 import { Storage } from '@ionic/storage-angular';
+import darkTheme from 'highcharts/themes/high-contrast-dark';
+import lightTheme from 'highcharts/themes/high-contrast-light';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
 //import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
@@ -11,6 +14,7 @@ import { AppStorage } from './services/app.storage';
 import { AppService } from './services/app.services';
 import { AppCurrencyPipe } from './services/app.pipe';
 import sampleData from '../../data/sample.json';
+import { BroadcastService } from './services/broadcast.service';
 
 @Component({
   selector: 'app-root',
@@ -51,10 +55,14 @@ export class AppComponent implements OnInit {
     private appStorage: AppStorage,
     private appService: AppService,
     private toastCtrl: ToastController,
+    private broadcastService: BroadcastService,
     //  private lottieSplashScreen: LottieSplashScreen
   ) {
     this.isAndroid = this.platform.is('android');
     this.initializeApp();
+    Highcharts.setOptions({
+      credits: { enabled: false }
+    });
   }
 
   async ngOnInit() {
@@ -107,6 +115,8 @@ export class AppComponent implements OnInit {
   async setProfileData() {
     this.profile = await this.appStorage.getProfile() || {};
     this.darkMode = this.profile.darkMode;
+    if (this.darkMode === true) darkTheme(Highcharts);
+    else lightTheme(Highcharts);
     AppCurrencyPipe.setCurrency(this.profile.currency);
     LoanUtils.setFinancialYearEnd(this.profile.currency);
   }
@@ -114,6 +124,9 @@ export class AppComponent implements OnInit {
   async updateProfile() {
     this.profile = await this.appStorage.getProfile();
     this.profile.darkMode = this.darkMode;
+    if (this.darkMode === true) darkTheme(Highcharts);
+    else lightTheme(Highcharts);
+    this.broadcastService.boradcast("THEME_CHNAGE");
     await this.appStorage.saveProfile(this.profile);
   }
 

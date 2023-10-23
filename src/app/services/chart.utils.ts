@@ -1,8 +1,4 @@
-import moment from 'moment';
 import * as Highcharts from 'highcharts';
-
-import { AppUtils } from './app.utils';
-import { Currency } from '../services/currency-map';
 
 export class ChartUtils {
   static getPieChartOptions(currencyPipe, title, data): Highcharts.Options {
@@ -47,9 +43,6 @@ export class ChartUtils {
             distance: -15,
           }
         }
-      },
-      credits: {
-        enabled: false
       },
       series: [{
         name: 'Percentage',
@@ -137,7 +130,6 @@ export class ChartUtils {
         },
         shared: true,
       },
-      credits: { enabled: false },
       legend: ChartUtils.getLegendOption(),
       plotOptions: {
         column: {

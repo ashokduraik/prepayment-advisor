@@ -8,6 +8,8 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 import { ChartUtils } from 'src/app/services/chart.utils';
+import { BroadcastService } from 'src/app/services/broadcast.service';
+import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +19,7 @@ import { ChartUtils } from 'src/app/services/chart.utils';
 export class HomePage {
   profile = null;
   loans: any = [];
+  chartUpdate = true;
   backButtonSubscription;
   Highcharts: typeof Highcharts = Highcharts;
   loanChartOpns: Highcharts.Options = null;
@@ -32,7 +35,12 @@ export class HomePage {
     private storage: AppStorage,
     private appService: AppService,
     private currencyPipe: AppCurrencyPipe,
-  ) { }
+    private broadcastService: BroadcastService,
+  ) {
+    this.broadcastService.subscribe("THEME_CHNAGE", () => {
+      this.chartUpdate = true;
+    });
+  }
 
   async ionViewWillEnter() {
     this.initializeHome();
@@ -40,6 +48,7 @@ export class HomePage {
 
   async initializeHome() {
     this.loans = await this.storage.getLoans() || [];
+    console.log("this.loans--->", JSON.stringify(this.loans[this.loans.length - 1]))
     this.loans.forEach(loan => {
       LoanUtils.fillInstalments(loan);
     });

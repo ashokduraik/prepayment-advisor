@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { EmiEditPage } from './pages/emi-edit/emi-edit.page';
 import { LoanBasicComponent } from './pages/loan-basic/loan-basic.component';
+import { BroadcastService } from './services/broadcast.service';
 
 import { AmountInputModule } from './directive/amount-input/amount-input.module';
 import { CurrencySelectComponent } from './pages/currency-select/currency-select.component';
@@ -62,6 +63,7 @@ export const myComponents = [
     },
     FileChooser,
     AppRate,
+    BroadcastService,
   ],
   bootstrap: [AppComponent],
 })

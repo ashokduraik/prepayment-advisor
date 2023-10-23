@@ -29,9 +29,13 @@
             <div>Loan Amount</div>
             <h2>{{ loan.amount | appCurrency: 'noDecimal' }}</h2>
           </ion-col>
-          <ion-col>
+          <ion-col *ngIf="loan.loanType === 'EMI_LOAN'">
             <div>Balance Term</div>
             <h2>{{ loan.balanceTerm | monthToYear }}</h2>
+          </ion-col>
+          <ion-col *ngIf="loan.loanType === 'FLEXI_LOAN'">
+            <div>Balance Amount</div>
+            <h2>{{ loan.balanceAmount | appCurrency: 'noDecimal' }}</h2>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -63,7 +67,7 @@
               style="height: 250px;"></highcharts-chart>
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="!loan.isCompleted">
+        <ion-row *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'">
           <ion-col class="ion-align-self-start">
             Balance Term
           </ion-col>
@@ -71,7 +75,7 @@
             {{ loan.balanceTerm }} Months
           </ion-col>
         </ion-row>
-        <ion-row *ngIf="!loan.isCompleted">
+        <ion-row *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'">
           <ion-col class="ion-align-self-start">
             Estimated End Date
           </ion-col>
@@ -115,12 +119,23 @@
       </ion-card-header>
       <ion-grid>
         <ion-row *ngIf="indexOfele==0">
-          <ion-col>EMI</ion-col>
+          <ion-col *ngIf="loan.loanType === 'EMI_LOAN'">EMI</ion-col>
+          <ion-col *ngIf="loan.loanType === 'FLEXI_LOAN'">Total Paid</ion-col>
           <ion-col>Principal Paid</ion-col>
-          <ion-col style="text-align: end;">Interest Paid</ion-col>
+          <ion-col style="text-align: end;" *ngIf="loan.loanType === 'EMI_LOAN'">
+            Interest Paid
+          </ion-col>
+          <ion-col style="text-align: end;" *ngIf="loan.loanType === 'FLEXI_LOAN'">
+            Interest
+          </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>{{ (emi.amount + (emi.charges || 0)) | appCurrency: 'noDecimal' }}</ion-col>
+          <ion-col *ngIf="loan.loanType === 'EMI_LOAN'">
+            {{ (emi.amount + (emi.charges || 0)) | appCurrency: 'noDecimal' }}
+          </ion-col>
+          <ion-col *ngIf="loan.loanType === 'FLEXI_LOAN'">
+            {{ emi.prepaymentTotal | appCurrency: 'noDecimal' }}
+          </ion-col>
           <ion-col style="color: green;">
             {{ emi.principalPaid | appCurrency: '' }}
           </ion-col>
@@ -130,7 +145,7 @@
         </ion-row>
       </ion-grid>
       <ion-grid>
-        <ion-row *ngIf="emi.prepaymentTotal > 0" style="color: green;">
+        <ion-row *ngIf="emi.prepaymentTotal > 0 && loan.loanType === 'EMI_LOAN'" style="color: green;">
           <ion-col class="ion-align-self-start">
             Prepayment Amount
           </ion-col>
@@ -155,7 +170,7 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-card *ngIf="emi.financialYear" color="light" class="inner-card">
+      <ion-card *ngIf="emi.financialYear && loan.loanType === 'EMI_LOAN'" color="light" class="inner-card">
         <ion-row>
           <ion-col class="ion-align-self-center" style="text-align: center;">
             Financial Year <strong>{{emi.financialYear}}</strong>

@@ -186,30 +186,49 @@ export class LoanDetailsPage implements OnInit {
 
   async getActionSheet(emi) {
     const buttons = [];
-    if (!this.loan.isCompleted) {
+    if (this.loan.loanType === 'EMI_LOAN') {
       buttons.push({
         text: 'Edit',
         role: 'edit',
         icon: 'create-outline',
-      }, {
-        role: 'topup',
-        text: 'Loan topup details',
-        icon: 'bag-handle-outline',
-        cssClass: 'action-sheet-danger',
-      }, {
+      });
+
+      if (!this.loan.isCompleted) {
+        buttons.push({
+          role: 'topup',
+          text: 'Add / Edit Loan topup',
+          icon: 'bag-handle-outline',
+          cssClass: 'action-sheet-danger',
+        });
+      }
+    }
+
+    if (this.loan.loanType === 'EMI_LOAN') {
+      buttons.push({
         role: 'prepayment',
-        text: 'Prepayment details',
+        text: 'Add / Edit Prepayment',
+        icon: 'cash-outline',
+        cssClass: 'action-sheet-primary',
+      });
+    } else {
+      buttons.push({
+        role: 'prepayment',
+        text: 'Add / Edit Payment details',
         icon: 'cash-outline',
         cssClass: 'action-sheet-primary',
       });
     }
 
+    if (this.loan.loanType === 'EMI_LOAN') {
+      buttons.push({
+        role: 'callogic',
+        text: 'Calculation Logic',
+        icon: 'calculator-outline',
+        cssClass: 'action-sheet-primary',
+      })
+    }
+
     buttons.push({
-      role: 'callogic',
-      text: 'Calculation Logic',
-      icon: 'calculator-outline',
-      cssClass: 'action-sheet-primary',
-    }, {
       text: 'Cancel',
       icon: 'close',
     });

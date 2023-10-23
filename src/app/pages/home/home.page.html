@@ -65,12 +65,20 @@
 
       <ion-card-content>
         <ion-grid>
-          <ion-row>
+          <ion-row *ngIf="loan.emi > 0">
             <ion-col class="ion-align-self-start">
               EMI
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
               {{ loan.emi | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="loan.loanType === 'FLEXI_LOAN'">
+            <ion-col class="ion-align-self-start">
+              Total Paid
+            </ion-col>
+            <ion-col size="5" class="ion-align-self-end">
+              {{ loan.totalPrepayment | appCurrency: '' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="!loan.isCompleted">
@@ -82,14 +90,17 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col class="ion-align-self-start">
+            <ion-col class="ion-align-self-start" *ngIf="loan.loanType === 'EMI_LOAN'">
               Interest Paid
+            </ion-col>
+            <ion-col class="ion-align-self-start" *ngIf="loan.loanType === 'FLEXI_LOAN'">
+              Interest Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end" style="color: red;">
               {{ loan.interestPaid | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="!loan.isCompleted">
+          <ion-row *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'">
             <ion-col class="ion-align-self-start">
               Balance Term
             </ion-col>

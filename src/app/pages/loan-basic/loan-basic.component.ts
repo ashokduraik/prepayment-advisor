@@ -56,22 +56,20 @@ export class LoanBasicComponent implements OnInit {
       emi: new FormControl('', Validators.compose([
         Validators.max(9999999),
         Validators.min(1),
-        Validators.required
       ])),
       amount: new FormControl('', Validators.compose([
         Validators.max(9999999999),
         Validators.min(1),
         Validators.required
       ])),
-      amountType: new FormControl('', Validators.compose([
+      amountType: new FormControl(''),
+      loanType: new FormControl('', Validators.compose([
         Validators.required
       ])),
-      startDate: new FormControl(null, Validators.compose([
+      startDate: new FormControl(new Date().toISOString(), Validators.compose([
         Validators.required
       ])),
-      emiDay: new FormControl(null, Validators.compose([
-        Validators.required
-      ])),
+      emiDay: new FormControl(null),
       name: new FormControl(null),
     });
 
@@ -79,6 +77,10 @@ export class LoanBasicComponent implements OnInit {
     if (!profile.currency) {
       this.forceToSelectCurrency(profile);
     }
+  }
+
+  onFlexiLoan() {
+    this.loanForm.patchValue({ amountType: '' });
   }
 
   async forceToSelectCurrency(profile) {
@@ -95,14 +97,20 @@ export class LoanBasicComponent implements OnInit {
   }
 
   async save(loanForm: FormGroup) {
+    this.minEmi = null;
     this.submitted = true;
+    const loan = loanForm.value;
+    if (loan.loanType === 'EMI_LOAN' && (!loan.emi || !loan.amountType || !loan.emiDay)) return;
     if (!loanForm.valid || this.saveInProgress) return;
 
-    this.minEmi = null;
-    const loan = loanForm.value;
-    const interest = (loan.interestRate / (100 * 12)) * loan.amount;
-    this.minEmi = interest * 1.1;
-    if (this.minEmi > loan.emi) return
+    if (loan.loanType === 'FLEXI_LOAN') {
+      loan.emiDay = '1';
+      loan.emi = 0;
+    } else {
+      const interest = (loan.interestRate / (100 * 12)) * loan.amount;
+      this.minEmi = interest * 1.1;
+      if (this.minEmi > loan.emi) return
+    }
 
     this.saveInProgress = true;
     loan._id = AppUtils.getUid();

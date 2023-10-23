@@ -103,7 +103,6 @@ export class StatisticsPage implements AfterViewInit {
           }
         }
       },
-      credits: { enabled: false },
       series: [{
         name: 'Interest Paid',
         data: interest,

@@ -14,15 +14,18 @@ import { AppService } from '../../services/app.services';
 })
 export class LoanDetailsPopoverComponent implements OnInit {
   @Input("_id") _id;
+  @Input("loanType") loanType;
   constructor(
     private storage: AppStorage,
     private router: Router,
     private service: AppService,
     public popoverCtrl: PopoverController,
     public alertController: AlertController,
-  ) { }
+  ) {
+  }
 
-  async ngOnInit() { }
+  async ngOnInit() {
+  }
 
   claculationLogic() {
     if (!this._id) return;

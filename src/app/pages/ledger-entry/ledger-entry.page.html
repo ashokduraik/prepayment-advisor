@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="defaultHref"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Ledger Entry
+    </ion-title>
+  </ion-toolbar>
+</ion-header> 
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="ledgerForm">
+    <ion-card style="padding-bottom: 10px">
+      <ion-radio-group formControlName="type" class="radio-with-ul">
+        <ion-item lines="none">
+          <ion-label text-wrap>Debit (Payment)</ion-label>
+          <ion-radio slot="start" value="DEBIT"></ion-radio>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label text-wrap>Credit (Interest, Charges, etc...)</ion-label>
+          <ion-radio slot="start" value="CREDIT"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+
+      <ion-item lines="none">
+        <ion-label>Transaction Date</ion-label>
+        <ion-datetime-button datetime="datetime" required></ion-datetime-button>
+
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime id="datetime" formControlName="transactionDate" min="{{minDate}}" max="{{maxDate}}"
+              presentation="date"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+        <ion-text color="danger"
+          *ngIf="ledgerForm.get('transactionDate').dirty || ledgerForm.get('transactionDate').touched || submitted == true">
+          <p *ngIf="ledgerForm.get('transactionDate').hasError('required')">
+            <ion-icon name="information-circle-outline"></ion-icon>Transaction Date is required
+          </p>
+          <p
+            *ngIf="ledgerForm.get('transactionDate').hasError('min') || ledgerForm.get('transactionDate').hasError('max')">
+            <ion-icon name="information-circle-outline"></ion-icon>Transaction Date should be valid
+          </p>
+        </ion-text>
+      </ion-item>
+
+      <div>
+        <span class="label">Amount</span>
+        <ion-input formControlName="amount" type="number" placeholder="700000" amountInput required
+          class="with-error-label"></ion-input>
+
+        <ion-text color="danger"
+          *ngIf="ledgerForm.get('amount').dirty || ledgerForm.get('amount').touched || submitted == true">
+          <p *ngIf="ledgerForm.get('amount').hasError('required')">
+            <ion-icon name="information-circle-outline"></ion-icon>Amount is required
+          </p>
+          <p *ngIf="ledgerForm.get('amount').hasError('min')">
+            <ion-icon name="information-circle-outline"></ion-icon>Amount should be greater than 1
+          </p>
+          <p *ngIf="ledgerForm.get('amount').hasError('max')">
+            <ion-icon name="information-circle-outline"></ion-icon>Amount should be less than 9999999999
+          </p>
+        </ion-text>
+      </div>
+
+      <div>
+        <span class="label">Description</span>
+        <ion-textarea formControlName="description" [autoGrow]="true"></ion-textarea>
+        <ion-text color="danger"
+          *ngIf="ledgerForm.get('description').dirty || ledgerForm.get('description').touched || submitted == true">
+          <p *ngIf="ledgerForm.get('description').hasError('required')">
+            <ion-icon name="information-circle-outline"></ion-icon>Description is required
+          </p>
+        </ion-text>
+      </div>
+
+      <ion-row>
+        <ion-col>
+          <ion-button (click)="save()" type="submit" expand="block">Save</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </form>
+</ion-content>

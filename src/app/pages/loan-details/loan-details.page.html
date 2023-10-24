@@ -7,8 +7,13 @@
       Loan Details
     </ion-title>
     <ion-buttons *ngIf="loan && loan._id" slot="end">
-      <ion-button *ngIf="!loan.isCompleted" (click)="playArea();" color="success" class="blink_me">
+      <ion-button *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'" (click)="playArea();" color="success"
+        class="blink_me">
         <ion-icon slot="icon-only" name="play-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button *ngIf="!loan.isCompleted && loan.loanType === 'FLEXI_LOAN'" (click)="addLedgerItem();" color="success"
+        class="blink_me">
+        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
       </ion-button>
       <ion-button (click)="presentPopover($event)">
         <ion-icon slot="icon-only" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
@@ -48,17 +53,15 @@
             <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns"
               *ngIf="loanChartOpns"></highcharts-chart>
           </ion-col>
-          <ion-col size="6" *ngIf="loan.totalPrepayment > 0">
+          <ion-col size="6">
             <highcharts-chart [Highcharts]="Highcharts" [options]="repaidChartOpns"
               *ngIf="repaidChartOpns"></highcharts-chart>
           </ion-col>
-          <ion-col size="6" *ngIf="loan.totalPrepayment > 0">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="prinpaidChartOpns"
-              *ngIf="prinpaidChartOpns"></highcharts-chart>
+          <ion-col size="6" *ngIf="loan.totalPrepayment > 0 && prinpaidChartOpns">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="prinpaidChartOpns"></highcharts-chart>
           </ion-col>
-          <ion-col size="6">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="payableChartOpns"
-              *ngIf="payableChartOpns"></highcharts-chart>
+          <ion-col size="6" *ngIf="payableChartOpns">
+            <highcharts-chart [Highcharts]="Highcharts" [options]="payableChartOpns"></highcharts-chart>
           </ion-col>
         </ion-row>
         <ion-row *ngIf="instaChartOpns">
@@ -119,22 +122,15 @@
       </ion-card-header>
       <ion-grid>
         <ion-row *ngIf="indexOfele==0">
-          <ion-col *ngIf="loan.loanType === 'EMI_LOAN'">EMI</ion-col>
-          <ion-col *ngIf="loan.loanType === 'FLEXI_LOAN'">Total Paid</ion-col>
+          <ion-col>EMI</ion-col>
           <ion-col>Principal Paid</ion-col>
-          <ion-col style="text-align: end;" *ngIf="loan.loanType === 'EMI_LOAN'">
+          <ion-col style="text-align: end;">
             Interest Paid
-          </ion-col>
-          <ion-col style="text-align: end;" *ngIf="loan.loanType === 'FLEXI_LOAN'">
-            Interest
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col *ngIf="loan.loanType === 'EMI_LOAN'">
+          <ion-col>
             {{ (emi.amount + (emi.charges || 0)) | appCurrency: 'noDecimal' }}
-          </ion-col>
-          <ion-col *ngIf="loan.loanType === 'FLEXI_LOAN'">
-            {{ emi.prepaymentTotal | appCurrency: 'noDecimal' }}
           </ion-col>
           <ion-col style="color: green;">
             {{ emi.principalPaid | appCurrency: '' }}
@@ -218,6 +214,45 @@
         </ion-row>
       </ion-card>
       <!-- <ion-button expand="block" color="light" style="margin: 0px;">Options</ion-button> -->
+    </ion-card>
+  </ion-grid>
+
+  <ion-grid *ngIf="ledger && ledger.length" fixed>
+    <ion-card *ngFor="let led of ledger; let indexOfele=index;" class="speaker-card">
+      <ion-card-header color="light" (click)="onLedgerClick(led)">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <strong>{{led.transactionDate | date: 'dd MMMM YYYY'}}</strong>
+            </ion-col>
+            <ion-col style="text-align: end;">
+              <ion-badge style="margin-left: 0px;" color="{{led.type === 'DEBIT'? 'success' : 'danger'}}">
+                {{ led.amount | appCurrency: 'noDecimal' }}
+              </ion-badge>
+            </ion-col>
+            <ion-col size="1">
+              <ion-icon ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            {{ led.description }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-align-self-start">
+            Closing Balance
+          </ion-col>
+          <ion-col size="4" class="ion-align-self-end">
+            {{ led.closingBalance | appCurrency: '' }}
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-card>
   </ion-grid>
 </ion-content>

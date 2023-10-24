@@ -106,12 +106,13 @@ p {
   display: block;
 }
 
-ion-input {
+ion-input,
+ion-textarea {
   border-color: #8e8e8e;
   border-width: thin;
   border-style: solid;
   border-radius: 5px;
-  margin: 5px 15px 15px 15px;
+  margin: 5px 15px 15px 15px !important;
   width: auto !important;
 }
 
@@ -389,4 +390,8 @@ ion-progress-bar.my-progress {
 
 highcharts-chart {
   display: block;
+}
+
+ion-datetime {
+  color: var(--ion-color-step-400, #222);
 }

@@ -14,7 +14,6 @@ import { AppStorage } from './services/app.storage';
 import { AppService } from './services/app.services';
 import { AppCurrencyPipe } from './services/app.pipe';
 import sampleData from '../../data/sample.json';
-import { BroadcastService } from './services/broadcast.service';
 
 @Component({
   selector: 'app-root',
@@ -55,7 +54,6 @@ export class AppComponent implements OnInit {
     private appStorage: AppStorage,
     private appService: AppService,
     private toastCtrl: ToastController,
-    private broadcastService: BroadcastService,
     //  private lottieSplashScreen: LottieSplashScreen
   ) {
     this.isAndroid = this.platform.is('android');
@@ -126,7 +124,6 @@ export class AppComponent implements OnInit {
     this.profile.darkMode = this.darkMode;
     if (this.darkMode === true) darkTheme(Highcharts);
     else lightTheme(Highcharts);
-    this.broadcastService.boradcast("THEME_CHNAGE");
     await this.appStorage.saveProfile(this.profile);
   }
 

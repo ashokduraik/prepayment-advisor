@@ -75,10 +75,18 @@
           </ion-row>
           <ion-row *ngIf="loan.loanType === 'FLEXI_LOAN'">
             <ion-col class="ion-align-self-start">
-              Total Paid
+              Interest Amount
+            </ion-col>
+            <ion-col size="5" class="ion-align-self-end" style="color: red;">
+              {{ loan.interest | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          <ion-row *ngIf="loan.loanType === 'FLEXI_LOAN'">
+            <ion-col class="ion-align-self-start">
+              Total Paid Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.totalPrepayment | appCurrency: '' }}
+              {{ loan.totalPaid | appCurrency: '' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="!loan.isCompleted">
@@ -90,11 +98,8 @@
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col class="ion-align-self-start" *ngIf="loan.loanType === 'EMI_LOAN'">
+            <ion-col class="ion-align-self-start">
               Interest Paid
-            </ion-col>
-            <ion-col class="ion-align-self-start" *ngIf="loan.loanType === 'FLEXI_LOAN'">
-              Interest Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end" style="color: red;">
               {{ loan.interestPaid | appCurrency: '' }}
@@ -116,7 +121,7 @@
               {{ loan.balanceAmount | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="loan.isCompleted">
+          <ion-row *ngIf="loan.isCompleted && loan.loanType === 'EMI_LOAN'">
             <ion-col class="ion-align-self-start">
               Total Paid Amount
             </ion-col>
@@ -124,7 +129,7 @@
               {{ loan.amount + loan.interestPaid | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="loan.isCompleted" style="color: red;">
+          <ion-row *ngIf="loan.isCompleted && loan.loanType === 'EMI_LOAN'" style="color: red;">
             <ion-col>
               You have paid {{((loan.interestPaid/(loan.amount + loan.interestPaid)) * 100).toFixed(2)}}% for interest.
             </ion-col>

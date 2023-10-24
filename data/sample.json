@@ -333,7 +333,9 @@
         }
       ],
       "balanceAmount": 3560089.1466497537,
-      "createdat": "2021-06-30T02:42:47.293Z"
+      "createdat": "2021-06-30T02:42:47.293Z",
+      "loanType": "EMI_LOAN",
+      "ledger": []
     },
     {
       "interestRate": 11.1,
@@ -580,7 +582,9 @@
         }
       ],
       "balanceAmount": 386196.26554459933,
-      "createdat": "2021-10-17T09:09:11.700Z"
+      "createdat": "2021-10-17T09:09:11.700Z",
+      "loanType": "EMI_LOAN",
+      "ledger": []
     },
     {
       "interestRate": 10.5,
@@ -603,7 +607,231 @@
         }
       ],
       "balanceAmount": 1971595.3333333333,
-      "createdat": "2023-09-06T14:11:07.812Z"
+      "createdat": "2023-09-06T14:11:07.812Z",
+      "loanType": "EMI_LOAN",
+      "ledger": []
+    },
+    {
+      "interestRate": 8.7,
+      "emi": 0,
+      "amount": 310000,
+      "amountType": "",
+      "loanType": "FLEXI_LOAN",
+      "startDate": "2023-08-24T00:07:00.000Z",
+      "emiDay": "1",
+      "name": "Gold Loan - 1",
+      "_id": "653606f3d299f30fa1e12bb3",
+      "ledger": [
+        {
+          "_id": "65368bdf7f3091991da93a5b",
+          "amount": 1298,
+          "type": "CREDIT",
+          "transactionDate": "2023-08-24T15:05:00+05:30",
+          "description": "SERVICE CHARGE Proc Chgs GL Non Crop Purpose"
+        },
+        {
+          "_id": "65376441b23a59d60b9ed1d2",
+          "amount": 236,
+          "type": "CREDIT",
+          "transactionDate": "2023-08-24T06:28:00+05:30",
+          "description": "SERVICE CHARGE APPRAISER CHGS GST\nNOT REGD"
+        },
+        {
+          "_id": "6537656b2446b3a77b216e8b",
+          "amount": 236,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-26T06:33:00+05:30",
+          "description": "OUTGOINGS BILL\nINSURANCE\nPREMIUM"
+        },
+        {
+          "_id": "65376594f0ad748e3159b2f1",
+          "amount": 2734,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-30T06:34:00+05:30",
+          "description": "LOAN\nINTEREST\nLN.\nInterest\nCharged"
+        },
+        {
+          "_id": "653765c81aa7180383787d46",
+          "amount": 55000,
+          "type": "DEBIT",
+          "transactionDate": "2023-10-01T06:35:00+05:30",
+          "description": "Repayment"
+        },
+        {
+          "_id": "653765df3605ab20b0ea1865",
+          "amount": 8900,
+          "type": "DEBIT",
+          "transactionDate": "2023-10-01T06:36:00+05:30",
+          "description": "Repayment"
+        }
+      ],
+      "instalments": [],
+      "createdat": "2023-10-23T05:38:59.560Z"
+    },
+    {
+      "interestRate": 8.7,
+      "emi": 0,
+      "amount": 490000,
+      "amountType": "",
+      "loanType": "FLEXI_LOAN",
+      "startDate": "2023-08-24T01:27:00.000Z",
+      "emiDay": "1",
+      "name": "Gold Loan - 2",
+      "_id": "65376b71100611e92a82d7ed",
+      "ledger": [
+        {
+          "_id": "65376bac17214f8fc990a051",
+          "amount": 1298,
+          "type": "CREDIT",
+          "transactionDate": "2023-08-24T07:00:00+05:30",
+          "description": "SERVICE\nCHARGE Proc\nChgs GL Non\nCrop\nPurpose"
+        },
+        {
+          "_id": "65377c25c6763ea6aa7a0fc7",
+          "amount": 236,
+          "type": "CREDIT",
+          "transactionDate": "2023-08-24T08:10:00+05:30",
+          "description": "SERVICE\nCHARGE\nAPPRAISER\nCHGS GST\nNOT REGD"
+        },
+        {
+          "_id": "65377c3e3f39f3cae93c99f2",
+          "amount": 236,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-26T08:11:00+05:30",
+          "description": "OUTGOINGS\nBILL\nINSURANCE\nPREMIUM"
+        },
+        {
+          "_id": "65377c594daec077dde19749",
+          "amount": 4321,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-30T08:11:00+05:30",
+          "description": "Interest"
+        },
+        {
+          "_id": "65377c728ee151d80af66817",
+          "amount": 6100,
+          "type": "DEBIT",
+          "transactionDate": "2023-10-01T08:12:00+05:30",
+          "description": "Repayment"
+        }
+      ],
+      "instalments": [],
+      "createdat": "2023-10-24T07:00:01.652Z"
+    },
+    {
+      "interestRate": 8.7,
+      "emi": 0,
+      "amount": 360000,
+      "amountType": "",
+      "loanType": "FLEXI_LOAN",
+      "startDate": "2023-08-25T02:43:00.000Z",
+      "emiDay": "1",
+      "name": "Gold Loan - 3",
+      "_id": "65377cfcebb40433770ce60b",
+      "ledger": [
+        {
+          "_id": "65377d1dbac269924ca2be33",
+          "amount": 1298,
+          "type": "CREDIT",
+          "transactionDate": "2023-08-25T08:14:00+05:30",
+          "description": "SERVICE\nCHARGE Proc\nChgs GL Non\nCrop\nPurpose"
+        },
+        {
+          "_id": "65377d3a50dfec996fb6530c",
+          "amount": 236,
+          "type": "CREDIT",
+          "transactionDate": "2023-08-25T08:15:00+05:30",
+          "description": "SERVICE\nCHARGE\nAPPRAISER\nCHGS GST\nNOT REGD"
+        },
+        {
+          "_id": "65377d53eaff74b9ff8978dc",
+          "amount": 236,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-26T08:16:00+05:30",
+          "description": "OUTGOINGS\nBILL\nINSURANCE\nPREMIUM"
+        },
+        {
+          "_id": "65377d69a76eca0f15fc4283",
+          "amount": 3089,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-30T08:16:00+05:30",
+          "description": "Interest"
+        },
+        {
+          "_id": "65377d8a599bb9ed708bb030",
+          "amount": 5000,
+          "type": "DEBIT",
+          "transactionDate": "2023-10-01T08:16:00+05:30",
+          "description": "Repayment"
+        }
+      ],
+      "instalments": [],
+      "createdat": "2023-10-24T08:14:52.626Z"
+    },
+    {
+      "interestRate": 4,
+      "emi": 0,
+      "amount": 300000,
+      "amountType": "",
+      "loanType": "FLEXI_LOAN",
+      "startDate": "2023-09-01T02:48:00.000Z",
+      "emiDay": "1",
+      "name": "Gold Loan - Grama Bank",
+      "_id": "65377e010b057cee8707c3c4",
+      "ledger": [
+        {
+          "_id": "65377e1ce1399a357aa938c5",
+          "amount": 2000,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-01T08:19:00+05:30",
+          "description": "Charges"
+        }
+      ],
+      "instalments": [],
+      "createdat": "2023-10-24T08:19:13.666Z"
+    },
+    {
+      "interestRate": 32.6,
+      "emi": 0,
+      "amount": 260000,
+      "amountType": "",
+      "loanType": "FLEXI_LOAN",
+      "startDate": "2023-09-01T02:50:00.000Z",
+      "emiDay": "1",
+      "name": "Chit Fund",
+      "_id": "65377e74babc8b43806d9e8c",
+      "ledger": [
+        {
+          "_id": "65377e8c03605fd918c98ee3",
+          "amount": 4000,
+          "type": "CREDIT",
+          "transactionDate": "2023-09-01T08:21:00+05:30",
+          "description": "Interest"
+        },
+        {
+          "_id": "65377e9ecdf8ea5a2b0da3d7",
+          "amount": 24000,
+          "type": "DEBIT",
+          "transactionDate": "2023-09-01T08:21:00+05:30",
+          "description": "Payment"
+        },
+        {
+          "_id": "65377eb2c134a75e47230b48",
+          "amount": 4000,
+          "type": "CREDIT",
+          "transactionDate": "2023-10-01T08:21:00+05:30",
+          "description": "Interest"
+        },
+        {
+          "_id": "65377ec31b7e4a28f88969ab",
+          "amount": 24000,
+          "type": "DEBIT",
+          "transactionDate": "2023-10-01T08:22:00+05:30",
+          "description": "Payment"
+        }
+      ],
+      "instalments": [],
+      "createdat": "2023-10-24T08:21:08.765Z"
     }
   ],
   "profile": {

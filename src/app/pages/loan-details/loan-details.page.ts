@@ -21,6 +21,7 @@ import { ChartUtils } from 'src/app/services/chart.utils';
 export class LoanDetailsPage implements OnInit {
   _id: String;
   loan: any;
+  ledger: any;
   instalments: any;
   defaultHref = 'home';
   Highcharts: typeof Highcharts = Highcharts;
@@ -62,6 +63,7 @@ export class LoanDetailsPage implements OnInit {
 
     this._id = _id;
     LoanUtils.calculateLoanDetails(this.loan);
+    this.ledger = (Object.assign([], this.loan.ledger)).reverse();
     this.instalments = (Object.assign([], this.loan.instalments)).reverse();
 
     const loanData = [{
@@ -116,8 +118,10 @@ export class LoanDetailsPage implements OnInit {
       color: '#eb445a'
     }];
 
-    this.payableChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Repayment Projection<br>${this.currencyPipe.transform(total, 'noDecimal')}`, payableData);
-    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.instalments.slice(0, 4));
+    if (this.loan.loanType === 'EMI_LOAN') {
+      this.payableChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Repayment Projection<br>${this.currencyPipe.transform(total, 'noDecimal')}`, payableData);
+      this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.instalments.slice(0, 4));
+    }
   }
 
   ngOnInit() {
@@ -143,7 +147,10 @@ export class LoanDetailsPage implements OnInit {
   async presentPopover(event: Event) {
     const popover = await this.popoverCtrl.create({
       component: LoanDetailsPopoverComponent,
-      componentProps: { _id: this.loan._id },
+      componentProps: {
+        _id: this.loan._id,
+        loanType: this.loan.loanType,
+      },
       event
     });
 
@@ -161,7 +168,7 @@ export class LoanDetailsPage implements OnInit {
   async onEmiClick(emi) {
     if (!emi || !emi._id) return;
 
-    const actionSheet = await this.getActionSheet(emi);
+    const actionSheet = await this.getEMIActionSheet(emi);
     await actionSheet.present();
 
     const { role } = await actionSheet.onDidDismiss();
@@ -184,49 +191,34 @@ export class LoanDetailsPage implements OnInit {
     }
   }
 
-  async getActionSheet(emi) {
+  async getEMIActionSheet(emi) {
     const buttons = [];
-    if (this.loan.loanType === 'EMI_LOAN') {
-      buttons.push({
-        text: 'Edit',
-        role: 'edit',
-        icon: 'create-outline',
-      });
+    buttons.push({
+      text: 'Edit',
+      role: 'edit',
+      icon: 'create-outline',
+    });
 
-      if (!this.loan.isCompleted) {
-        buttons.push({
-          role: 'topup',
-          text: 'Add / Edit Loan topup',
-          icon: 'bag-handle-outline',
-          cssClass: 'action-sheet-danger',
-        });
-      }
-    }
-
-    if (this.loan.loanType === 'EMI_LOAN') {
+    if (!this.loan.isCompleted) {
       buttons.push({
-        role: 'prepayment',
-        text: 'Add / Edit Prepayment',
-        icon: 'cash-outline',
-        cssClass: 'action-sheet-primary',
-      });
-    } else {
-      buttons.push({
-        role: 'prepayment',
-        text: 'Add / Edit Payment details',
-        icon: 'cash-outline',
-        cssClass: 'action-sheet-primary',
+        role: 'topup',
+        text: 'Add / Edit Loan topup',
+        icon: 'bag-handle-outline',
+        cssClass: 'action-sheet-danger',
       });
     }
 
-    if (this.loan.loanType === 'EMI_LOAN') {
-      buttons.push({
-        role: 'callogic',
-        text: 'Calculation Logic',
-        icon: 'calculator-outline',
-        cssClass: 'action-sheet-primary',
-      })
-    }
+    buttons.push({
+      role: 'prepayment',
+      text: 'Add / Edit Prepayment',
+      icon: 'cash-outline',
+      cssClass: 'action-sheet-primary',
+    }, {
+      role: 'callogic',
+      text: 'Calculation Logic',
+      icon: 'calculator-outline',
+      cssClass: 'action-sheet-primary',
+    });
 
     buttons.push({
       text: 'Cancel',
@@ -235,6 +227,46 @@ export class LoanDetailsPage implements OnInit {
 
     return await this.actionSheetController.create({
       header: this.datePipe.transform(emi.emiDate, 'MMMM YYYY'),
+      cssClass: 'my-custom-class',
+      buttons,
+    });
+  }
+
+  addLedgerItem() {
+    this.router.navigateByUrl(`ledger-entry/${this.loan._id}`, {
+      skipLocationChange: true
+    });
+  }
+
+  async onLedgerClick(ledger) {
+    if (!ledger || !ledger._id) return;
+
+    const actionSheet = await this.getLedgerActionSheet(ledger);
+    await actionSheet.present();
+
+    const { role } = await actionSheet.onDidDismiss();
+    if (!role) return;
+
+    if (role === 'edit') {
+      this.router.navigateByUrl(`ledger-entry/${this.loan._id}/${ledger._id}`);
+    }
+  }
+
+  async getLedgerActionSheet(ledger) {
+    const buttons = [];
+    buttons.push({
+      text: 'Edit',
+      role: 'edit',
+      icon: 'create-outline',
+    });
+
+    buttons.push({
+      text: 'Cancel',
+      icon: 'close',
+    });
+
+    return await this.actionSheetController.create({
+      header: `${ledger.description} (${this.currencyPipe.transform(ledger.amount, '')})`,
       cssClass: 'my-custom-class',
       buttons,
     });

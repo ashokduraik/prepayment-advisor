@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import { Platform } from '@ionic/angular';
+import moment from 'moment';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 import { ChartUtils } from 'src/app/services/chart.utils';
-import { BroadcastService } from 'src/app/services/broadcast.service';
-import { timer } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -35,11 +34,8 @@ export class HomePage {
     private storage: AppStorage,
     private appService: AppService,
     private currencyPipe: AppCurrencyPipe,
-    private broadcastService: BroadcastService,
   ) {
-    this.broadcastService.subscribe("THEME_CHNAGE", () => {
-      this.chartUpdate = true;
-    });
+
   }
 
   async ionViewWillEnter() {
@@ -48,7 +44,6 @@ export class HomePage {
 
   async initializeHome() {
     this.loans = await this.storage.getLoans() || [];
-    console.log("this.loans--->", JSON.stringify(this.loans[this.loans.length - 1]))
     this.loans.forEach(loan => {
       LoanUtils.fillInstalments(loan);
     });
@@ -81,6 +76,35 @@ export class HomePage {
         lastInstallments[i].principalPaid += insts[i].principalPaid;
       }
     });
+
+    if (lastInstallments && lastInstallments.length) {
+      this.loans.forEach(loan => {
+        if (!loan.ledger.length) return;
+
+        lastInstallments.forEach(insta => {
+          const end = moment(insta.emiDate).endOf('month').toDate();
+          const start = moment(insta.emiDate).startOf('month').toDate();
+          let monthPaid = 0;
+          let monthInterest = 0;
+
+          loan.ledger.forEach(led => {
+            const date = new Date(led.transactionDate);
+            if (date >= start && date <= end) {
+              if (led.type === 'DEBIT') {
+                monthPaid += led.amount;
+              } else {
+                monthInterest += led.amount;
+              }
+            }
+          });
+
+          insta.interestPaid += monthInterest;
+          if (monthPaid > monthInterest) {
+            insta.principalPaid += monthPaid - monthInterest;
+          }
+        });
+      });
+    }
 
     this.summary.outstanding = outstanding;
     const loanData = [{

@@ -28,6 +28,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/loan-topup/loan-topup.module').then(m => m.LoanTopupPageModule)
   },
   {
+    path: 'ledger-entry/:loanid',
+    loadChildren: () => import('./pages/ledger-entry/ledger-entry.module').then(m => m.LedgerEntryPageModule)
+  },
+  {
+    path: 'ledger-entry/:loanid/:ledgerid',
+    loadChildren: () => import('./pages/ledger-entry/ledger-entry.module').then(m => m.LedgerEntryPageModule)
+  },
+  {
     path: 'calculation-logic/:loanid/:emiid',
     loadChildren: () => import('./pages/calculation-logic/calculation-logic.module').then(m => m.CalculationLogicPageModule)
   },

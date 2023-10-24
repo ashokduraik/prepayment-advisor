@@ -76,13 +76,41 @@ export class LoanUtils {
     loan.balanceAmount = balance;
   }
 
+  private static flexiLoanDetails(loan) {
+    loan.interest = 0;
+    loan.totalPaid = 0;
+
+    loan.ledger.forEach(led => {
+      if (led.type === 'DEBIT') {
+        loan.totalPaid += led.amount;
+        loan.balanceAmount -= led.amount;
+      } else {
+        loan.interest += led.amount;
+        loan.balanceAmount += led.amount;
+      }
+
+      if (loan.totalPaid > loan.interest) {
+        loan.interestPaid = loan.interest;
+        loan.principalPaid = loan.totalPaid - loan.interest;
+      } else if (loan.totalPaid > 0) {
+        loan.interestPaid = loan.totalPaid;
+      }
+
+      led.closingBalance = loan.balanceAmount;
+    });
+  }
+
   static calculateLoanDetails(loan) {
     loan.emiPaid = 0;
     loan.interestPaid = 0;
     loan.principalPaid = 0;
     loan.totalPrepayment = 0;
     loan.balanceAmount = loan.amount;
-    if (loan.loanType === 'FLEXI_LOAN') return;
+
+    if (loan.loanType === 'FLEXI_LOAN') {
+      LoanUtils.flexiLoanDetails(loan);
+      return;
+    }
 
     let term = 1;
     let emiMonth = null;

@@ -1,17 +1,17 @@
 <ion-list>
-  <ion-item button (click)="timeline()">
+  <ion-item button (click)="timeline()" *ngIf="loanType === 'EMI_LOAN'">
     <ion-icon name="time-outline"></ion-icon>
     <ion-label>Timeline</ion-label>
   </ion-item>
-  <ion-item button (click)="claculationLogic()">
+  <ion-item button (click)="claculationLogic()" *ngIf="loanType === 'EMI_LOAN'">
     <ion-icon name="calculator-outline"></ion-icon>
     <ion-label>Calculation Logic</ion-label>
   </ion-item>
-  <ion-item button (click)="statistics()">
+  <ion-item button (click)="statistics()" *ngIf="loanType === 'EMI_LOAN'">
     <ion-icon name="pie-chart-outline"></ion-icon>
     <ion-label>Statistics</ion-label>
   </ion-item>
-  <ion-item button (click)="projection()">
+  <ion-item button (click)="projection()" *ngIf="loanType === 'EMI_LOAN'">
     <ion-icon name="albums-outline"></ion-icon>
     <ion-label>EMI Projection</ion-label>
   </ion-item>

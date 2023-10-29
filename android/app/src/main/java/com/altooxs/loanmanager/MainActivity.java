@@ -1,4 +1,4 @@
-package com.altooxs.loanmanager;
+package com.altooxs.prepaymentadvisor;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -1,6 +1,6 @@
 {
-	"appId": "com.altooxs.loanmanager",
-	"appName": "LoanManager",
+	"appId": "com.altooxs.prepaymentadvisor",
+	"appName": "Prepayment Advisor",
 	"webDir": "www",
 	"bundledWebRuntime": false,
 	"cordova": {

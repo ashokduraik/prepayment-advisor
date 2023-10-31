@@ -55,7 +55,7 @@ export class BackupRestorePage implements OnInit {
 
   async restore() {
     try {
-      const uri = await this.fileChooser.open();
+      const uri = await this.fileChooser.open({ "mime": "application/json" });
       if (!uri) return;
 
       const contents = await Filesystem.readFile({

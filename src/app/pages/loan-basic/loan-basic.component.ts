@@ -108,7 +108,7 @@ export class LoanBasicComponent implements OnInit {
       loan.emi = 0;
     } else {
       const interest = (loan.interestRate / (100 * 12)) * loan.amount;
-      this.minEmi = interest * 1.1;
+      this.minEmi = interest * 1.01;
       if (this.minEmi > loan.emi) return
     }
 

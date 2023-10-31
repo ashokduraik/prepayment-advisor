@@ -118,7 +118,7 @@ export class EmiEditPage implements OnInit {
 
     for (let i = this.emiIndex; i < this.loan.instalments.length; i++) {
       const emi = this.loan.instalments[i];
-      if (emiChanged || i == this.emiIndex) {
+      if ((!loanDetails.emiChangeCurrent && emiChanged) || i == this.emiIndex) {
         emi.amount = loanDetails.emi;
       }
 

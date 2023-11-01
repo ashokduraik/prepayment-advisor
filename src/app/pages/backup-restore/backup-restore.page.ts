@@ -68,9 +68,9 @@ export class BackupRestorePage implements OnInit {
         return;
       }
 
-      let data = null;
+      let data: any = null;
       try {
-        data = JSON.parse(contents.data);
+        data = JSON.parse(contents.data.toString());
       } catch (e) {
         this.service.presentAlert('', 'Invalid backup file, please select valid backup file');
         return;
@@ -85,9 +85,9 @@ export class BackupRestorePage implements OnInit {
       await this.storage.saveProfile(data.profile);
       this.service.showToast("Backup restored successfully..!");
       this.router.navigateByUrl('home');
-    } catch (e) {
+    } catch (e: any) {
       if (e && e.toString() == 'User canceled.') return;
-      this.service.presentAlert(e, 'Sorry..!, this device is not supported..!');
+      this.service.presentAlert(e.toString(), 'Sorry..!, this device is not supported..!');
       AppUtils.errorLog(e);
     }
   }

@@ -11,20 +11,21 @@ import { AppService } from '../../services/app.services';
   styleUrls: ['./emi-calculator.page.scss'],
 })
 export class EmiCalculatorPage implements OnInit {
+  //@ts-ignore
   @ViewChild(IonContent, { static: false }) content: IonContent;
   emi = 7000;
-  term = null;
-  termInYear = null;
+  term = 0;
+  termInYear = 0;
   amount = 500000;
-  interest = null;
-  totalAmount = null;
-  calcPromise = null;
+  interest = 0;
+  totalAmount = 0;
+  calcPromise: any = null;
   interestRate = 8;
   toConsider = '';
   defaultHref = 'home';
   calculationDone = false;
-  interestPercentage = null;
-  loanProjection = null;
+  interestPercentage = '';
+  loanProjection: any = null;
   constructor(
     private appService: AppService,
     public loadingController: LoadingController,
@@ -68,9 +69,9 @@ export class EmiCalculatorPage implements OnInit {
 
     if (this.emi && this.term) {
       if (this.toConsider == 'TERM') {
-        this.emi = null;
+        this.emi = 0;
       } else {
-        this.term = null;
+        this.term = 0;
       }
     }
 
@@ -102,26 +103,26 @@ export class EmiCalculatorPage implements OnInit {
     this.calculationDone = true;
 
     if (!isYearChanged) {
-      this.termInYear = null;
+      this.termInYear = 0;
       if (this.term) this.termInYear = parseFloat((this.term / 12).toFixed(2));
     }
   }
 
   termChanged(isYearChanged?: Boolean) {
-    this.emi = null;
+    this.emi = 0;
     this.toConsider = 'TERM';
     this.doCalc(isYearChanged);
   }
 
   emiChanged() {
-    this.term = null;
+    this.term = 0;
     this.toConsider = 'EMI';
     this.doCalc();
   }
 
   yearChanged() {
     if (!this.termInYear)
-      this.term = null;
+      this.term = 0;
     else
       this.term = Math.round(this.termInYear * 12);
     this.termChanged(true);
@@ -154,7 +155,7 @@ export class EmiCalculatorPage implements OnInit {
       emi.closingBalance = balanceAmount -= emi.principalPaid;
     });
 
-    let y = document.getElementById('projection').offsetTop;
+    let y = document.getElementById('projection')?.offsetTop;
     this.content.scrollToPoint(0, y, 1500);
 
     setTimeout(_ => {

@@ -6,11 +6,11 @@ export class AppUtils {
       ' '.repeat(16).replace(/./g, () => AppUtils.hex(Math.random() * 16))
   }
 
-  static hex(value) {
+  static hex(value: number) {
     return Math.floor(value).toString(16)
   }
 
-  static errorLog(err) {
+  static errorLog(err: unknown) {
     console.error(err);
   }
 }

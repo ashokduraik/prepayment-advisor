@@ -10,7 +10,7 @@ import { LoanUtils } from '../../services/loan.utils';
   styleUrls: ['./play-area-filter.page.scss'],
 })
 export class PlayAreaFilterPage implements OnInit {
-  minEmi = null;
+  minEmi = 0;
   submitted = false;
   @Input() outstanding: any;
 
@@ -30,9 +30,9 @@ export class PlayAreaFilterPage implements OnInit {
     this.submitted = true;
     if (!this.doValidation()) return;
 
-    this.minEmi = null;
+    this.minEmi = 0;
     const interest = (this.outstanding.interestRate / (100 * 12)) * this.outstanding.amount;
-    this.minEmi = interest * 1.1;
+    this.minEmi = interest * 1.01;
     if (this.minEmi > this.outstanding.emi) return;
 
     const temp = LoanUtils.getBalanceTermAndInterest(

@@ -17,7 +17,22 @@ export class LedgerEntryPage implements OnInit {
   ledger: any;
   submitted = false;
   defaultHref = 'home';
-  ledgerForm: FormGroup;
+  ledgerForm = this.formBuilder.group({
+    amount: new FormControl('', Validators.compose([
+      Validators.max(9999999999),
+      Validators.min(1),
+      Validators.required
+    ])),
+    type: new FormControl('DEBIT', Validators.compose([
+      Validators.required
+    ])),
+    transactionDate: new FormControl(new Date().toISOString(), Validators.compose([
+      Validators.required
+    ])),
+    description: new FormControl(null, Validators.compose([
+      Validators.required
+    ])),
+  });
   saveInProgress = false;
   minDate = '2010-01-01T00:00:00';
   maxDate = moment().endOf('month').format("YYYY-MM-DD");
@@ -31,23 +46,6 @@ export class LedgerEntryPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.ledgerForm = this.formBuilder.group({
-      amount: new FormControl('', Validators.compose([
-        Validators.max(9999999999),
-        Validators.min(1),
-        Validators.required
-      ])),
-      type: new FormControl('DEBIT', Validators.compose([
-        Validators.required
-      ])),
-      transactionDate: new FormControl(new Date().toISOString(), Validators.compose([
-        Validators.required
-      ])),
-      description: new FormControl(null, Validators.compose([
-        Validators.required
-      ])),
-    });
-
     const _id = this.activatedRoute.snapshot.paramMap.get('loanid');
     this.defaultHref = _id ? 'loan-details/' + _id : 'home';
 

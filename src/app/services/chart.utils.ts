@@ -7,8 +7,8 @@ export class ChartUtils {
     })
     return {
       chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
+        plotBackgroundColor: '',
+        plotBorderWidth: 0,
         plotShadow: false,
         type: 'pie',
         width: 180,
@@ -46,7 +46,7 @@ export class ChartUtils {
       },
       series: [{
         name: 'Percentage',
-        type: undefined,
+        type: 'pie',
         data
       }]
     }
@@ -54,10 +54,10 @@ export class ChartUtils {
 
   static getPaymentHistoryChart(currencyPipe, instalments): Highcharts.Options {
     let ymax = 0;
-    let categories = null;
-    const interestPaid = [];
-    const principalPaid = [];
-    const interestRate = [];
+    let categories: any = null;
+    const interestPaid: any = [];
+    const principalPaid: any = [];
+    const interestRate: any = [];
     const lessCate = instalments.length < 5;
     if (lessCate) categories = [];
 
@@ -85,13 +85,13 @@ export class ChartUtils {
 
     const series: Highcharts.Options["series"] = [{
       name: 'Interest Paid',
-      type: undefined,
+      type: 'column',
       data: interestPaid,
       color: '#eb445a',
       yAxis: 0,
     }, {
       name: 'Principal Paid',
-      type: undefined,
+      type: 'column',
       data: principalPaid,
       color: '#2dd36f',
       yAxis: 0,
@@ -176,7 +176,7 @@ export class ChartUtils {
       verticalAlign: 'top',
       y: 0,
       floating: true,
-      backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || 'white',
+      backgroundColor: Highcharts.defaultOptions.legend?.backgroundColor || 'white',
       borderColor: '#CCC',
       borderWidth: 1,
       shadow: false,
@@ -186,7 +186,7 @@ export class ChartUtils {
   }
 
   static getTooltip(_this: Highcharts.TooltipFormatterContextObject, currencyPipe) {
-    const rows = _this.points.map(p => {
+    const rows = (_this.points || []).map(p => {
       return `
       <tr>
         <td style="padding: 3px 5px">${p.series.name}</td>

@@ -21,8 +21,8 @@ export class StatisticsPage implements AfterViewInit {
   showFinalCanvas = false;
   showPayableCanvas = false;
   Highcharts: typeof Highcharts = Highcharts;
-  loanChartOpns: Highcharts.Options = null;
-  instaChartOpns: Highcharts.Options = null;
+  loanChartOpns: Highcharts.Options | null = null;
+  instaChartOpns: Highcharts.Options | null = null;
 
   constructor(
     private router: Router,
@@ -52,9 +52,9 @@ export class StatisticsPage implements AfterViewInit {
   }
 
   showChart() {
-    const categories = [];
-    const interest = [];
-    const principal = [];
+    const categories: any = [];
+    const interest: any = [];
+    const principal: any = [];
 
     this.loan.instalments.forEach(emi => {
       if (!emi.financialYear) return;
@@ -98,7 +98,7 @@ export class StatisticsPage implements AfterViewInit {
           dataLabels: {
             enabled: true,
             formatter: function () {
-              return currencyPipe.transform(this.y, 'noDecimal');
+              return currencyPipe.transform(this.y || 0, 'noDecimal');
             }
           }
         }
@@ -106,12 +106,12 @@ export class StatisticsPage implements AfterViewInit {
       series: [{
         name: 'Interest Paid',
         data: interest,
-        type: undefined,
+        type: 'column',
         color: '#eb445a'
       }, {
         name: 'Principal Paid',
         data: principal,
-        type: undefined,
+        type: 'column',
         color: '#2dd36f',
       }]
     }

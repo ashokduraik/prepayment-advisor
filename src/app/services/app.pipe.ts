@@ -9,11 +9,12 @@ export class AppCurrencyPipe implements PipeTransform {
 
   private static currency: any;
 
-  public static setCurrency(code) {
+  public static setCurrency(code: string) {
+    // @ts-ignore
     AppCurrencyPipe.currency = code && Currency[code] || null;
   }
 
-  transform(value: number, option): string {
+  transform(value: number, option: string): string {
 
     if (!isNaN(value)) {
       value = Number(value);
@@ -66,7 +67,7 @@ export class monthToYearPipe implements PipeTransform {
 @Pipe({ name: 'safeHtml' })
 export class SafeHtmlPipe implements PipeTransform {
   constructor(private sanitized: DomSanitizer) { }
-  transform(value) {
+  transform(value: string) {
     return this.sanitized.bypassSecurityTrustHtml(value);
   }
 }

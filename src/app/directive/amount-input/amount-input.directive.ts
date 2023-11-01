@@ -7,7 +7,7 @@ import { AppCurrencyPipe } from '../../services/app.pipe';
 })
 export class AmountInputDirective implements OnInit {
   @Input() autofocus: any;
-  oldValue: Number;
+  oldValue: Number = 0;
 
   constructor(
     private el: ElementRef,

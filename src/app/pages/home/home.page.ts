@@ -21,9 +21,9 @@ export class HomePage {
   chartUpdate = true;
   backButtonSubscription;
   Highcharts: typeof Highcharts = Highcharts;
-  loanChartOpns: Highcharts.Options = null;
-  repaidChartOpns: Highcharts.Options = null;
-  instaChartOpns: Highcharts.Options = null;
+  loanChartOpns: Highcharts.Options | null = null;
+  repaidChartOpns: Highcharts.Options | null = null;
+  instaChartOpns: Highcharts.Options | null = null;
   summary = {
     outstanding: 0,
   }
@@ -50,7 +50,7 @@ export class HomePage {
 
     await this.storage.saveLoans(this.loans);
     let totalLoanAmount = 0, outstanding = 0, principalPaid = 0, interestPaid = 0;
-    let lastInstallments = null;
+    let lastInstallments: any = null;
 
     this.loans.forEach(loan => {
       LoanUtils.calculateLoanDetails(loan);

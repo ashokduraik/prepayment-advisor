@@ -1,5 +1,4 @@
 import { Router } from '@angular/router';
-import { SwUpdate } from '@angular/service-worker';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import * as Highcharts from 'highcharts';
@@ -13,15 +12,14 @@ import { LoanUtils } from './services/loan.utils';
 import { AppStorage } from './services/app.storage';
 import { AppService } from './services/app.services';
 import { AppCurrencyPipe } from './services/app.pipe';
-import sampleData from '../../data/sample.json';
+// import sampleData from '../../data/sample.json';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   appPages = [{
     title: 'Add Loan',
     url: 'loan-basic',
@@ -39,8 +37,6 @@ export class AppComponent implements OnInit {
     url: 'fixed-chit-fund',
     icon: 'wallet'
   }];
-
-  darkMode = false;
   profile: any;
   loggedIn = false;
   isAndroid = false;
@@ -50,7 +46,6 @@ export class AppComponent implements OnInit {
     private platform: Platform,
     private router: Router,
     private storage: Storage,
-    private swUpdate: SwUpdate,
     private appStorage: AppStorage,
     private appService: AppService,
     private toastCtrl: ToastController,
@@ -70,26 +65,6 @@ export class AppComponent implements OnInit {
     this.setProfileData();
     // this.checkLoginStatus();
     // this.listenForLoginEvents();
-
-    this.swUpdate.available.subscribe(async res => {
-      const toast = await this.toastCtrl.create({
-        message: 'Update available!',
-        position: 'bottom',
-        buttons: [
-          {
-            role: 'cancel',
-            text: 'Reload'
-          }
-        ]
-      });
-
-      await toast.present();
-
-      toast
-        .onDidDismiss()
-        .then(() => this.swUpdate.activateUpdate())
-        .then(() => window.location.reload());
-    });
   }
 
   initializeApp() {
@@ -112,50 +87,10 @@ export class AppComponent implements OnInit {
 
   async setProfileData() {
     this.profile = await this.appStorage.getProfile() || {};
-    this.darkMode = this.profile.darkMode;
-    if (this.darkMode === true) darkTheme(Highcharts);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    if (prefersDark.matches === true) darkTheme(Highcharts);
     else lightTheme(Highcharts);
     AppCurrencyPipe.setCurrency(this.profile.currency);
     LoanUtils.setFinancialYearEnd(this.profile.currency);
   }
-
-  async updateProfile() {
-    this.profile = await this.appStorage.getProfile();
-    this.profile.darkMode = this.darkMode;
-    if (this.darkMode === true) darkTheme(Highcharts);
-    else lightTheme(Highcharts);
-    await this.appStorage.saveProfile(this.profile);
-  }
-
-  // checkLoginStatus() {
-  //   return this.userData.isLoggedIn().then(loggedIn => {
-  //     return this.updateLoggedInStatus(loggedIn);
-  //   });
-  // }
-
-  // updateLoggedInStatus(loggedIn: boolean) {
-  //   setTimeout(() => {
-  //     this.loggedIn = loggedIn;
-  //   }, 300);
-  // }
-
-  // listenForLoginEvents() {
-  //   window.addEventListener('user:login', () => {
-  //     this.updateLoggedInStatus(true);
-  //   });
-
-  //   window.addEventListener('user:signup', () => {
-  //     this.updateLoggedInStatus(true);
-  //   });
-
-  //   window.addEventListener('user:logout', () => {
-  //     this.updateLoggedInStatus(false);
-  //   });
-  // }
-
-  // logout() {
-  //   this.userData.logout().then(() => {
-  //     return this.router.navigateByUrl('/app/tabs/schedule');
-  //   });
-  // }
 }

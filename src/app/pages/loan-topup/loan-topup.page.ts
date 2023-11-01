@@ -17,7 +17,7 @@ export class LoanTopupPage implements OnInit {
   newEmi = 0;
   noEmi = false;
   topups: any = [];
-  emiIndex = null;
+  emiIndex = -1;
   submitted = false;
   loanDetails: any;
   newEmiAmount = null;
@@ -26,7 +26,7 @@ export class LoanTopupPage implements OnInit {
   defaultHref = 'home';
   minDate = '2010-01-01';
   saveInProgress = false;
-  valueChangedPromise = null;
+  valueChangedPromise: any = null;
   maxDate = moment().endOf('month').format("YYYY-MM-DD");
 
   constructor(

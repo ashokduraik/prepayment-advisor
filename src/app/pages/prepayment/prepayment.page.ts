@@ -16,17 +16,17 @@ export class PrepaymentPage implements OnInit {
   loan: any;
   newEmi = 0;
   noEmi = false;
-  emiIndex = null;
+  emiIndex = -1;
   submitted = false;
-  prepayments = [];
-  loanDetails = null;
+  prepayments: any = [];
+  loanDetails: any = null;
   newEmiAmount = null;
   defaultHref = 'home';
-  approximateEmi = null;
+  approximateEmi: any = null;
   minDate = '2010-01-01';
   saveInProgress = false;
   prepaymentChanged = false;
-  valueChangedPromise = null;
+  valueChangedPromise: any = null;
   maxDate = moment().endOf('month').format("YYYY-MM-DD");
 
   constructor(

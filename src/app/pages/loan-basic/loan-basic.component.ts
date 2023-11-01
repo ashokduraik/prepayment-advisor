@@ -17,14 +17,38 @@ import { CurrencySelectComponent } from '../currency-select/currency-select.comp
   styleUrls: ['./loan-basic.component.scss'],
 })
 export class LoanBasicComponent implements OnInit {
-  _id: string;
-  loanForm: FormGroup;
+  _id: string = '';
   submitted = false;
-  minEmi = null;
+  minEmi = 0;
   defaultHref = 'home';
   saveInProgress = false;
   maxDate = moment().endOf('month').format("YYYY-MM-DD");
   days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+  loanForm = this.formBuilder.group({
+    interestRate: new FormControl('', Validators.compose([
+      Validators.max(50),
+      Validators.min(0.1),
+      Validators.required
+    ])),
+    emi: new FormControl('', Validators.compose([
+      Validators.max(9999999),
+      Validators.min(1),
+    ])),
+    amount: new FormControl('', Validators.compose([
+      Validators.max(9999999999),
+      Validators.min(1),
+      Validators.required
+    ])),
+    amountType: new FormControl(''),
+    loanType: new FormControl('', Validators.compose([
+      Validators.required
+    ])),
+    startDate: new FormControl(new Date().toISOString(), Validators.compose([
+      Validators.required
+    ])),
+    emiDay: new FormControl(null),
+    name: new FormControl(null),
+  });;
 
   constructor(
     private router: Router,
@@ -47,32 +71,6 @@ export class LoanBasicComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.loanForm = this.formBuilder.group({
-      interestRate: new FormControl('', Validators.compose([
-        Validators.max(50),
-        Validators.min(0.1),
-        Validators.required
-      ])),
-      emi: new FormControl('', Validators.compose([
-        Validators.max(9999999),
-        Validators.min(1),
-      ])),
-      amount: new FormControl('', Validators.compose([
-        Validators.max(9999999999),
-        Validators.min(1),
-        Validators.required
-      ])),
-      amountType: new FormControl(''),
-      loanType: new FormControl('', Validators.compose([
-        Validators.required
-      ])),
-      startDate: new FormControl(new Date().toISOString(), Validators.compose([
-        Validators.required
-      ])),
-      emiDay: new FormControl(null),
-      name: new FormControl(null),
-    });
-
     const profile = await this.storage.getProfile() || {};
     if (!profile.currency) {
       this.forceToSelectCurrency(profile);
@@ -97,7 +95,7 @@ export class LoanBasicComponent implements OnInit {
   }
 
   async save(loanForm: FormGroup) {
-    this.minEmi = null;
+    this.minEmi = 0;
     this.submitted = true;
     const loan = loanForm.value;
     if (loan.loanType === 'EMI_LOAN' && (!loan.emi || !loan.amountType || !loan.emiDay)) return;

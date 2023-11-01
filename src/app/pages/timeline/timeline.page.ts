@@ -44,7 +44,7 @@ export class TimelinePage {
     LoanUtils.calculateLoanDetails(this.loan);
     this.appService.showInterstitialAds();
     let lastEMI = null;
-    const timeLine = [];
+    const timeLine: any = [];
     let lastInterest = null;
     this.loan.instalments = this.loan.instalments || [];
     let iStyle = `style="font-size: 17px; font-weight: 600;"`;
@@ -55,7 +55,7 @@ export class TimelinePage {
     }
 
     this.loan.instalments.forEach((emi, i) => {
-      const changes = [];
+      const changes: any = [];
       const date = this.datePipe.transform(emi.emiDate, 'MMM YYYY');
       let amount = this.getAmount(emi.amount);
 

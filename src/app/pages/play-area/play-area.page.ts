@@ -18,6 +18,7 @@ export class PlayAreaPage implements OnInit {
   advice: any;
   defaultHref = 'home';
   filterNotGiven = false;
+  // @ts-ignore
   outstanding: Outstanding;
 
   constructor(

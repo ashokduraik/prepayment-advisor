@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastController, AlertController } from '@ionic/angular';
 
-import moment from 'moment';
 // import { AdMobPlus, BannerAd, InterstitialAd } from '@admob-plus/capacitor';
 
 import { AppUtils } from './app.utils';
@@ -18,7 +17,7 @@ export class AppService {
     private toastController: ToastController,
   ) { }
 
-  async showToast(message) {
+  async showToast(message: string) {
     const toast = await this.toastController.create({
       message,
       duration: 2000
@@ -62,7 +61,7 @@ export class AppService {
     }
   }
 
-  async presentAlert(header, message) {
+  async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
       message,

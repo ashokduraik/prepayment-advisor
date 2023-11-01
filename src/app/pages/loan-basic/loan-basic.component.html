@@ -30,9 +30,9 @@
         </ul>
       </ion-radio-group>
     </ion-card>
-    <ion-card *ngIf="loanForm.get('loanType').value">
+    <ion-card *ngIf="loanForm.get('loanType')?.value">
       <ion-list>
-        <div *ngIf="loanForm.get('loanType').value == 'EMI_LOAN'">
+        <div *ngIf="loanForm.get('loanType')?.value == 'EMI_LOAN'">
           <ion-radio-group formControlName="amountType" class="radio-with-ul">
             <ion-item lines="none">
               <ion-label text-wrap>New Load
@@ -62,8 +62,8 @@
             </ul>
           </ion-radio-group>
           <ion-text color="danger"
-            *ngIf="loanForm.get('amountType').dirty || loanForm.get('amountType').touched || submitted == true">
-            <p *ngIf="!loanForm.get('amountType').value">
+            *ngIf="loanForm.get('amountType')?.dirty || loanForm.get('amountType')?.touched || submitted == true">
+            <p *ngIf="!loanForm.get('amountType')?.value">
               <ion-icon name="information-circle-outline"></ion-icon>Please select any of above option
             </p>
           </ion-text>
@@ -74,7 +74,7 @@
         </ion-input>
 
         <ion-text color="danger"
-          *ngIf="loanForm.get('interestRate').dirty || loanForm.get('interestRate').touched || submitted == true">
+          *ngIf="loanForm.get('interestRate')?.dirty || loanForm.get('interestRate')?.touched || submitted == true">
           <p *ngIf="loanForm.get('interestRate').hasError('required')">
             <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest is required
           </p>
@@ -86,14 +86,14 @@
           </p>
         </ion-text>
 
-        <div *ngIf="loanForm.get('amountType').value">
+        <div *ngIf="loanForm.get('amountType')?.value">
           <span class="label">Enter EMI amount</span>
           <ion-input formControlName="emi" type="number" placeholder="30000" amountInput required
             class="with-error-label"></ion-input>
 
           <ion-text color="danger"
-            *ngIf="loanForm.get('emi').dirty || loanForm.get('emi').touched || submitted == true">
-            <p *ngIf="!loanForm.get('emi').value">
+            *ngIf="loanForm.get('emi')?.dirty || loanForm.get('emi')?.touched || submitted == true">
+            <p *ngIf="!loanForm.get('emi')?.value">
               <ion-icon name="information-circle-outline"></ion-icon>EMI is required
             </p>
             <p *ngIf="loanForm.get('emi').hasError('min')">
@@ -102,26 +102,26 @@
             <p *ngIf="loanForm.get('emi').hasError('max')">
               <ion-icon name="information-circle-outline"></ion-icon>EMI should be less than 99999999
             </p>
-            <p *ngIf="minEmi >loanForm.get('emi').value">
+            <p *ngIf="minEmi >loanForm.get('emi')?.value">
               <ion-icon name="information-circle-outline"></ion-icon>As per your loan amount, your minimum EMI should be
               greater than {{minEmi}}
             </p>
           </ion-text>
         </div>
 
-        <div *ngIf="loanForm.get('amountType').value || loanForm.get('loanType').value == 'FLEXI_LOAN'">
-          <span class="label" *ngIf="['FULL_TRANS', 'NEW_LOAN'].indexOf(loanForm.get('amountType').value) > -1">Enter
+        <div *ngIf="loanForm.get('amountType')?.value || loanForm.get('loanType')?.value == 'FLEXI_LOAN'">
+          <span class="label" *ngIf="['FULL_TRANS', 'NEW_LOAN'].indexOf(loanForm.get('amountType')?.value) > -1">Enter
             Loan
             amount</span>
           <span class="label"
-            *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT' || loanForm.get('loanType').value == 'FLEXI_LOAN'">Enter
+            *ngIf="loanForm.get('amountType')?.value == 'OUTSTANDING_AMOUNT' || loanForm.get('loanType')?.value == 'FLEXI_LOAN'">Enter
             Current Outstanding
             amount</span>
           <ion-input formControlName="amount" type="number" placeholder="700000" amountInput required
             class="with-error-label"></ion-input>
 
           <ion-text color="danger"
-            *ngIf="loanForm.get('amount').dirty || loanForm.get('amount').touched || submitted == true">
+            *ngIf="loanForm.get('amount')?.dirty || loanForm.get('amount')?.touched || submitted == true">
             <p *ngIf="loanForm.get('amount').hasError('required')">
               <ion-icon name="information-circle-outline"></ion-icon>Amount is required
             </p>
@@ -131,16 +131,16 @@
             <p *ngIf="loanForm.get('amount').hasError('max')">
               <ion-icon name="information-circle-outline"></ion-icon>Amount should be less than 9999999999
             </p>
-            <p *ngIf="loanForm.get('amount').value && loanForm.get('amount').value < loanForm.get('emi').value">
+            <p *ngIf="loanForm.get('amount')?.value && loanForm.get('amount')?.value < loanForm.get('emi')?.value">
               <ion-icon name="information-circle-outline"></ion-icon>Amount should be greater than EMI
             </p>
           </ion-text>
 
           <ion-item lines="none">
-            <ion-label *ngIf="['FULL_TRANS', 'NEW_LOAN'].indexOf(loanForm.get('amountType').value) > -1">EMI start
+            <ion-label *ngIf="['FULL_TRANS', 'NEW_LOAN'].indexOf(loanForm.get('amountType')?.value) > -1">EMI start
               date</ion-label>
             <ion-label
-              *ngIf="loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT' ||loanForm.get('amountType').value == 'OUTSTANDING_AMOUNT' || loanForm.get('loanType').value == 'FLEXI_LOAN'">Outstanding
+              *ngIf="loanForm.get('amountType')?.value == 'OUTSTANDING_AMOUNT' ||loanForm.get('amountType')?.value == 'OUTSTANDING_AMOUNT' || loanForm.get('loanType')?.value == 'FLEXI_LOAN'">Outstanding
               amount as of
             </ion-label>
             <ion-datetime-button datetime="datetime" required></ion-datetime-button>
@@ -154,14 +154,14 @@
           </ion-item>
 
           <ion-text color="danger"
-            *ngIf="loanForm.get('startDate').dirty || loanForm.get('startDate').touched || submitted == true">
+            *ngIf="loanForm.get('startDate')?.dirty || loanForm.get('startDate')?.touched || submitted == true">
             <p *ngIf="loanForm.get('startDate').hasError('required')">
               <ion-icon name="information-circle-outline"></ion-icon>Date is required
             </p>
           </ion-text>
         </div>
 
-        <div *ngIf="loanForm.get('loanType').value == 'EMI_LOAN'">
+        <div *ngIf="loanForm.get('loanType')?.value == 'EMI_LOAN'">
           <ion-item lines="none">
             <ion-label>EMI debit day</ion-label>
             <ion-select formControlName="emiDay" placeholder="Select" style="max-width: none;" required>
@@ -170,8 +170,8 @@
           </ion-item>
 
           <ion-text color="danger"
-            *ngIf="loanForm.get('emiDay').dirty || loanForm.get('emiDay').touched || submitted == true">
-            <p *ngIf="!loanForm.get('emiDay').value">
+            *ngIf="loanForm.get('emiDay')?.dirty || loanForm.get('emiDay')?.touched || submitted == true">
+            <p *ngIf="!loanForm.get('emiDay')?.value">
               <ion-icon name="information-circle-outline"></ion-icon>EMI Day is required
             </p>
           </ion-text>

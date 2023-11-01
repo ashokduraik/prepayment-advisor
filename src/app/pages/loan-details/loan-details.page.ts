@@ -19,17 +19,17 @@ import { ChartUtils } from 'src/app/services/chart.utils';
   styleUrls: ['./loan-details.page.scss'],
 })
 export class LoanDetailsPage implements OnInit {
-  _id: String;
+  _id: String = '';
   loan: any;
   ledger: any;
   instalments: any;
   defaultHref = 'home';
   Highcharts: typeof Highcharts = Highcharts;
-  loanChartOpns: Highcharts.Options = null;
-  repaidChartOpns: Highcharts.Options = null;
-  prinpaidChartOpns: Highcharts.Options = null;
-  payableChartOpns: Highcharts.Options = null;
-  instaChartOpns: Highcharts.Options = null;
+  loanChartOpns: Highcharts.Options | null = null;
+  repaidChartOpns: Highcharts.Options | null = null;
+  prinpaidChartOpns: Highcharts.Options | null = null;
+  payableChartOpns: Highcharts.Options | null = null;
+  instaChartOpns: Highcharts.Options | null = null;
 
   constructor(
     private appRate: AppRate,
@@ -192,7 +192,7 @@ export class LoanDetailsPage implements OnInit {
   }
 
   async getEMIActionSheet(emi) {
-    const buttons = [];
+    const buttons: any = [];
     buttons.push({
       text: 'Edit',
       role: 'edit',
@@ -226,7 +226,7 @@ export class LoanDetailsPage implements OnInit {
     });
 
     return await this.actionSheetController.create({
-      header: this.datePipe.transform(emi.emiDate, 'MMMM YYYY'),
+      header: this.datePipe.transform(emi.emiDate, 'MMMM YYYY') || '',
       cssClass: 'my-custom-class',
       buttons,
     });
@@ -253,7 +253,7 @@ export class LoanDetailsPage implements OnInit {
   }
 
   async getLedgerActionSheet(ledger) {
-    const buttons = [];
+    const buttons: any = [];
     buttons.push({
       text: 'Edit',
       role: 'edit',

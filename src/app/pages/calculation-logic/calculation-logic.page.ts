@@ -13,7 +13,7 @@ import { AppService } from '../../services/app.services';
 export class CalculationLogicPage implements OnInit {
   emi: any;
   loan: any;
-  emiIndex = null;
+  emiIndex = -1;
   nextMonth = null;
   previousMonth = null;
   defaultHref = 'home';

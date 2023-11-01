@@ -15,7 +15,7 @@ import { AppCurrencyPipe } from '../../services/app.pipe';
 })
 export class CurrencySelectComponent implements OnInit {
   currency = null;
-  currencies = [];
+  currencies: any = [];
   allCurrencies = null;
   searchCurrency = '';
   @Input() profile: any;
@@ -42,7 +42,7 @@ export class CurrencySelectComponent implements OnInit {
   getCurrency() {
     if (this.allCurrencies) return Object.assign([], this.allCurrencies);
 
-    const currencies = [];
+    const currencies: any = [];
     Object.keys(Currency).forEach(key => {
       currencies.push({
         value: key,

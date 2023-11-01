@@ -35,7 +35,7 @@
           </ng-template>
         </ion-modal>
         <ion-text color="danger"
-          *ngIf="ledgerForm.get('transactionDate').dirty || ledgerForm.get('transactionDate').touched || submitted == true">
+          *ngIf="ledgerForm.get('transactionDate')?.dirty || ledgerForm.get('transactionDate')?.touched || submitted == true">
           <p *ngIf="ledgerForm.get('transactionDate').hasError('required')">
             <ion-icon name="information-circle-outline"></ion-icon>Transaction Date is required
           </p>
@@ -52,7 +52,7 @@
           class="with-error-label"></ion-input>
 
         <ion-text color="danger"
-          *ngIf="ledgerForm.get('amount').dirty || ledgerForm.get('amount').touched || submitted == true">
+          *ngIf="ledgerForm.get('amount')?.dirty || ledgerForm.get('amount')?.touched || submitted == true">
           <p *ngIf="ledgerForm.get('amount').hasError('required')">
             <ion-icon name="information-circle-outline"></ion-icon>Amount is required
           </p>
@@ -69,7 +69,7 @@
         <span class="label">Description</span>
         <ion-textarea formControlName="description" [autoGrow]="true"></ion-textarea>
         <ion-text color="danger"
-          *ngIf="ledgerForm.get('description').dirty || ledgerForm.get('description').touched || submitted == true">
+          *ngIf="ledgerForm.get('description')?.dirty || ledgerForm.get('description')?.touched || submitted == true">
           <p *ngIf="ledgerForm.get('description').hasError('required')">
             <ion-icon name="information-circle-outline"></ion-icon>Description is required
           </p>

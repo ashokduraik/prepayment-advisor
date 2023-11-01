@@ -16,9 +16,26 @@ export class EmiEditPage implements OnInit {
   loan: any;
   emiIndex = null;
   defaultHref = 'home';
-  loanForm: FormGroup;
+  loanForm = this.formBuilder.group({
+    interestRate: new FormControl('', Validators.compose([
+      Validators.max(50),
+      Validators.min(0.1),
+      Validators.required
+    ])),
+    emi: new FormControl('', Validators.compose([
+      Validators.max(9999999),
+      Validators.min(1),
+      Validators.required
+    ])),
+    emiDay: new FormControl(null, Validators.compose([
+      Validators.required
+    ])),
+    emiChangeCurrent: new FormControl(false),
+    charges: new FormControl(null),
+    interestAdjustment: new FormControl(null),
+  });
   submitted = false;
-  minEmi = null;
+  minEmi = 0;
   saveInProgress = false;
   days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
 
@@ -31,25 +48,6 @@ export class EmiEditPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.loanForm = this.formBuilder.group({
-      interestRate: new FormControl('', Validators.compose([
-        Validators.max(50),
-        Validators.min(0.1),
-        Validators.required
-      ])),
-      emi: new FormControl('', Validators.compose([
-        Validators.max(9999999),
-        Validators.min(1),
-        Validators.required
-      ])),
-      emiDay: new FormControl(null, Validators.compose([
-        Validators.required
-      ])),
-      emiChangeCurrent: new FormControl(false),
-      charges: new FormControl(null),
-      interestAdjustment: new FormControl(null),
-    });
-
     const _id = this.activatedRoute.snapshot.paramMap.get('loanid');
     const emiid = this.activatedRoute.snapshot.paramMap.get('emiid');
     this.defaultHref = _id ? 'loan-details/' + _id : 'home';
@@ -85,7 +83,7 @@ export class EmiEditPage implements OnInit {
     });
 
     const interest = (this.loan.interestRate / (100 * 12)) * this.loan.amount;
-    this.minEmi = interest * 1.1;
+    this.minEmi = interest * 1.01;
   }
 
   async save(loanForm: FormGroup) {
@@ -94,7 +92,7 @@ export class EmiEditPage implements OnInit {
 
     const loanDetails = loanForm.value;
     const interest = (loanDetails.interestRate / (100 * 12)) * this.loan.amount;
-    this.minEmi = interest * 1.1;
+    this.minEmi = interest * 1.01;
     if (this.minEmi > loanDetails.emi) return
 
     this.saveInProgress = true;
@@ -116,7 +114,7 @@ export class EmiEditPage implements OnInit {
       this.loan.interestRate = loanDetails.interestRate;
     }
 
-    for (let i = this.emiIndex; i < this.loan.instalments.length; i++) {
+    for (let i = this.emiIndex; i && i < this.loan.instalments.length; i++) {
       const emi = this.loan.instalments[i];
       if ((!loanDetails.emiChangeCurrent && emiChanged) || i == this.emiIndex) {
         emi.amount = loanDetails.emi;

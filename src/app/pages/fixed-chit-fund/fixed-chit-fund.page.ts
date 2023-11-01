@@ -8,8 +8,8 @@ import { LoanUtils } from '../../services/loan.utils';
   styleUrls: ['./fixed-chit-fund.page.scss'],
 })
 export class FixedChitFundPage implements OnInit {
-  projections = [];
-  chitFund = null;
+  projections: any = [];
+  chitFund: any = null;
   defaultHref = 'home';
   constructor() { }
 

@@ -20,7 +20,7 @@ export class LoanUtils {
     loan.loanType = loan.loanType || 'EMI_LOAN';
     if (loan.loanType === 'FLEXI_LOAN') return;
 
-    let noOfDays = null;
+    let noOfDays: any = null;
     let lastMonthInterest = 0;
     const currentMonth = isProjection ? moment().add(100, 'year') : moment();
     const currentDay = currentMonth.get("date");
@@ -113,7 +113,7 @@ export class LoanUtils {
     }
 
     let term = 1;
-    let emiMonth = null;
+    let emiMonth: any = null;
     const fyStart = LoanUtils.financialYearEnd - 1;
     let fyInterest = 0;
     let fyPrincipal = 0;
@@ -229,7 +229,7 @@ export class LoanUtils {
       }
     });
 
-    let fyPendingMonth = null, temp = null;
+    let fyPendingMonth: any = null, temp: any = null;
     const lastEMI = loan.instalments[loan.instalments.length - 1];
     if (emiMonth > -1 && emiMonth < 11) {
       fyPendingMonth = 12 - emiMonth + fyStart;
@@ -295,7 +295,7 @@ export class LoanUtils {
       balance -= principal;
       interestPayable += interest;
 
-      if (fyPendingMonth > 0 && fyPendingMonth >= balanceTerm) {
+      if (fyPendingMonth && fyPendingMonth > 0 && fyPendingMonth >= balanceTerm) {
         fyPendingInterest += interest;
         fyPendingPrincipal += principal;
       }

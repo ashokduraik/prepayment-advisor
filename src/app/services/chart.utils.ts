@@ -54,13 +54,24 @@ export class ChartUtils {
 
   static getPaymentHistoryChart(currencyPipe, instalments): Highcharts.Options {
     let ymax = 0;
+    let categories = null;
     const interestPaid = [];
     const principalPaid = [];
     const interestRate = [];
+    const lessCate = instalments.length < 5;
+    if (lessCate) categories = [];
 
     instalments.forEach(emi => {
       const date = new Date(emi.emiDate).getTime();
       ymax = Math.max(ymax, emi.interestPaid + emi.principalPaid);
+
+      if (lessCate) {
+        categories.push(date);
+        interestPaid.push(emi.interestPaid);
+        principalPaid.push(emi.principalPaid);
+        emi.interestRate && interestRate.push(emi.interestRate);
+        return;
+      }
       interestPaid.push({
         x: date,
         y: emi.interestPaid,
@@ -105,6 +116,7 @@ export class ChartUtils {
       },
       title: { text: '' },
       xAxis: {
+        categories,
         type: 'datetime',
         labels: { format: '{value:%b %Y}' },
       },

@@ -1,8 +1,7 @@
 {
-  "name": "ppa",
+  "name": "prepayment-advisor",
   "integrations": {
-    "capacitor": {},
-    "cordova": {}
+    "capacitor": {}
   },
   "type": "angular"
 }

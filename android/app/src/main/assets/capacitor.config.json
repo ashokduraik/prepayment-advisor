@@ -2,18 +2,7 @@
 	"appId": "com.altooxs.prepaymentadvisor",
 	"appName": "Prepayment Advisor",
 	"webDir": "www",
-	"bundledWebRuntime": false,
-	"cordova": {
-		"preferences": {
-			"ScrollEnabled": "false",
-			"BackupWebStorage": "none",
-			"SplashMaintainAspectRatio": "true",
-			"FadeSplashScreenDuration": "300",
-			"SplashShowOnlyFirstTime": "false",
-			"SplashScreen": "screen",
-			"SplashScreenDelay": "3000",
-			"AndroidPersistentFileLocation": "Compatibility",
-			"AndroidExtraFilesystems": "files,cache, sdcard, cache-external, files-external"
-		}
+	"server": {
+		"androidScheme": "https"
 	}
 }

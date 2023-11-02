@@ -12,7 +12,7 @@ import { LoanUtils } from './services/loan.utils';
 import { AppStorage } from './services/app.storage';
 import { AppService } from './services/app.services';
 import { AppCurrencyPipe } from './services/app.pipe';
-// import sampleData from '../../data/sample.json';
+import sampleData from '../../data/sample.json';
 
 @Component({
   selector: 'app-root',

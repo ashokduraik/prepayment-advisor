@@ -1,3 +1,4 @@
+import moment from 'moment';
 import * as Highcharts from 'highcharts';
 
 export class ChartUtils {
@@ -118,7 +119,13 @@ export class ChartUtils {
       xAxis: {
         categories,
         type: 'datetime',
-        labels: { format: '{value:%b %Y}' },
+        labels: {
+          // format: '{value:%b %Y}' 
+          formatter: function () {
+            const label = this.axis.defaultLabelFormatter.call(this);
+            return moment(Number(label)).format('MMM YYYY')
+          }
+        },
       },
       yAxis: [{
         title: { text: '' },

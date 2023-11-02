@@ -122,3 +122,8 @@ ion-menu ion-content {
   --padding-end: 0px !important;
   --padding-top: 0px !important;
 }
+
+.has-focus.ion-valid.sc-ion-input-md-h,
+.ion-touched.ion-invalid.sc-ion-input-md-h {
+  border-color: var(--highlight-color);
+}

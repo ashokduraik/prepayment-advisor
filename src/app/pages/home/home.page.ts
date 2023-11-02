@@ -133,7 +133,7 @@ export class HomePage {
     }];
     this.repaidChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(principalPaid + interestPaid, 'noDecimal')}`, paidData);
 
-    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, lastInstallments);
+    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, lastInstallments.reverse());
   }
 
   getLastInstallemts(arr) {

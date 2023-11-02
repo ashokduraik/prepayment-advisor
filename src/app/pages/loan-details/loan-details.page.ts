@@ -120,7 +120,7 @@ export class LoanDetailsPage implements OnInit {
 
     if (this.loan.loanType === 'EMI_LOAN') {
       this.payableChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Repayment Projection<br>${this.currencyPipe.transform(total, 'noDecimal')}`, payableData);
-      this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.instalments.slice(0, 4));
+      this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.instalments.slice(0, 4).reverse());
     }
   }
 

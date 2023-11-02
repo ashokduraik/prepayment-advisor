@@ -33,15 +33,13 @@
 
   <ion-card>
     <ion-list>
-      <ion-item *ngIf="prepaymentChanged">
-        <ion-checkbox [(ngModel)]="noEmi" color="primary"></ion-checkbox>
-        <ion-label text-wrap>No Change in EMI. Only term needs to be decreased</ion-label>
+      <ion-item *ngIf="prepaymentChanged" lines="none">
+        <ion-checkbox [(ngModel)]="noEmi" color="primary" labelPlacement="end">No Change in EMI. Only term needs to be
+          decreased</ion-checkbox>
       </ion-item>
 
       <div *ngIf="prepaymentChanged">
-        <!-- <span class="label">Enter the new EMI amount (Approximately {{approximateEmi | appCurrency: '' }}, if no change in
-          term)</span> -->
-        <span class="label">Enter the new EMI amount</span>
+        <span class="label">Enter the new EMI Amount</span>
         <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
 
         <ion-text color="danger" *ngIf="!newEmiAmount && !noEmi && submitted == true">

@@ -344,3 +344,8 @@ ion-textarea {
 .sc-ion-input-md-h:not(.legacy-input) {
   min-height: 45px;
 }
+
+.native-wrapper.sc-ion-textarea-md textarea.sc-ion-textarea-md {
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
+}

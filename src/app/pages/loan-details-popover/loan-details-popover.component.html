@@ -11,7 +11,7 @@
     <ion-icon name="pie-chart-outline"></ion-icon>
     <ion-label>Statistics</ion-label>
   </ion-item>
-  <ion-item button (click)="projection()" *ngIf="loanType === 'EMI_LOAN'">
+  <ion-item button (click)="projection()" *ngIf="loanType === 'EMI_LOAN' && !isCompleted">
     <ion-icon name="albums-outline"></ion-icon>
     <ion-label>EMI Projection</ion-label>
   </ion-item>

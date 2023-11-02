@@ -73,7 +73,7 @@
               {{ loan.emi | appCurrency: '' }}
             </ion-col>
           </ion-row>
-          <ion-row *ngIf="loan.loanType === 'FLEXI_LOAN'">
+          <ion-row *ngIf="loan.loanType === 'FLEXI_LOAN' && !loan.isCompleted">
             <ion-col class="ion-align-self-start">
               Interest Amount
             </ion-col>
@@ -127,11 +127,6 @@
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
               {{ loan.amount + loan.interestPaid | appCurrency: '' }}
-            </ion-col>
-          </ion-row>
-          <ion-row *ngIf="loan.isCompleted && loan.loanType === 'EMI_LOAN'" style="color: red;">
-            <ion-col>
-              You have paid {{((loan.interestPaid/(loan.amount + loan.interestPaid)) * 100).toFixed(2)}}% for interest.
             </ion-col>
           </ion-row>
           <ion-row *ngIf="loan.isCompleted" style="color: green;">

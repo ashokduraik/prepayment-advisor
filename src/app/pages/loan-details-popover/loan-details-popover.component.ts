@@ -15,6 +15,7 @@ import { AppService } from '../../services/app.services';
 export class LoanDetailsPopoverComponent implements OnInit {
   @Input("_id") _id;
   @Input("loanType") loanType;
+  @Input("isCompleted") isCompleted;
   constructor(
     private storage: AppStorage,
     private router: Router,

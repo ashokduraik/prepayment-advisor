@@ -150,6 +150,7 @@ export class LoanDetailsPage implements OnInit {
       componentProps: {
         _id: this.loan._id,
         loanType: this.loan.loanType,
+        isCompleted: this.loan.isCompleted,
       },
       event
     });

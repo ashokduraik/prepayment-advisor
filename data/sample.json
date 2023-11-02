@@ -330,9 +330,18 @@
           "interestRate": 8.65,
           "emiDate": "2023-09-30T18:30:00.000Z",
           "interestPaid": 25908.055366334647
+        },
+        {
+          "_id": "6543c5fe6cab2544ebbe47c1",
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 8.65,
+          "emiDate": "2023-10-31T18:30:00.000Z",
+          "amount": 45000,
+          "interestPaid": 25662.309265433643
         }
       ],
-      "balanceAmount": 3560089.1466497537,
+      "balanceAmount": 3540751.4559151875,
       "createdat": "2021-06-30T02:42:47.293Z",
       "loanType": "EMI_LOAN",
       "ledger": []
@@ -579,9 +588,18 @@
           "interestRate": 11.1,
           "emiDate": "2023-10-01T09:08:22.944Z",
           "interestPaid": 3808.11538893985
+        },
+        {
+          "_id": "6543c5feacce30dca80d3d99",
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 11.1,
+          "emiDate": "2023-11-01T09:08:22.944Z",
+          "amount": 29300,
+          "interestPaid": 3572.315456287544
         }
       ],
-      "balanceAmount": 386196.26554459933,
+      "balanceAmount": 360468.58100088686,
       "createdat": "2021-10-17T09:09:11.700Z",
       "loanType": "EMI_LOAN",
       "ledger": []
@@ -604,9 +622,18 @@
           "interestRate": 10.5,
           "emiDate": "2023-10-01T14:09:22.967Z",
           "interestPaid": 14583.333333333334
+        },
+        {
+          "_id": "6543c5fe784d7129dceefcbf",
+          "emiDay": 1,
+          "noOfDays": null,
+          "interestRate": 10.5,
+          "emiDate": "2023-11-01T14:09:22.967Z",
+          "amount": 42988,
+          "interestPaid": 17251.459166666667
         }
       ],
-      "balanceAmount": 1971595.3333333333,
+      "balanceAmount": 1945858.7925,
       "createdat": "2023-09-06T14:11:07.812Z",
       "loanType": "EMI_LOAN",
       "ledger": []
@@ -832,6 +859,105 @@
       ],
       "instalments": [],
       "createdat": "2023-10-24T08:21:08.765Z"
+    },
+    {
+      "interestRate": 7.25,
+      "emi": 0,
+      "amount": 1000000,
+      "amountType": "",
+      "loanType": "FLEXI_LOAN",
+      "startDate": "2021-01-02T15:35:00.000Z",
+      "emiDay": "1",
+      "name": "SBI Gold Loan",
+      "_id": "65440f58faf132d85450aa6e",
+      "ledger": [
+        {
+          "_id": "654410a9f8c0710b00100fba",
+          "amount": 100000,
+          "type": "CREDIT",
+          "transactionDate": "2022-11-02T21:11:55.528Z",
+          "description": "Interest"
+        },
+        {
+          "_id": "654410c01c23f0f7601c1508",
+          "amount": 1100000,
+          "type": "DEBIT",
+          "transactionDate": "2022-11-02T21:12:20.011Z",
+          "description": "payment"
+        }
+      ],
+      "instalments": [],
+      "createdat": "2023-11-02T21:06:32.177Z"
+    },
+    {
+      "interestRate": 12,
+      "emi": 30000,
+      "amount": 170000,
+      "amountType": "NEW_LOAN",
+      "loanType": "EMI_LOAN",
+      "startDate": "2020-11-02T16:00:00.000Z",
+      "emiDay": 2,
+      "name": "Test Loan",
+      "_id": "65441522a44c9f42c6612941",
+      "ledger": [],
+      "instalments": [
+        {
+          "_id": "6544152286a4c9b99310ee7c",
+          "emiDay": 2,
+          "noOfDays": 29,
+          "interestRate": 12,
+          "emiDate": "2020-12-02T16:00:00.000Z",
+          "amount": 30000,
+          "interestPaid": 1643.3333333333333
+        },
+        {
+          "_id": "65441522ea34cb45e99cb00a",
+          "emiDay": 2,
+          "noOfDays": null,
+          "interestRate": 12,
+          "emiDate": "2021-01-02T16:00:00.000Z",
+          "amount": 30000,
+          "interestPaid": 1416.4333333333334
+        },
+        {
+          "_id": "65441522dd3331b748e8d5f8",
+          "emiDay": 2,
+          "noOfDays": null,
+          "interestRate": 12,
+          "emiDate": "2021-02-02T16:00:00.000Z",
+          "amount": 30000,
+          "interestPaid": 1130.5976666666668
+        },
+        {
+          "_id": "65441522a6400879f1e461f8",
+          "emiDay": 2,
+          "noOfDays": null,
+          "interestRate": 12,
+          "emiDate": "2021-03-02T16:00:00.000Z",
+          "amount": 30000,
+          "interestPaid": 841.9036433333334
+        },
+        {
+          "_id": "6544152276f4139a3a065e5f",
+          "emiDay": 2,
+          "noOfDays": null,
+          "interestRate": 12,
+          "emiDate": "2021-04-02T16:00:00.000Z",
+          "amount": 30000,
+          "interestPaid": 550.3226797666669
+        },
+        {
+          "_id": "654415222fc6e2e3f1cd5e23",
+          "emiDay": 2,
+          "noOfDays": null,
+          "interestRate": 12,
+          "emiDate": "2021-05-02T16:00:00.000Z",
+          "amount": 25838.416562997685,
+          "interestPaid": 255.82590656433354
+        }
+      ],
+      "balanceAmount": 0,
+      "createdat": "2023-11-02T21:31:14.195Z"
     }
   ],
   "profile": {

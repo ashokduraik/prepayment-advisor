@@ -79,11 +79,13 @@ export class LoanUtils {
   private static flexiLoanDetails(loan) {
     loan.interest = 0;
     loan.totalPaid = 0;
+    let lastPayment: any = null;
 
     loan.ledger.forEach(led => {
       if (led.type === 'DEBIT') {
         loan.totalPaid += led.amount;
         loan.balanceAmount -= led.amount;
+        lastPayment = led;
       } else {
         loan.interest += led.amount;
         loan.balanceAmount += led.amount;
@@ -98,6 +100,13 @@ export class LoanUtils {
 
       led.closingBalance = loan.balanceAmount;
     });
+
+    if (loan.balanceAmount > 0) {
+      loan.isCompleted = false;
+    } else {
+      loan.isCompleted = true;
+      loan.completedAt = lastPayment && lastPayment.transactionDate;
+    }
   }
 
   static calculateLoanDetails(loan) {

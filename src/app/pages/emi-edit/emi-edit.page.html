@@ -71,8 +71,8 @@
           </ion-item>
 
           <ion-item lines="none">
-            <ion-label>EMI debit day</ion-label>
-            <ion-select formControlName="emiDay" placeholder="Select" style="max-width: none;" required>
+            <ion-select label="EMI debit day" formControlName="emiDay" placeholder="Select" style="max-width: none;"
+              required>
               <ion-select-option *ngFor="let day of days" [value]="day">{{day}} of every month</ion-select-option>
             </ion-select>
           </ion-item>

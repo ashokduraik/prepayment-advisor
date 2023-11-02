@@ -15,8 +15,7 @@
 
     <ion-radio-group [(ngModel)]="currency">
       <ion-item lines="none" *ngFor="let cur of currencies;">
-        <ion-label text-wrap>{{cur.label}}</ion-label>
-        <ion-radio slot="start" [value]="cur.value"></ion-radio>
+        <ion-radio labelPlacement="end" slot="start" [value]="cur.value">{{cur.label}}</ion-radio>
       </ion-item>
     </ion-radio-group>
   </ion-list>

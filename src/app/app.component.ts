@@ -32,10 +32,10 @@ export class AppComponent {
     title: 'EMI Calculator',
     url: 'emi-calculator',
     icon: 'calculator'
-  }, {
-    title: 'Fixed Chit Fund',
-    url: 'fixed-chit-fund',
-    icon: 'wallet'
+    // }, {
+    //   title: 'Fixed Chit Fund',
+    //   url: 'fixed-chit-fund',
+    //   icon: 'wallet'
   }];
   profile: any;
   loggedIn = false;

@@ -67,16 +67,6 @@ p {
   display: block;
 }
 
-ion-input,
-ion-textarea {
-  // border-color: #8e8e8e;
-  // border-width: thin;
-  // border-style: solid;
-  // border-radius: 5px;
-  // margin: 5px 15px 15px 15px !important;
-  // width: auto !important;
-}
-
 ion-radio {
   margin-right: 10px;
   margin-left: 0px;
@@ -277,7 +267,9 @@ ion-checkbox {
     display: none;
     text-align: right;
     width: 100%;
-    margin-right: -5px;
+    right: 7px;
+    position: absolute;
+    top: 12px;
   }
 }
 
@@ -337,4 +329,18 @@ ion-grid {
 
 .input-fill-solid.sc-ion-input-md-h {
   --background: none !important;
+}
+
+ion-input,
+ion-textarea {
+  border-color: #8e8e8e;
+  border-width: thin;
+  border-style: solid;
+  border-radius: 5px;
+  margin: 5px 15px 15px 15px !important;
+  width: auto !important;
+}
+
+.sc-ion-input-md-h:not(.legacy-input) {
+  min-height: 45px;
 }

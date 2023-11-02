@@ -14,16 +14,15 @@
     <ion-card style="padding-bottom: 10px">
       <ion-radio-group formControlName="loanType" class="radio-with-ul">
         <ion-item lines="none">
-          <ion-label text-wrap>Loan with EMI</ion-label>
-          <ion-radio slot="start" value="EMI_LOAN"></ion-radio>
+          <ion-radio labelPlacement="end" slot="start" value="EMI_LOAN">Loan with EMI</ion-radio>
         </ion-item>
         <ul>
           <li>Ex. Home Loan, Personal Loan</li>
         </ul>
 
         <ion-item lines="none">
-          <ion-label text-wrap>Flexi Loan</ion-label>
-          <ion-radio slot="start" value="FLEXI_LOAN" (onClick)="onFlexiLoan()"></ion-radio>
+          <ion-radio labelPlacement="end" slot="start" value="FLEXI_LOAN" (onClick)="onFlexiLoan()">Flexi
+            Loan</ion-radio>
         </ion-item>
         <ul>
           <li>Ex. Gold Loan</li>
@@ -35,14 +34,13 @@
         <div *ngIf="loanForm.get('loanType')?.value == 'EMI_LOAN'">
           <ion-radio-group formControlName="amountType" class="radio-with-ul">
             <ion-item lines="none">
-              <ion-label text-wrap>New Load
-                the future</ion-label>
-              <ion-radio slot="start" value="NEW_LOAN"></ion-radio>
+              <ion-radio labelPlacement="end" slot="start" value="NEW_LOAN">New Load
+                the future</ion-radio>
             </ion-item>
 
             <ion-item lines="none">
-              <ion-label text-wrap>Old Loan: Please select this if you know</ion-label>
-              <ion-radio slot="start" value="FULL_TRANS"></ion-radio>
+              <ion-radio labelPlacement="end" slot="start" value="FULL_TRANS">Old Loan: Please select this if you
+                know</ion-radio>
             </ion-item>
             <ul>
               <li>All the amount paid as EMI</li>
@@ -54,8 +52,7 @@
               correctly</div>
 
             <ion-item lines="none">
-              <ion-label text-wrap>Old Loan</ion-label>
-              <ion-radio slot="start" value="OUTSTANDING_AMOUNT"></ion-radio>
+              <ion-radio labelPlacement="end" slot="start" value="OUTSTANDING_AMOUNT" label="">Old Loan</ion-radio>
             </ion-item>
             <ul>
               <li>Don't worry if you just know the current outstanding, Just select this and plan for the future</li>
@@ -163,8 +160,8 @@
 
         <div *ngIf="loanForm.get('loanType')?.value == 'EMI_LOAN'">
           <ion-item lines="none">
-            <ion-label>EMI debit day</ion-label>
-            <ion-select formControlName="emiDay" placeholder="Select" style="max-width: none;" required>
+            <ion-select label="EMI debit day" formControlName="emiDay" placeholder="Select" style="max-width: none;"
+              required>
               <ion-select-option *ngFor="let day of days" [value]="day">{{day}} of every month</ion-select-option>
             </ion-select>
           </ion-item>

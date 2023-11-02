@@ -145,7 +145,7 @@
             <ion-modal [keepContentsMounted]="true">
               <ng-template>
                 <ion-datetime id="datetime" formControlName="startDate" min="2010-01-01T00:00:00" max="{{maxDate}}"
-                  presentation="date"></ion-datetime>
+                  presentation="date" [showDefaultButtons]="true"></ion-datetime>
               </ng-template>
             </ion-modal>
           </ion-item>

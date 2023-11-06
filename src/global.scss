@@ -349,3 +349,13 @@ ion-textarea {
   padding-inline-start: 10px;
   padding-inline-end: 10px;
 }
+
+.danger-color ion-icon,
+.danger-color {
+  color: var(--ion-color-danger, #eb445a) !important;
+}
+
+.primary-color ion-icon,
+.primary-color {
+  color: var(--ion-color-primary, #eb445a) !important;
+}

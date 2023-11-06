@@ -12,6 +12,7 @@ import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 import { LoanDetailsPopoverComponent } from '../loan-details-popover/loan-details-popover.component';
 import { ChartUtils } from 'src/app/services/chart.utils';
+import { AppUtils } from 'src/app/services/app.utils';
 
 @Component({
   selector: 'app-loan-details',
@@ -22,6 +23,7 @@ export class LoanDetailsPage implements OnInit {
   _id: String = '';
   loan: any;
   ledger: any;
+  loanRaw: any;
   instalments: any;
   defaultHref = 'home';
   Highcharts: typeof Highcharts = Highcharts;
@@ -62,6 +64,7 @@ export class LoanDetailsPage implements OnInit {
     }
 
     this._id = _id;
+    this.loanRaw = JSON.parse(JSON.stringify(this.loan));
     LoanUtils.calculateLoanDetails(this.loan);
     this.ledger = (Object.assign([], this.loan.ledger)).reverse();
     this.instalments = (Object.assign([], this.loan.instalments)).reverse();
@@ -250,7 +253,45 @@ export class LoanDetailsPage implements OnInit {
 
     if (role === 'edit') {
       this.router.navigateByUrl(`ledger-entry/${this.loan._id}/${ledger._id}`);
+    } else if (role === 'clone') {
+      const newrole = await this.alertConfirmation('Are you sure want to clone this transaction?');
+      if (newrole !== 'Yes') return;
+
+      const newLedger = Object.assign({}, ledger);
+      newLedger._id = AppUtils.getUid();
+      newLedger.transactionDate = new Date().toISOString();
+      this.loanRaw.ledger.push(newLedger);
+      await this.storage.updateLoan(this.loanRaw);
+      this.appService.showToast('The transaction cloned successfully');
+      this.init(this.loan._id);
+    } else if (role === 'delete') {
+      const newrole = await this.alertConfirmation('Are you sure want to delete this transaction?');
+      if (newrole !== 'Yes') return;
+
+      this.loanRaw.ledger = this.loanRaw.ledger.filter(e => e._id != ledger._id);
+      await this.storage.updateLoan(this.loanRaw);
+      this.appService.showToast('The transaction deleted successfully');
+      this.init(this.loan._id);
     }
+  }
+
+  async alertConfirmation(message) {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Confirmation',
+      message,
+      buttons: [{
+        text: 'No',
+        role: 'No',
+      }, {
+        text: 'Yes',
+        role: 'Yes',
+      }]
+    });
+
+    await alert.present();
+    const { role } = await alert.onDidDismiss();
+    return role;
   }
 
   async getLedgerActionSheet(ledger) {
@@ -258,11 +299,19 @@ export class LoanDetailsPage implements OnInit {
     buttons.push({
       text: 'Edit',
       role: 'edit',
+      cssClass: 'primary-color',
       icon: 'create-outline',
-    });
-
-    buttons.push({
-      text: 'Cancel',
+    }, {
+      text: 'Clone this in the current month',
+      role: 'clone',
+      icon: 'copy-outline',
+    }, {
+      text: 'Delete',
+      role: 'delete',
+      cssClass: 'danger-color',
+      icon: 'trash-outline',
+    }, {
+      text: 'Close',
       icon: 'close',
     });
 

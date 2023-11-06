@@ -122,8 +122,7 @@ export class ChartUtils {
         labels: {
           // format: '{value:%b %Y}' 
           formatter: function () {
-            const label = this.axis.defaultLabelFormatter.call(this);
-            return moment(Number(label)).format('MMM YYYY')
+            return moment(Number(this.value)).format('MMM YYYY')
           }
         },
       },

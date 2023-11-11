@@ -84,14 +84,16 @@ export class ChartUtils {
       emi.interestRate && interestRate.push({ x: date, y: emi.interestRate });
     });
 
+    ymax += ymax * 0.2;
+
     const series: Highcharts.Options["series"] = [{
-      name: 'Interest Paid',
+      name: 'Interest',
       type: 'column',
       data: interestPaid,
       color: '#eb445a',
       yAxis: 0,
     }, {
-      name: 'Principal Paid',
+      name: 'Principal',
       type: 'column',
       data: principalPaid,
       color: '#2dd36f',

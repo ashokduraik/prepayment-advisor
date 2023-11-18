@@ -70,7 +70,7 @@
               EMI
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.emi | appCurrency: '' }}
+              {{ loan.emi | appCurrency: 'noDecimal' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="loan.loanType === 'FLEXI_LOAN' && !loan.isCompleted">
@@ -78,7 +78,7 @@
               Interest Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end" style="color: red;">
-              {{ loan.interest | appCurrency: '' }}
+              {{ loan.interest | appCurrency: 'noDecimal' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="loan.loanType === 'FLEXI_LOAN'">
@@ -86,7 +86,7 @@
               Total Paid Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.totalPaid | appCurrency: '' }}
+              {{ loan.totalPaid | appCurrency: 'noDecimal' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="!loan.isCompleted">
@@ -94,7 +94,7 @@
               Principal Paid
             </ion-col>
             <ion-col size="5" class="ion-align-self-end" style="color: green;">
-              {{ loan.principalPaid | appCurrency: '' }}
+              {{ loan.principalPaid | appCurrency: 'noDecimal' }}
             </ion-col>
           </ion-row>
           <ion-row>
@@ -102,7 +102,7 @@
               Interest Paid
             </ion-col>
             <ion-col size="5" class="ion-align-self-end" style="color: red;">
-              {{ loan.interestPaid | appCurrency: '' }}
+              {{ loan.interestPaid | appCurrency: 'noDecimal' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'">
@@ -118,7 +118,7 @@
               Balance Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.balanceAmount | appCurrency: '' }}
+              {{ loan.balanceAmount | appCurrency: 'noDecimal' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="loan.isCompleted && loan.loanType === 'EMI_LOAN'">
@@ -126,7 +126,7 @@
               Total Paid Amount
             </ion-col>
             <ion-col size="5" class="ion-align-self-end">
-              {{ loan.amount + loan.interestPaid | appCurrency: '' }}
+              {{ loan.amount + loan.interestPaid | appCurrency: 'noDecimal' }}
             </ion-col>
           </ion-row>
           <ion-row *ngIf="loan.isCompleted" style="color: green;">

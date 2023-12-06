@@ -6,6 +6,8 @@ import { Storage } from '@ionic/storage-angular';
 import darkTheme from 'highcharts/themes/high-contrast-dark';
 import lightTheme from 'highcharts/themes/high-contrast-light';
 import { MenuController, Platform, ToastController } from '@ionic/angular';
+import HC_drilldown from "highcharts/modules/drilldown";
+HC_drilldown(Highcharts);
 //import { LottieSplashScreen } from '@ionic-native/lottie-splash-screen/ngx';
 
 import { LoanUtils } from './services/loan.utils';

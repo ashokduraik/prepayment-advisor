@@ -59,33 +59,89 @@ export class ChartUtils {
     const interestPaid: any = [];
     const principalPaid: any = [];
     const interestRate: any = [];
-    const lessCate = instalments.length < 5;
-    if (lessCate) categories = [];
+    const drilldown: any = {
+      series: [],
+      breadcrumbs: {
+        formatter: function (level) {
+          return `Back`;
+        },
+        buttonTheme: {
+          padding: 8,
+          stroke: '#cccccc',
+          'stroke-width': 1
+        },
+        floating: true,
+        position: {
+          align: 'right'
+        },
+        showFullPath: false
+      },
+      activeDataLabelStyle: {
+        textDecoration: 'none',
+        // fontStyle: 'italic'
+        color: '#000',
+      },
+      activeAxisLabelStyle: {
+        fontSize: '10px',
+      }
+    };
+    const lessCate = instalments.length <= 5;
+    let zooming: any = { type: 'x', singleTouch: true };
+    if (lessCate) zooming.type = false;
+
 
     instalments.forEach(emi => {
       const date = new Date(emi.emiDate).getTime();
-      ymax = Math.max(ymax, emi.interestPaid + emi.principalPaid);
+      const pPaid = emi.principalPaid + (emi.prepaymentTotal || 0);
+      ymax = Math.max(ymax, emi.interestPaid + pPaid);
 
       if (lessCate) {
-        categories.push(date);
-        interestPaid.push(emi.interestPaid);
-        principalPaid.push(emi.principalPaid);
-        emi.interestRate && interestRate.push(emi.interestRate);
+        const name = moment(date).format('MMM YYYY');
+        let dd = emi.drilldowns && emi.drilldowns.length;
+
+        interestPaid.push({
+          name,
+          y: emi.interestPaid,
+          drilldown: dd ? 'i' + name : false,
+        });
+        principalPaid.push({
+          name,
+          y: pPaid,
+          drilldown: dd ? 'p' + name : false,
+        });
+        emi.interestRate && interestRate.push({ name, y: emi.interestRate, drilldown: false });
+
+        if (dd) {
+          const interest: any = [];
+          const principal: any = [];
+          emi.drilldowns.forEach(d => {
+            interest.push([d.name, d.interestPaid]);
+            principal.push([d.name, d.principalPaid]);
+          });
+
+          drilldown.series.push({
+            id: 'i' + name,
+            data: interest,
+            name: 'Interest',
+            color: '#eb445a',
+            yAxis: 0,
+          }, {
+            id: 'p' + name,
+            data: principal,
+            name: 'Principal',
+            color: '#2dd36f',
+            yAxis: 0,
+          });
+        }
         return;
       }
-      interestPaid.push({
-        x: date,
-        y: emi.interestPaid,
-      });
-      principalPaid.push({
-        x: date,
-        y: emi.principalPaid,
-      });
+
+      interestPaid.push({ x: date, y: emi.interestPaid });
+      principalPaid.push({ x: date, y: pPaid });
       emi.interestRate && interestRate.push({ x: date, y: emi.interestRate });
     });
 
-    ymax += ymax * 0.2;
-
+    ymax += ymax * 0.3;
     const series: Highcharts.Options["series"] = [{
       name: 'Interest',
       type: 'column',
@@ -112,19 +168,17 @@ export class ChartUtils {
     return {
       chart: {
         type: 'column',
-        zooming: {
-          type: 'x',
-          singleTouch: true,
-        },
+        zooming,
       },
       title: { text: '' },
       xAxis: {
         categories,
-        type: 'datetime',
+        type: !lessCate ? 'datetime' : 'category',
         labels: {
-          // format: '{value:%b %Y}' 
+          autoRotationLimit: 10,
           formatter: function () {
-            return moment(Number(this.value)).format('MMM YYYY')
+            if (isNaN(Number(this.value))) return this.value + '';
+            return moment(Number(this.value)).format('MMM YYYY');
           }
         },
       },
@@ -170,6 +224,7 @@ export class ChartUtils {
         }
       },
       series,
+      drilldown,
     }
 
     function getCurrVal(val) {
@@ -214,5 +269,8 @@ export class ChartUtils {
         </tr>
         ${rows}
       </table>`;
+
   }
+
+
 }

@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import moment from 'moment';
 import * as Highcharts from 'highcharts';
 import { AppRate } from '@ionic-native/app-rate/ngx';
 import { ActionSheetController, AlertController, PopoverController } from '@ionic/angular';
@@ -123,7 +124,41 @@ export class LoanDetailsPage implements OnInit {
 
     if (this.loan.loanType === 'EMI_LOAN') {
       this.payableChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Repayment Projection<br>${this.currencyPipe.transform(total, 'noDecimal')}`, payableData);
-      this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.instalments.slice(0, 4).reverse());
+      this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, this.instalments.slice(0, 5).reverse());
+    } else if (this.loan.loanType === 'FLEXI_LOAN') {
+      const lastInstallments = Array.from({ length: 5 }, (_, index) => {
+        const currentDate = moment().subtract(index, 'months');
+        return {
+          interestPaid: 0,
+          principalPaid: 0,
+          emiDate: currentDate.startOf('month').add(1, 'day').toDate(),
+        }
+      });
+
+      lastInstallments.forEach(insta => {
+        const month = moment(insta.emiDate);
+        let monthPaid = 0;
+        let monthInterest = 0;
+        let principalPaid = 0;
+
+        this.loan.ledger.forEach(led => {
+          if (month.isSame(led.transactionDate, 'month')) {
+            if (led.type === 'DEBIT') {
+              monthPaid += led.amount;
+            } else {
+              monthInterest += led.amount;
+            }
+          }
+        });
+
+        insta.interestPaid += monthInterest;
+        if (monthPaid > monthInterest) {
+          principalPaid = monthPaid - monthInterest;
+        }
+        insta.principalPaid += principalPaid;
+      });
+
+      this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, lastInstallments.reverse());
     }
   }
 

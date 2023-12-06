@@ -23,8 +23,9 @@ export class HomePage {
   Highcharts: typeof Highcharts = Highcharts;
   loanChartOpns: Highcharts.Options | null = null;
   repaidChartOpns: Highcharts.Options | null = null;
-  instaChartOpns: Highcharts.Options | null = null;
+  instaChartOpns: any = null;
   summary = {
+    LoanCnt: 0,
     outstanding: 0,
   }
 
@@ -50,7 +51,15 @@ export class HomePage {
 
     await this.storage.saveLoans(this.loans);
     let totalLoanAmount = 0, outstanding = 0, principalPaid = 0, interestPaid = 0;
-    let lastInstallments: any = null;
+    const lastInstallments: any = Array.from({ length: 5 }, (_, index) => {
+      const currentDate = moment().subtract(index, 'months');
+      return {
+        interestPaid: 0,
+        principalPaid: 0,
+        drilldowns: [],
+        emiDate: currentDate.startOf('month').add(1, 'day').toDate(),
+      }
+    });
 
     this.loans.forEach(loan => {
       LoanUtils.calculateLoanDetails(loan);
@@ -59,52 +68,63 @@ export class HomePage {
       principalPaid += loan.principalPaid;
       interestPaid += loan.interestPaid;
 
-      if (!lastInstallments) {
-        lastInstallments = this.getLastInstallemts(loan.instalments).map(e => {
-          return {
-            emiDate: e.emiDate,
-            interestPaid: e.interestPaid,
-            principalPaid: e.principalPaid,
-          }
-        });
-        return;
+      if (!loan.isCompleted) {
+        this.summary.LoanCnt++;
       }
 
+      if (!loan.instalments.length) return;
       const insts = this.getLastInstallemts(loan.instalments);
-      for (let i = 0; i < insts.length; i++) {
-        lastInstallments[i].interestPaid += insts[i].interestPaid;
-        lastInstallments[i].principalPaid += insts[i].principalPaid;
-      }
-    });
 
-    if (lastInstallments && lastInstallments.length) {
-      this.loans.forEach(loan => {
-        if (!loan.ledger.length) return;
+      lastInstallments.forEach(insta => {
+        const month = moment(insta.emiDate);
+        const matchedEmi = insts.find(e => month.isSame(e.emiDate, 'month'));
+        if (!matchedEmi) return;
 
-        lastInstallments.forEach(insta => {
-          const end = moment(insta.emiDate).endOf('month').toDate();
-          const start = moment(insta.emiDate).startOf('month').toDate();
-          let monthPaid = 0;
-          let monthInterest = 0;
-
-          loan.ledger.forEach(led => {
-            const date = new Date(led.transactionDate);
-            if (date >= start && date <= end) {
-              if (led.type === 'DEBIT') {
-                monthPaid += led.amount;
-              } else {
-                monthInterest += led.amount;
-              }
-            }
-          });
-
-          insta.interestPaid += monthInterest;
-          if (monthPaid > monthInterest) {
-            insta.principalPaid += monthPaid - monthInterest;
-          }
+        const principalPaid = matchedEmi.principalPaid + (matchedEmi.prepaymentTotal || 0);
+        insta.principalPaid += principalPaid;
+        insta.interestPaid += matchedEmi.interestPaid;
+        insta.drilldowns.push({
+          name: loan.name,
+          principalPaid,
+          interestPaid: matchedEmi.interestPaid,
         });
       });
-    }
+    });
+
+    this.loans.forEach(loan => {
+      if (!loan.ledger.length) return;
+
+      lastInstallments.forEach(insta => {
+        const month = moment(insta.emiDate);
+        let monthPaid = 0;
+        let monthInterest = 0;
+        let principalPaid = 0;
+
+        loan.ledger.forEach(led => {
+          if (month.isSame(led.transactionDate, 'month')) {
+            if (led.type === 'DEBIT') {
+              monthPaid += led.amount;
+            } else {
+              monthInterest += led.amount;
+            }
+          }
+        });
+
+        insta.interestPaid += monthInterest;
+        if (monthPaid > monthInterest) {
+          principalPaid = monthPaid - monthInterest;
+        }
+        insta.principalPaid += principalPaid;
+
+        if (principalPaid > 0 || monthInterest > 0) {
+          insta.drilldowns.push({
+            name: loan.name,
+            principalPaid,
+            interestPaid: monthInterest,
+          });
+        }
+      });
+    });
 
     this.summary.outstanding = outstanding;
     const loanData = [{
@@ -133,11 +153,26 @@ export class HomePage {
     }];
     this.repaidChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(principalPaid + interestPaid, 'noDecimal')}`, paidData);
 
+    let redrawEnabled = true;
     this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, lastInstallments.reverse());
+    this.instaChartOpns.chart.events = {
+      redraw: function () {
+        if (!redrawEnabled) return;
+        redrawEnabled = false;
+        const values: any = [];
+        this.series.forEach(s => {
+          values.push(s.dataMax)
+        });
+        let ymax = values.reduce((acc, val) => (acc > val) ? acc : val, 0);
+        ymax += ymax * 0.3;
+        this.yAxis[0].setExtremes(0, ymax);
+        redrawEnabled = true;
+      }
+    }
   }
 
   getLastInstallemts(arr) {
-    return (Object.assign([], arr)).reverse().slice(0, 4);
+    return (Object.assign([], arr)).reverse().slice(0, 5);
   }
 
   ngOnInit() {

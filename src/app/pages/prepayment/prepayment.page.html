@@ -38,11 +38,11 @@
           decreased</ion-checkbox>
       </ion-item>
 
-      <div *ngIf="prepaymentChanged">
+      <div *ngIf="prepaymentChanged && !noEmi">
         <span class="label">Enter the new EMI Amount</span>
         <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
 
-        <ion-text color="danger" *ngIf="!newEmiAmount && !noEmi && submitted == true">
+        <ion-text color="danger" *ngIf="!newEmiAmount && submitted == true">
           <p>
             <ion-icon name="information-circle-outline"></ion-icon>New EMI is required
           </p>

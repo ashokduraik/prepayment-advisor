@@ -162,9 +162,9 @@ ion-checkbox {
   input {
     display: none;
 
-    &:checked+label {
+    &:checked + label {
       //background: #eee;
-      color: #1E88E5;
+      color: #1e88e5;
 
       &::after {
         opacity: 1;
@@ -173,11 +173,11 @@ ion-checkbox {
 
     @for $i from 1 through 4 {
       &#tab#{$i}:checked {
-        ~.line {
+        ~ .line {
           left: #{($i - 1) * 25%};
         }
 
-        ~.content-container #c#{$i} {
+        ~ .content-container #c#{$i} {
           opacity: 1;
         }
       }
@@ -203,7 +203,7 @@ ion-checkbox {
       width: 100%;
       position: absolute;
       display: block;
-      background: #1E88E5;
+      background: #1e88e5;
       bottom: 0;
       opacity: 0;
       left: 0;
@@ -218,7 +218,9 @@ ion-checkbox {
 
 .loan-name {
   text-align: center;
-  padding: 0px;
+  padding: 2px;
+  font-weight: 700;
+  font-size: 17px;
 }
 
 #container {
@@ -273,7 +275,7 @@ ion-checkbox {
   }
 }
 
-input[type=number] {
+input[type="number"] {
   text-align: right !important;
   padding-right: 10px !important;
 }

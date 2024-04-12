@@ -32,6 +32,7 @@
                     [Highcharts]="Highcharts"
                     [options]="loanChartOpns"
                     *ngIf="loanChartOpns"
+                    [(update)]="updateFlag"
                   ></highcharts-chart>
                 </ion-col>
                 <ion-col size="6" style="padding: 0">

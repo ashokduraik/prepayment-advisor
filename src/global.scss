@@ -25,6 +25,22 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+:host {
+  --background-color: #ffffff;
+  --text-color: #000000;
+}
+
+// Dark Mode
+:host.dark {
+  --background-color: #333333;
+  --text-color: #ffffff;
+}
+
+ion-content {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
 highcharts-chart {
   display: block;
 }

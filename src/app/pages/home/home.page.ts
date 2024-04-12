@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import * as Highcharts from 'highcharts';
-import { Platform } from '@ionic/angular';
 import moment from 'moment';
+import darkTheme from 'highcharts/themes/high-contrast-dark';
+import lightTheme from 'highcharts/themes/high-contrast-light';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
@@ -18,6 +19,7 @@ import { ChartUtils } from 'src/app/services/chart.utils';
 export class HomePage {
   profile = null;
   loans: any = [];
+  darkMode = false;
   chartUpdate = true;
   backButtonSubscription;
   Highcharts: typeof Highcharts = Highcharts;
@@ -27,30 +29,36 @@ export class HomePage {
   summary = {
     LoanCnt: 0,
     outstanding: 0,
-  }
+  };
+  updateFlag = false;
 
   constructor(
     public router: Router,
-    private platform: Platform,
     private storage: AppStorage,
     private appService: AppService,
-    private currencyPipe: AppCurrencyPipe,
-  ) {
-
-  }
+    private currencyPipe: AppCurrencyPipe
+  ) {}
 
   async ionViewWillEnter() {
     this.initializeHome();
+    this.appService.getEvent().subscribe((data: any) => {
+      this.darkMode = data.mode;
+      console.log('this.darkMode', this.darkMode);
+      this.updateFlag = true;
+    });
   }
 
   async initializeHome() {
-    this.loans = await this.storage.getLoans() || [];
-    this.loans.forEach(loan => {
+    this.loans = (await this.storage.getLoans()) || [];
+    this.loans.forEach((loan) => {
       LoanUtils.fillInstalments(loan);
     });
 
     await this.storage.saveLoans(this.loans);
-    let totalLoanAmount = 0, outstanding = 0, principalPaid = 0, interestPaid = 0;
+    let totalLoanAmount = 0,
+      outstanding = 0,
+      principalPaid = 0,
+      interestPaid = 0;
     const lastInstallments: any = Array.from({ length: 5 }, (_, index) => {
       const currentDate = moment().subtract(index, 'months');
       return {
@@ -58,10 +66,10 @@ export class HomePage {
         principalPaid: 0,
         drilldowns: [],
         emiDate: currentDate.startOf('month').add(1, 'day').toDate(),
-      }
+      };
     });
 
-    this.loans.forEach(loan => {
+    this.loans.forEach((loan) => {
       LoanUtils.calculateLoanDetails(loan);
       totalLoanAmount += loan.amount;
       outstanding += loan.balanceAmount;
@@ -75,12 +83,13 @@ export class HomePage {
       if (!loan.instalments.length) return;
       const insts = this.getLastInstallemts(loan.instalments);
 
-      lastInstallments.forEach(insta => {
+      lastInstallments.forEach((insta) => {
         const month = moment(insta.emiDate);
-        const matchedEmi = insts.find(e => month.isSame(e.emiDate, 'month'));
+        const matchedEmi = insts.find((e) => month.isSame(e.emiDate, 'month'));
         if (!matchedEmi) return;
 
-        const principalPaid = matchedEmi.principalPaid + (matchedEmi.prepaymentTotal || 0);
+        const principalPaid =
+          matchedEmi.principalPaid + (matchedEmi.prepaymentTotal || 0);
         insta.principalPaid += principalPaid;
         insta.interestPaid += matchedEmi.interestPaid;
         insta.drilldowns.push({
@@ -91,16 +100,16 @@ export class HomePage {
       });
     });
 
-    this.loans.forEach(loan => {
+    this.loans.forEach((loan) => {
       if (!loan.ledger.length) return;
 
-      lastInstallments.forEach(insta => {
+      lastInstallments.forEach((insta) => {
         const month = moment(insta.emiDate);
         let monthPaid = 0;
         let monthInterest = 0;
         let principalPaid = 0;
 
-        loan.ledger.forEach(led => {
+        loan.ledger.forEach((led) => {
           if (month.isSame(led.transactionDate, 'month')) {
             if (led.type === 'DEBIT') {
               monthPaid += led.amount;
@@ -127,57 +136,78 @@ export class HomePage {
     });
 
     this.summary.outstanding = outstanding;
-    const loanData = [{
-      name: 'Principal<br> Paid',
-      y: principalPaid * 100 / totalLoanAmount,
-      amount: principalPaid,
-      color: '#2dd36f',
-    }, {
-      name: 'Balanace',
-      y: outstanding * 100 / totalLoanAmount,
-      amount: outstanding,
-      color: '#eb445a',
-    }]
-    this.loanChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Loan<br>${this.currencyPipe.transform(totalLoanAmount, 'noDecimal')}`, loanData);
+    const loanData = [
+      {
+        name: 'Principal<br> Paid',
+        y: (principalPaid * 100) / totalLoanAmount,
+        amount: principalPaid,
+        color: '#2dd36f',
+      },
+      {
+        name: 'Balanace',
+        y: (outstanding * 100) / totalLoanAmount,
+        amount: outstanding,
+        color: '#eb445a',
+      },
+    ];
+    this.loanChartOpns = ChartUtils.getPieChartOptions(
+      this.currencyPipe,
+      `Total Loan<br>${this.currencyPipe.transform(
+        totalLoanAmount,
+        'noDecimal'
+      )}`,
+      loanData
+    );
 
-    const paidData = [{
-      name: 'Interest<br> Paid',
-      y: interestPaid * 100 / (principalPaid + interestPaid),
-      amount: interestPaid,
-      color: '#eb445a'
-    }, {
-      name: 'Principal<br> Paid',
-      y: principalPaid * 100 / (principalPaid + interestPaid),
-      amount: principalPaid,
-      color: '#2dd36f',
-    }];
-    this.repaidChartOpns = ChartUtils.getPieChartOptions(this.currencyPipe, `Total Paid<br>${this.currencyPipe.transform(principalPaid + interestPaid, 'noDecimal')}`, paidData);
+    const paidData = [
+      {
+        name: 'Interest<br> Paid',
+        y: (interestPaid * 100) / (principalPaid + interestPaid),
+        amount: interestPaid,
+        color: '#eb445a',
+      },
+      {
+        name: 'Principal<br> Paid',
+        y: (principalPaid * 100) / (principalPaid + interestPaid),
+        amount: principalPaid,
+        color: '#2dd36f',
+      },
+    ];
+    this.repaidChartOpns = ChartUtils.getPieChartOptions(
+      this.currencyPipe,
+      `Total Paid<br>${this.currencyPipe.transform(
+        principalPaid + interestPaid,
+        'noDecimal'
+      )}`,
+      paidData
+    );
 
     let redrawEnabled = true;
-    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(this.currencyPipe, lastInstallments.reverse());
+    this.instaChartOpns = ChartUtils.getPaymentHistoryChart(
+      this.currencyPipe,
+      lastInstallments.reverse()
+    );
     this.instaChartOpns.chart.events = {
       redraw: function () {
         if (!redrawEnabled) return;
         redrawEnabled = false;
         const values: any = [];
-        this.series.forEach(s => {
-          values.push(s.dataMax)
+        this.series.forEach((s) => {
+          values.push(s.dataMax);
         });
-        let ymax = values.reduce((acc, val) => (acc > val) ? acc : val, 0);
+        let ymax = values.reduce((acc, val) => (acc > val ? acc : val), 0);
         ymax += ymax * 0.3;
         this.yAxis[0].setExtremes(0, ymax);
         redrawEnabled = true;
-      }
-    }
+      },
+    };
   }
 
   getLastInstallemts(arr) {
-    return (Object.assign([], arr)).reverse().slice(0, 5);
+    return Object.assign([], arr).reverse().slice(0, 5);
   }
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   // ngAfterViewInit() {
   //   this.backButtonSubscription = this.platform.backButton.subscribe(() => {
@@ -190,19 +220,17 @@ export class HomePage {
   // }
 
   newLoan() {
-    this.router.navigateByUrl("loan-basic", {
-      skipLocationChange: true
+    this.router.navigateByUrl('loan-basic', {
+      skipLocationChange: true,
     });
   }
 
   playArea() {
-    this.router.navigateByUrl("play-area");
+    this.router.navigateByUrl('play-area');
   }
 
   loanOther(loan) {
     if (!loan || !loan._id) return;
-    this.router.navigateByUrl("loan-details/" + loan._id);
+    this.router.navigateByUrl('loan-details/' + loan._id);
   }
-
-
 }

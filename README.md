@@ -1,4 +1,8 @@
-#Prepayment Advisor
+<p align="center">
+  <img width="100px" height="100px" src="splash_land.png">
+</p>
+
+# Prepayment Advisor
 
 ## Table of contents
 
@@ -6,12 +10,14 @@
 - [Installation](#installation)
 - [Run](#run)
 - [Build](#build)
+- [Live App](#live-app)
 
 ## Motivation
 
-<p>Our aim is to help you to track of your loan EMI and encourage you to pay prepayment by showing the laon interest reduction and term reduction due to prepayment or part payment.</p>
-<p>Most people feels difficult to understand the logic behind the EMI calculation. We are trying to help people to understand, How EMI is calculated each month and how each month of your loan principle amount is reduced.</p>
-[Read More about this project](https://prepayment-advisor.web.app/)
+<p>Our goal is to assist users in tracking their loan EMIs and to encourage prepayments by demonstrating potential savings. By providing insights into how small prepayments or part payments can significantly reduce the overall interest and shorten the loan tenure.</p>
+<p>Many people find it challenging to understand the logic behind EMI calculations. Our aim is to simplify this process and help users comprehend how their monthly EMIs are determined. We will provide clear explanations of how each EMI contributes to reducing the principal loan amount and how interest is calculated. By breaking down these details.</p>
+
+[**Read More about Prepayment Advisor**](https://prepayment-advisor.web.app/)
 
 ## Installation
 
@@ -30,3 +36,9 @@ npm start
 ```
 npm run build
 ```
+
+## Live App
+
+<a target="_blank" href="https://play.google.com/store/apps/details?id=com.altooxs.prepaymentadvisor">
+  <img style="height: 100px;" src="playstore.png" alt="Get it on Google Play">
+</a>

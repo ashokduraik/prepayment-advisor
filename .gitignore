@@ -12,7 +12,6 @@ $RECYCLE.BIN/
 *.log
 log.txt
 
-
 /.sourcemaps
 /.versions
 /coverage
@@ -66,3 +65,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+*.pepk
+*.jks
+upload_certificate.pem

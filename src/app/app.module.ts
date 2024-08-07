@@ -8,7 +8,6 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
-import { AppRate } from '@ionic-native/app-rate/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -44,19 +43,19 @@ export const myComponents = [
         Drivers.IndexedDB,
         'sqlite',
         'websql',
-        Drivers.LocalStorage
-      ]
+        Drivers.LocalStorage,
+      ],
     }),
     AmountInputModule,
   ],
-  providers: [{
-    provide: RouteReuseStrategy,
-    useClass: IonicRouteStrategy
-  },
+  providers: [
+    {
+      provide: RouteReuseStrategy,
+      useClass: IonicRouteStrategy,
+    },
     FileChooser,
-    AppRate,
   ],
 
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

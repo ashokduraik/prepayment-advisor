@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import moment from 'moment';
 import * as Highcharts from 'highcharts';
-import { AppRate } from '@ionic-native/app-rate/ngx';
+// import { AppRate } from '@ionic-native/app-rate/ngx';
 import {
   ActionSheetController,
   AlertController,
@@ -39,7 +39,7 @@ export class LoanDetailsPage implements OnInit {
   instaChartOpns: Highcharts.Options | null = null;
 
   constructor(
-    private appRate: AppRate,
+    // private appRate: AppRate,
     private storage: AppStorage,
     private router: Router,
     private datePipe: DatePipe,
@@ -221,23 +221,21 @@ export class LoanDetailsPage implements OnInit {
 
   ngOnInit() {
     //this.appService.showInterstitialAds();
-
-    this.appRate.setPreferences({
-      displayAppName: 'Prepayment Advisor',
-      usesUntilPrompt: 3,
-      promptAgainForEachNewVersion: false,
-      storeAppURL: {
-        //ios: '<app_id>',
-        android: 'market://details?id=com.altooxs.prepaymentadvisor',
-      },
-      customLocale: {
-        title: 'Would you mind rating %@?',
-        message:
-          'It won’t take more than a minute and helps to promote our app. Thanks for your support!',
-      },
-    });
-
-    this.appRate.promptForRating(false);
+    // this.appRate.setPreferences({
+    //   displayAppName: 'Prepayment Advisor',
+    //   usesUntilPrompt: 3,
+    //   promptAgainForEachNewVersion: false,
+    //   storeAppURL: {
+    //     //ios: '<app_id>',
+    //     android: 'market://details?id=com.altooxs.prepaymentadvisor',
+    //   },
+    //   customLocale: {
+    //     title: 'Would you mind rating %@?',
+    //     message:
+    //       'It won’t take more than a minute and helps to promote our app. Thanks for your support!',
+    //   },
+    // });
+    // this.appRate.promptForRating(false);
   }
 
   async presentPopover(event: Event) {

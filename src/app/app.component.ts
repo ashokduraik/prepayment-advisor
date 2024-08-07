@@ -56,9 +56,9 @@ export class AppComponent {
   ) {
     this.isAndroid = this.platform.is('android');
     this.initializeApp();
-    Highcharts.setOptions({
-      credits: { enabled: false },
-    });
+    // Highcharts.setOptions({
+    //   credits: { enabled: false },
+    // });
   }
 
   async ngOnInit() {
@@ -101,9 +101,9 @@ export class AppComponent {
     // } else {
     lightTheme(Highcharts);
     Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].apply();
-    Highcharts.setOptions(
-      Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].options
-    );
+    // Highcharts.setOptions(
+    //   Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].options
+    // );
     // }
   }
 

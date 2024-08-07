@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 
 import * as Highcharts from 'highcharts';
 import { Storage } from '@ionic/storage-angular';
-import darkTheme from 'highcharts/themes/high-contrast-dark';
+// import darkTheme from 'highcharts/themes/high-contrast-dark';
 import lightTheme from 'highcharts/themes/high-contrast-light';
 import { Platform } from '@ionic/angular';
 import HC_drilldown from 'highcharts/modules/drilldown';
@@ -89,22 +89,22 @@ export class AppComponent {
   }
 
   toggleDarkMode() {
-    document.body.classList.toggle('dark', this.darkMode);
+    // document.body.classList.toggle('dark', this.darkMode);
     // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     // if (prefersDark.matches === true) darkTheme(Highcharts);
-    if (this.darkMode === true) {
-      darkTheme(Highcharts);
-      Highcharts['_modules']['Extensions/Themes/HighContrastDark.js'].apply();
-      Highcharts.setOptions(
-        Highcharts['_modules']['Extensions/Themes/HighContrastDark.js'].options
-      );
-    } else {
-      lightTheme(Highcharts);
-      Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].apply();
-      Highcharts.setOptions(
-        Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].options
-      );
-    }
+    // if (this.darkMode === true) {
+    //   darkTheme(Highcharts);
+    //   Highcharts['_modules']['Extensions/Themes/HighContrastDark.js'].apply();
+    //   Highcharts.setOptions(
+    //     Highcharts['_modules']['Extensions/Themes/HighContrastDark.js'].options
+    //   );
+    // } else {
+    lightTheme(Highcharts);
+    Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].apply();
+    Highcharts.setOptions(
+      Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].options
+    );
+    // }
   }
 
   async updateProfile() {

@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import * as Highcharts from 'highcharts';
 import moment from 'moment';
-import darkTheme from 'highcharts/themes/high-contrast-dark';
-import lightTheme from 'highcharts/themes/high-contrast-light';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
@@ -27,7 +25,7 @@ export class HomePage {
   repaidChartOpns: Highcharts.Options | null = null;
   instaChartOpns: any = null;
   summary = {
-    LoanCnt: 0,
+    loanCnt: 0,
     outstanding: 0,
   };
   updateFlag = false;
@@ -54,6 +52,8 @@ export class HomePage {
       LoanUtils.fillInstalments(loan);
     });
 
+    this.summary.loanCnt = 0;
+    this.summary.outstanding = 0;
     await this.storage.saveLoans(this.loans);
     let totalLoanAmount = 0,
       outstanding = 0,
@@ -77,7 +77,7 @@ export class HomePage {
       interestPaid += loan.interestPaid;
 
       if (!loan.isCompleted) {
-        this.summary.LoanCnt++;
+        this.summary.loanCnt++;
       }
 
       if (!loan.instalments.length) return;
@@ -208,16 +208,6 @@ export class HomePage {
   }
 
   ngOnInit() {}
-
-  // ngAfterViewInit() {
-  //   this.backButtonSubscription = this.platform.backButton.subscribe(() => {
-  //     navigator['app'].exitApp();
-  //   });
-  // }
-
-  // ngOnDestroy() {
-  //   this.backButtonSubscription.unsubscribe();
-  // }
 
   newLoan() {
     this.router.navigateByUrl('loan-basic', {

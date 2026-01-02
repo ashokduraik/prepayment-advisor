@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+// use HTML file input as cross-platform picker (works in webview on Android/iOS)
 
 import { AppUtils } from '../../services/app.utils';
 import { AppStorage } from '../../services/app.storage';
@@ -19,7 +19,6 @@ export class BackupRestorePage implements OnInit {
     private router: Router,
     private service: AppService,
     private storage: AppStorage,
-    private fileChooser: FileChooser,
   ) { }
 
   ngOnInit() {
@@ -55,22 +54,47 @@ export class BackupRestorePage implements OnInit {
 
   async restore() {
     try {
-      const uri = await this.fileChooser.open({ "mime": "application/json" });
-      if (!uri) return;
+      const cap: any = (window as any).Capacitor || (window as any).cordova || {};
+      const NativeFilePicker = cap.Plugins && cap.Plugins.NativeFilePicker ? cap.Plugins.NativeFilePicker : null;
 
-      const contents = await Filesystem.readFile({
-        path: uri,
-        encoding: Encoding.UTF8,
-      });
+      let text: string | null = null;
 
-      if (!contents || !contents.data) {
-        this.service.presentAlert('', 'Sorry..!, this device is not supported..!');
-        return;
+      if (NativeFilePicker && typeof NativeFilePicker.pickFile === 'function') {
+        const res: any = await NativeFilePicker.pickFile();
+        if (!res || !res.data) {
+          this.service.presentAlert('', 'Sorry..!, this device is not supported..!');
+          return;
+        }
+        text = res.data;
+      } else {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'application/json,.json';
+        input.multiple = false;
+
+        const filePromise: Promise<File | null> = new Promise((resolve) => {
+          input.onchange = () => {
+            const files = input.files;
+            if (!files || files.length === 0) return resolve(null);
+            resolve(files[0]);
+          };
+        });
+
+        input.click();
+        const pickedFile = await filePromise;
+        if (!pickedFile) return;
+
+        text = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (err) => reject(err);
+          reader.readAsText(pickedFile);
+        });
       }
 
       let data: any = null;
       try {
-        data = JSON.parse(contents.data.toString());
+        data = JSON.parse((text || '').toString());
       } catch (e) {
         this.service.presentAlert('', 'Invalid backup file, please select valid backup file');
         return;

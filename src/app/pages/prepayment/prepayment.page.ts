@@ -7,9 +7,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-prepayment',
-  templateUrl: './prepayment.page.html',
-  styleUrls: ['./prepayment.page.scss'],
+    selector: 'app-prepayment',
+    templateUrl: './prepayment.page.html',
+    styleUrls: ['./prepayment.page.scss'],
+    standalone: false
 })
 export class PrepaymentPage implements OnInit {
   emi: any;

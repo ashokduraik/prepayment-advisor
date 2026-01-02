@@ -5,9 +5,10 @@ import { ModalController } from '@ionic/angular';
 import { LoanUtils } from '../../services/loan.utils';
 
 @Component({
-  selector: 'app-play-area-filter',
-  templateUrl: './play-area-filter.page.html',
-  styleUrls: ['./play-area-filter.page.scss'],
+    selector: 'app-play-area-filter',
+    templateUrl: './play-area-filter.page.html',
+    styleUrls: ['./play-area-filter.page.scss'],
+    standalone: false
 })
 export class PlayAreaFilterPage implements OnInit {
   minEmi = 0;

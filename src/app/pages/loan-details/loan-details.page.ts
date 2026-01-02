@@ -20,9 +20,10 @@ import { ChartUtils } from 'src/app/services/chart.utils';
 import { AppUtils } from 'src/app/services/app.utils';
 
 @Component({
-  selector: 'app-loan-details',
-  templateUrl: './loan-details.page.html',
-  styleUrls: ['./loan-details.page.scss'],
+    selector: 'app-loan-details',
+    templateUrl: './loan-details.page.html',
+    styleUrls: ['./loan-details.page.scss'],
+    standalone: false
 })
 export class LoanDetailsPage implements OnInit {
   _id: String = '';

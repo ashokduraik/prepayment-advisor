@@ -8,9 +8,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-loan-details-popover',
-  templateUrl: './loan-details-popover.component.html',
-  styleUrls: ['./loan-details-popover.component.scss'],
+    selector: 'app-loan-details-popover',
+    templateUrl: './loan-details-popover.component.html',
+    styleUrls: ['./loan-details-popover.component.scss'],
+    standalone: false
 })
 export class LoanDetailsPopoverComponent implements OnInit {
   @Input("_id") _id;

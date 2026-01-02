@@ -7,9 +7,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-loan-topup',
-  templateUrl: './loan-topup.page.html',
-  styleUrls: ['./loan-topup.page.scss'],
+    selector: 'app-loan-topup',
+    templateUrl: './loan-topup.page.html',
+    styleUrls: ['./loan-topup.page.scss'],
+    standalone: false
 })
 export class LoanTopupPage implements OnInit {
   emi: any;

@@ -9,9 +9,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-backup-restore',
-  templateUrl: './backup-restore.page.html',
-  styleUrls: ['./backup-restore.page.scss'],
+    selector: 'app-backup-restore',
+    templateUrl: './backup-restore.page.html',
+    styleUrls: ['./backup-restore.page.scss'],
+    standalone: false
 })
 export class BackupRestorePage implements OnInit {
   defaultHref = 'home';

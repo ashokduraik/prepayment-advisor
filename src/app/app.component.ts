@@ -16,9 +16,10 @@ import { AppCurrencyPipe } from './services/app.pipe';
 // import sampleData from '../../data/sample.json';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   appPages = [

@@ -8,9 +8,10 @@ import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 
 @Component({
-  selector: 'app-timeline',
-  templateUrl: './timeline.page.html',
-  styleUrls: ['./timeline.page.scss'],
+    selector: 'app-timeline',
+    templateUrl: './timeline.page.html',
+    styleUrls: ['./timeline.page.scss'],
+    standalone: false
 })
 export class TimelinePage {
   loan: any;

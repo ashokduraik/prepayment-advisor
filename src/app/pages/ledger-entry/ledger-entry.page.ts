@@ -8,9 +8,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-ledger-entry',
-  templateUrl: './ledger-entry.page.html',
-  styleUrls: ['./ledger-entry.page.scss'],
+    selector: 'app-ledger-entry',
+    templateUrl: './ledger-entry.page.html',
+    styleUrls: ['./ledger-entry.page.scss'],
+    standalone: false
 })
 export class LedgerEntryPage implements OnInit {
   loan: any;

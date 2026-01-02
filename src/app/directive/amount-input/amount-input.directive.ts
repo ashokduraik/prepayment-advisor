@@ -3,7 +3,8 @@ import { Directive, ElementRef, HostListener, Input, OnInit } from "@angular/cor
 import { AppCurrencyPipe } from '../../services/app.pipe';
 
 @Directive({
-  selector: "[amountInput]",
+    selector: "[amountInput]",
+    standalone: false
 })
 export class AmountInputDirective implements OnInit {
   @Input() autofocus: any;

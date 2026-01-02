@@ -12,9 +12,10 @@ import { AppService } from '../../services/app.services';
 import { CurrencySelectComponent } from '../currency-select/currency-select.component';
 
 @Component({
-  selector: 'app-loan-basic',
-  templateUrl: './loan-basic.component.html',
-  styleUrls: ['./loan-basic.component.scss'],
+    selector: 'app-loan-basic',
+    templateUrl: './loan-basic.component.html',
+    styleUrls: ['./loan-basic.component.scss'],
+    standalone: false
 })
 export class LoanBasicComponent implements OnInit {
   _id: string = '';

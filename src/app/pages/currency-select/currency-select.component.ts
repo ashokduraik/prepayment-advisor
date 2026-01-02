@@ -9,9 +9,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 
 @Component({
-  selector: 'app-currency-select',
-  templateUrl: './currency-select.component.html',
-  styleUrls: ['./currency-select.component.scss'],
+    selector: 'app-currency-select',
+    templateUrl: './currency-select.component.html',
+    styleUrls: ['./currency-select.component.scss'],
+    standalone: false
 })
 export class CurrencySelectComponent implements OnInit {
   currency = null;

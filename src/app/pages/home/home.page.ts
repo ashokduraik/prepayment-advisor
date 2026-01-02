@@ -10,9 +10,10 @@ import { AppCurrencyPipe } from '../../services/app.pipe';
 import { ChartUtils } from 'src/app/services/chart.utils';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+    selector: 'app-home',
+    templateUrl: 'home.page.html',
+    styleUrls: ['home.page.scss'],
+    standalone: false
 })
 export class HomePage {
   profile = null;

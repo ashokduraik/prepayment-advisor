@@ -6,9 +6,10 @@ import { LoanUtils } from '../../services/loan.utils';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-emi-calculator',
-  templateUrl: './emi-calculator.page.html',
-  styleUrls: ['./emi-calculator.page.scss'],
+    selector: 'app-emi-calculator',
+    templateUrl: './emi-calculator.page.html',
+    styleUrls: ['./emi-calculator.page.scss'],
+    standalone: false
 })
 export class EmiCalculatorPage implements OnInit {
   //@ts-ignore

@@ -7,48 +7,52 @@
       Loan Topup
     </ion-title>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card *ngFor="let topup of topups;">
-    <ion-list>
-
-      <span class="label">Enter the topup amount</span>
-      <ion-input [(ngModel)]="topup.amount" type="number" (change)="valueChanged();" placeholder="100000" amountInput>
-      </ion-input>
-
-      <ion-item lines="none">
-        <ion-label>Select Date</ion-label>
-        <ion-datetime-button datetime="datetime" required></ion-datetime-button>
-
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime" [(ngModel)]="topup.topupDate" min="{{minDate}}" max="{{maxDate}}"
+  @for (topup of topups; track topup) {
+    <ion-card>
+      <ion-list>
+        <span class="label">Enter the topup amount</span>
+        <ion-input [(ngModel)]="topup.amount" type="number" (change)="valueChanged();" placeholder="100000" amountInput>
+        </ion-input>
+        <ion-item lines="none">
+          <ion-label>Select Date</ion-label>
+          <ion-datetime-button datetime="datetime" required></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime" [(ngModel)]="topup.topupDate" min="{{minDate}}" max="{{maxDate}}"
               presentation="date" [showDefaultButtons]="true"></ion-datetime>
-          </ng-template>
-        </ion-modal>
-      </ion-item>
-    </ion-list>
-  </ion-card>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+  }
 
   <ion-card>
     <ion-list>
-      <ion-item *ngIf="topupChanged" lines="none">
-        <ion-checkbox [(ngModel)]="noEmi" color="primary" labelPlacement="end">No Change in EMI. Only term needs to be
+      @if (topupChanged) {
+        <ion-item lines="none">
+          <ion-checkbox [(ngModel)]="noEmi" color="primary" labelPlacement="end">No Change in EMI. Only term needs to be
           increased</ion-checkbox>
-      </ion-item>
+        </ion-item>
+      }
 
-      <div *ngIf="topupChanged">
-        <span class="label">Enter the new EMI Amount (Approximately {{approximateEmi | appCurrency: '' }}, if no change
+      @if (topupChanged) {
+        <div>
+          <span class="label">Enter the new EMI Amount (Approximately {{approximateEmi | appCurrency: '' }}, if no change
           in term)</span>
-        <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
-
-        <ion-text color="danger" *ngIf="!newEmiAmount && !noEmi && submitted == true">
-          <p>
-            <ion-icon name="information-circle-outline"></ion-icon>New EMI is required
-          </p>
-        </ion-text>
-      </div>
+          <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
+          @if (!newEmiAmount && !noEmi && submitted == true) {
+            <ion-text color="danger">
+              <p>
+                <ion-icon name="information-circle-outline"></ion-icon>New EMI is required
+              </p>
+            </ion-text>
+          }
+        </div>
+      }
 
       <ion-button (click)="save()" type="submit" expand="block">Save</ion-button>
     </ion-list>

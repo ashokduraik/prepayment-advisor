@@ -4,9 +4,11 @@
       Select Currency
     </ion-title>
 
-    <ion-buttons *ngIf="currency" slot="end">
-      <ion-button (click)="updateProfile()" strong>Done</ion-button>
-    </ion-buttons>
+    @if (currency) {
+      <ion-buttons slot="end">
+        <ion-button (click)="updateProfile()" strong>Done</ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -14,9 +16,11 @@
     <ion-input [(ngModel)]="searchCurrency" placeholder="Type to search" (keyup)="filterCurrency()"></ion-input>
 
     <ion-radio-group [(ngModel)]="currency">
-      <ion-item lines="none" *ngFor="let cur of currencies;">
-        <ion-radio labelPlacement="end" slot="start" [value]="cur.value">{{cur.label}}</ion-radio>
-      </ion-item>
+      @for (cur of currencies; track cur) {
+        <ion-item lines="none">
+          <ion-radio labelPlacement="end" slot="start" [value]="cur.value">{{cur.label}}</ion-radio>
+        </ion-item>
+      }
     </ion-radio-group>
   </ion-list>
 </ion-content>

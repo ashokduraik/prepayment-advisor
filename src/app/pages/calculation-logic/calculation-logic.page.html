@@ -7,290 +7,381 @@
       Calculation Logic
     </ion-title>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card *ngIf="previousMonth" class="speaker-card" style="margin: -10px 10px 15px 10px;">
-    <ion-button (click)="goToPrevious()" expand="block" color="light" style="margin: 0px; text-transform: none;">
-      <ion-icon name="arrow-up-outline" style="margin-right: 5px;"></ion-icon>
-      Go to {{previousMonth | date: 'MMMM YYYY'}} EMI
-    </ion-button>
-  </ion-card>
+  @if (previousMonth) {
+    <ion-card class="speaker-card" style="margin: -10px 10px 15px 10px;">
+      <ion-button (click)="goToPrevious()" expand="block" color="light" style="margin: 0px; text-transform: none;">
+        <ion-icon name="arrow-up-outline" style="margin-right: 5px;"></ion-icon>
+        Go to {{previousMonth | date: 'MMMM YYYY'}} EMI
+      </ion-button>
+    </ion-card>
+  }
 
-  <ion-card *ngIf="emi" class="speaker-card">
-    <ion-card-header color="primary">
-      <ion-grid>
+  @if (emi) {
+    <ion-card class="speaker-card">
+      <ion-card-header color="primary">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="3" class="ion-align-self-center">
+              Term: {{emi.term}}
+            </ion-col>
+            <ion-col>
+              <h2 style="font-size: 20px;">{{emi.emiDate | date: 'MMMM YYYY'}}</h2>
+            </ion-col>
+            <ion-col size="2" style="text-align: end;" class="ion-align-self-center">
+              {{ emi.interestRate }}%
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row class="detail-head">
+            <ion-col class="ion-align-self-start">
+              Opening Balance
+            </ion-col>
+            <ion-col size="4" class="ion-align-self-end">
+              {{ emi.openingBalance | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              = Closing Balance of previous month
+            </ion-col>
+          </ion-row>
+          <ion-row class="detail-head">
+            <ion-col class="ion-align-self-start">
+              EMI
+            </ion-col>
+            <ion-col size="4" class="ion-align-self-end">
+              {{ emi.amount + (emi.charges || 0) | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          @if (emi.charges) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = EMI + Charges
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.charges) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = {{emi.amount | appCurrency: ''}} + {{emi.charges | appCurrency: ''}}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.charges) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = {{ emi.amount + (emi.charges || 0) | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.previousMonthTopupPending) {
+            <ion-row class="detail-head">
+              <ion-col class="ion-align-self-start">
+                Interest due to topup from previous month
+              </ion-col>
+              <ion-col size="4" class="ion-align-self-end">
+                {{ emi.previousMonthTopupPending.interest | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.previousMonthTopupPending) {
+            <ion-row>
+              <ion-col class="logic-det">
+                (you got money after your EMI debit date for the previous month, so that days interest will be added in this
+                month)
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.previousMonthTopupPending) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = Toup amount * no of days * interest per day
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.previousMonthTopupPending) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = {{ emi.previousMonthTopupPending.amount | appCurrency: '' }} * {{ emi.previousMonthTopupPending.noOfDay }}
+                *
+                {{ (emi.interestRate/(100 * 12 * emi.previousMonthTopupPending.daysInMonth)).toFixed(6)}}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.previousMonthTopupPending) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = {{ emi.previousMonthTopupPending.interest| appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.topupInterest > 0) {
+            <ion-row class="detail-head">
+              <ion-col class="ion-align-self-start">
+                Topup Interest
+              </ion-col>
+              <ion-col size="4" class="ion-align-self-end">
+                {{ emi.topupInterest | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.topupInterest > 0) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = Toup amount * no of days * interest per day
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.topupInterest > 0) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = {{ emi.topupAmount | appCurrency: '' }} * {{ emi.topupAmountNoOfDay }} *
+                {{ (emi.interestRate/(100 * 12 * emi.daysInMonth)).toFixed(6)}}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.topupInterest > 0) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = {{ emi.topupInterest | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          }
+          <ion-row class="detail-head">
+            <ion-col class="ion-align-self-start">
+              Interest Amount
+            </ion-col>
+            <ion-col size="4" class="ion-align-self-end">
+              {{ emi.interestPaid | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              @if (!emi.noOfDays) {
+                <span>
+                  = (Opening Balance * Interest rate per month)
+                </span>
+              }
+              @if (emi.noOfDays) {
+                <span>
+                  = (Opening Balance * no of days * interest per day)
+                </span>
+              }
+              @if (emi.previousMonthTopupPending) {
+                <span> + Interest due to topup from previous month</span>
+              }
+              @if (emi.topupInterest > 0) {
+                <span> + Topup Interest</span>
+              }
+              @if (emi.interestAdjustment != null) {
+                <span> + Interest Adjustment</span>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              @if (!emi.noOfDays) {
+                <span>
+                  = ({{ emi.openingBalance | appCurrency: '' }} * ({{ emi.interestRate}} / (100 * 12)))
+                </span>
+              }
+              @if (emi.noOfDays) {
+                <span>
+                  = ({{ emi.openingBalance | appCurrency: '' }} * {{emi.noOfDays}} * ({{ emi.interestRate}} / (100 * 12 *
+                  {{emi.daysInMonth}})))
+                </span>
+              }
+              @if (emi.previousMonthTopupPending) {
+                <span> + {{ emi.previousMonthTopupPending.interest |
+                appCurrency: '' }}</span>
+              }
+              @if (emi.topupInterest > 0) {
+                <span> + {{ emi.topupInterest | appCurrency: '' }}</span>
+              }
+              @if (emi.interestAdjustment != null) {
+                <span> + {{ emi.interestAdjustment | appCurrency: '' }}</span>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              @if (!emi.noOfDays) {
+                <span>
+                  = ({{ emi.openingBalance | appCurrency: '' }} * {{ (emi.interestRate/(100*12)).toFixed(6)}})
+                </span>
+              }
+              @if (emi.noOfDays) {
+                <span>
+                  = ({{ emi.openingBalance | appCurrency: '' }} * {{emi.noOfDays}} * {{ (emi.interestRate / (100 * 12 *
+                  emi.daysInMonth)).toFixed(8) }})
+                </span>
+              }
+              @if (emi.previousMonthTopupPending) {
+                <span> + {{ emi.previousMonthTopupPending.interest |
+                appCurrency: '' }}</span>
+              }
+              @if (emi.topupInterest > 0) {
+                <span> + {{ emi.topupInterest | appCurrency: '' }}</span>
+              }
+              @if (emi.interestAdjustment != null) {
+                <span> + {{ emi.interestAdjustment | appCurrency: '' }}</span>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              = {{ emi.interestPaid | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          <ion-row class="detail-head">
+            <ion-col class="ion-align-self-start">
+              Principal Amount
+            </ion-col>
+            <ion-col size="4" class="ion-align-self-end">
+              {{ emi.principalPaid | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              = EMI - Interest Amount
+              @if (emi.charges > 0) {
+                <span>- Charges</span>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              = {{ emi.amount | appCurrency: '' }} - {{ emi.interestPaid | appCurrency: '' }}
+              @if (emi.charges > 0) {
+                <span>- {{ emi.charges | appCurrency: '' }}</span>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="logic-det">
+              = {{ emi.principalPaid | appCurrency: '' }}
+            </ion-col>
+          </ion-row>
+          @if (emi.prepaymentTotal) {
+            <ion-row class="detail-head">
+              <ion-col class="ion-align-self-start">
+                Prepayment Amount
+              </ion-col>
+              <ion-col size="4" class="ion-align-self-end">
+                {{ emi.prepaymentActual | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.prepaymentTotal) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = Prepayment Paid - Interest on Prepayment
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.prepaymentTotal) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = Prepayment Paid - (Amount * Interest Per Day * No of Days)
+              </ion-col>
+            </ion-row>
+          }
+          @if (emi.prepaymentTotal) {
+            <ion-row>
+              <ion-col class="logic-det">
+                = @for (pp of emi.prepayments; track pp; let indexOfele = $index) {
+                <span>
+                  ( {{pp.amount | appCurrency: '' }} - (
+                  {{pp.ppamount | appCurrency: ''}} *
+                  {{(emi.interestRate /(100 * 12 * pp.daysInMonth)).toFixed(6)}} *
+                  {{pp.noOfDay}} ))
+                  @if (indexOfele != emi.prepayments.length-1) {
+                    <span>+</span>
+                  }
+                </span>
+              }
+            </ion-col>
+          </ion-row>
+        }
+        @if (emi.prepaymentTotal) {
+          <ion-row>
+            <ion-col class="logic-det">
+              = @for (pp of emi.prepayments; track pp; let indexOfele = $index) {
+              <span>
+                ( {{pp.amount | appCurrency: '' }} - {{pp.interest | appCurrency: '' }})
+                @if (indexOfele != emi.prepayments.length-1) {
+                  <span>+</span>
+                }
+              </span>
+            }
+          </ion-col>
+        </ion-row>
+      }
+      @if (emi.prepaymentTotal) {
         <ion-row>
-          <ion-col size="3" class="ion-align-self-center">
-            Term: {{emi.term}}
-          </ion-col>
-          <ion-col>
-            <h2 style="font-size: 20px;">{{emi.emiDate | date: 'MMMM YYYY'}}</h2>
-          </ion-col>
-          <ion-col size="2" style="text-align: end;" class="ion-align-self-center">
-            {{ emi.interestRate }}%
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-grid>
-        <ion-row class="detail-head">
-          <ion-col class="ion-align-self-start">
-            Opening Balance
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.openingBalance | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = Closing Balance of previous month
-          </ion-col>
-        </ion-row>
-        <ion-row class="detail-head">
-          <ion-col class="ion-align-self-start">
-            EMI
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.amount + (emi.charges || 0) | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.charges">
-          <ion-col class="logic-det">
-            = EMI + Charges
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.charges">
-          <ion-col class="logic-det">
-            = {{emi.amount | appCurrency: ''}} + {{emi.charges | appCurrency: ''}}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.charges">
-          <ion-col class="logic-det">
-            = {{ emi.amount + (emi.charges || 0) | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row class="detail-head" *ngIf="emi.previousMonthTopupPending">
-          <ion-col class="ion-align-self-start">
-            Interest due to topup from previous month
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.previousMonthTopupPending.interest | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.previousMonthTopupPending">
-          <ion-col class="logic-det">
-            (you got money after your EMI debit date for the previous month, so that days interest will be added in this
-            month)
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.previousMonthTopupPending">
-          <ion-col class="logic-det">
-            = Toup amount * no of days * interest per day
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.previousMonthTopupPending">
-          <ion-col class="logic-det">
-            = {{ emi.previousMonthTopupPending.amount | appCurrency: '' }} * {{ emi.previousMonthTopupPending.noOfDay }}
-            *
-            {{ (emi.interestRate/(100 * 12 * emi.previousMonthTopupPending.daysInMonth)).toFixed(6)}}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.previousMonthTopupPending">
-          <ion-col class="logic-det">
-            = {{ emi.previousMonthTopupPending.interest| appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row class="detail-head" *ngIf="emi.topupInterest > 0">
-          <ion-col class="ion-align-self-start">
-            Topup Interest
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.topupInterest | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.topupInterest > 0">
-          <ion-col class="logic-det">
-            = Toup amount * no of days * interest per day
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.topupInterest > 0">
-          <ion-col class="logic-det">
-            = {{ emi.topupAmount | appCurrency: '' }} * {{ emi.topupAmountNoOfDay }} *
-            {{ (emi.interestRate/(100 * 12 * emi.daysInMonth)).toFixed(6)}}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.topupInterest > 0">
-          <ion-col class="logic-det">
-            = {{ emi.topupInterest | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row class="detail-head">
-          <ion-col class="ion-align-self-start">
-            Interest Amount
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.interestPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            <span *ngIf="!emi.noOfDays">
-              = (Opening Balance * Interest rate per month)
-            </span>
-            <span *ngIf="emi.noOfDays">
-              = (Opening Balance * no of days * interest per day)
-            </span>
-            <span *ngIf="emi.previousMonthTopupPending"> + Interest due to topup from previous month</span>
-            <span *ngIf="emi.topupInterest > 0"> + Topup Interest</span>
-            <span *ngIf="emi.interestAdjustment != null"> + Interest Adjustment</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            <span *ngIf="!emi.noOfDays">
-              = ({{ emi.openingBalance | appCurrency: '' }} * ({{ emi.interestRate}} / (100 * 12)))
-            </span>
-            <span *ngIf="emi.noOfDays">
-              = ({{ emi.openingBalance | appCurrency: '' }} * {{emi.noOfDays}} * ({{ emi.interestRate}} / (100 * 12 *
-              {{emi.daysInMonth}})))
-            </span>
-            <span *ngIf="emi.previousMonthTopupPending"> + {{ emi.previousMonthTopupPending.interest |
-              appCurrency: '' }}</span>
-            <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency: '' }}</span>
-            <span *ngIf="emi.interestAdjustment != null"> + {{ emi.interestAdjustment | appCurrency: '' }}</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            <span *ngIf="!emi.noOfDays">
-              = ({{ emi.openingBalance | appCurrency: '' }} * {{ (emi.interestRate/(100*12)).toFixed(6)}})
-            </span>
-            <span *ngIf="emi.noOfDays">
-              = ({{ emi.openingBalance | appCurrency: '' }} * {{emi.noOfDays}} * {{ (emi.interestRate / (100 * 12 *
-              emi.daysInMonth)).toFixed(8) }})
-            </span>
-            <span *ngIf="emi.previousMonthTopupPending"> + {{ emi.previousMonthTopupPending.interest |
-              appCurrency: '' }}</span>
-            <span *ngIf="emi.topupInterest > 0"> + {{ emi.topupInterest | appCurrency: '' }}</span>
-            <span *ngIf="emi.interestAdjustment != null"> + {{ emi.interestAdjustment | appCurrency: '' }}</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = {{ emi.interestPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row class="detail-head">
-          <ion-col class="ion-align-self-start">
-            Principal Amount
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.principalPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = EMI - Interest Amount
-            <span *ngIf="emi.charges > 0">- Charges</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = {{ emi.amount | appCurrency: '' }} - {{ emi.interestPaid | appCurrency: '' }}
-            <span *ngIf="emi.charges > 0">- {{ emi.charges | appCurrency: '' }}</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = {{ emi.principalPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-
-        <ion-row *ngIf="emi.prepaymentTotal" class="detail-head">
-          <ion-col class="ion-align-self-start">
-            Prepayment Amount
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.prepaymentActual | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.prepaymentTotal">
-          <ion-col class="logic-det">
-            = Prepayment Paid - Interest on Prepayment
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.prepaymentTotal">
-          <ion-col class="logic-det">
-            = Prepayment Paid - (Amount * Interest Per Day * No of Days)
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.prepaymentTotal">
-          <ion-col class="logic-det">
-            = <span *ngFor="let pp of emi.prepayments; let indexOfele=index;">
-              ( {{pp.amount | appCurrency: '' }} - (
-              {{pp.ppamount | appCurrency: ''}} *
-              {{(emi.interestRate /(100 * 12 * pp.daysInMonth)).toFixed(6)}} *
-              {{pp.noOfDay}} ))
-              <span *ngIf="indexOfele != emi.prepayments.length-1">+</span>
-            </span>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.prepaymentTotal">
-          <ion-col class="logic-det">
-            = <span *ngFor="let pp of emi.prepayments; let indexOfele=index;">
-              ( {{pp.amount | appCurrency: '' }} - {{pp.interest | appCurrency: '' }})
-              <span *ngIf="indexOfele != emi.prepayments.length-1">+</span>
-            </span>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.prepaymentTotal">
           <ion-col class="logic-det">
             = {{ emi.prepaymentActual | appCurrency: '' }}
           </ion-col>
         </ion-row>
+      }
+      <ion-row class="detail-head">
+        <ion-col class="ion-align-self-start">
+          Closing Balance
+        </ion-col>
+        <ion-col size="4" class="ion-align-self-end">
+          {{ emi.closingBalance | appCurrency: '' }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="logic-det">
+          = Opening Balance - Principal Amount
+          @if (emi.topupTotal > 0) {
+            <span>+ Topup Amount</span>
+          }
+          @if (emi.prepaymentTotal > 0) {
+            <span>- Prepayment Amount</span>
+          }
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="logic-det">
+          = {{ emi.openingBalance | appCurrency: '' }} - {{ emi.principalPaid | appCurrency: '' }}
+          @if (emi.topupTotal > 0) {
+            <span>+ {{ emi.topupTotal | appCurrency: '' }}</span>
+          }
+          @if (emi.prepaymentActual > 0) {
+            <span>- {{ emi.prepaymentActual | appCurrency: '' }}</span>
+          }
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="logic-det">
+          = {{ emi.closingBalance | appCurrency: '' }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>
+}
 
-        <ion-row class="detail-head">
-          <ion-col class="ion-align-self-start">
-            Closing Balance
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.closingBalance | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = Opening Balance - Principal Amount
-            <span *ngIf="emi.topupTotal > 0">+ Topup Amount</span>
-            <span *ngIf="emi.prepaymentTotal > 0">- Prepayment Amount</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = {{ emi.openingBalance | appCurrency: '' }} - {{ emi.principalPaid | appCurrency: '' }}
-            <span *ngIf="emi.topupTotal > 0">+ {{ emi.topupTotal | appCurrency: '' }}</span>
-            <span *ngIf="emi.prepaymentActual > 0">- {{ emi.prepaymentActual | appCurrency: '' }}</span>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="logic-det">
-            = {{ emi.closingBalance | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card *ngIf="nextMonth" class="speaker-card" style="margin-top: 20px;">
+@if (nextMonth) {
+  <ion-card class="speaker-card" style="margin-top: 20px;">
     <ion-button (click)="goToNext()" expand="block" color="light" style="margin: 0px; text-transform: none;">
       <ion-icon name="arrow-down-outline" style="margin-right: 5px;"></ion-icon>
       Go to {{nextMonth | date: 'MMMM YYYY'}} EMI
     </ion-button>
   </ion-card>
+}
 
-  <div *ngIf="noInstalment" style="text-align: center;">
+@if (noInstalment) {
+  <div style="text-align: center;">
     <ion-text color="danger">No Instalment found</ion-text>
   </div>
+}
 </ion-content>

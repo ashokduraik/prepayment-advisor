@@ -7,110 +7,125 @@
       Edit EMI
     </ion-title>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
   <form [formGroup]="loanForm">
-    <ion-card *ngIf="emi" class="speaker-card">
-      <ion-card-header color="primary">
-        <ion-grid>
+    @if (emi) {
+      <ion-card class="speaker-card">
+        <ion-card-header color="primary">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
+              </ion-col>
+              <ion-col size="2" style="text-align: end;">
+                {{ emi.interestRate }}%
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list>
+            <span class="label">Enter Rate of Interest per year</span>
+            <ion-input formControlName="interestRate" type="number" placeholder="8" required>
+            </ion-input>
+            @if (loanForm.get('interestRate')?.dirty || loanForm.get('interestRate')?.touched || submitted == true) {
+              <ion-text color="danger"
+                >
+                @if (loanForm.get('interestRate')?.hasError('required')) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest is required
+                  </p>
+                }
+                @if (loanForm.get('interestRate')?.hasError('min')) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be greater than 0
+                  </p>
+                }
+                @if (loanForm.get('interestRate')?.hasError('max')) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be less than 50
+                  </p>
+                }
+              </ion-text>
+            }
+            <span class="label">Enter EMI Amount</span>
+            <ion-input formControlName="emi" type="number" placeholder="7000" amountInput required></ion-input>
+            @if (loanForm.get('emi')?.dirty || loanForm.get('emi')?.touched || submitted == true) {
+              <ion-text color="danger"
+                >
+                @if (loanForm.get('emi')?.hasError('required')) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>EMI is required
+                  </p>
+                }
+                @if (loanForm.get('emi')?.hasError('min')) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>EMI should be greater than 1
+                  </p>
+                }
+                @if (loanForm.get('emi')?.hasError('max')) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>EMI should be less than 99999999
+                  </p>
+                }
+                @if (minEmi > loanForm.get('emi')?.value) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>As per your loan amount, your minimum EMI should be
+                    greater than {{minEmi}}
+                  </p>
+                }
+              </ion-text>
+            }
+            <ion-item>
+              <ion-label>Apply EMI Amount change for this month only</ion-label>
+              <ion-toggle formControlName="emiChangeCurrent"></ion-toggle>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-select label="EMI debit day" formControlName="emiDay" placeholder="Select" style="max-width: none;"
+                required>
+                @for (day of days; track day) {
+                  <ion-select-option [value]="day">{{day}} of every month</ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+            @if (loanForm.get('emiDay')?.dirty || loanForm.get('emiDay')?.touched || submitted == true) {
+              <ion-text color="danger"
+                >
+                @if (loanForm.get('emiDay')?.hasError('required')) {
+                  <p>
+                    <ion-icon name="information-circle-outline"></ion-icon>EMI Day is required
+                  </p>
+                }
+              </ion-text>
+            }
+            <span class="label">Charges if any</span>
+            <ion-input formControlName="charges" type="number" amountInput></ion-input>
+            <span class="label">Interest Adjustment If our logic is wrong</span>
+            <ion-input formControlName="interestAdjustment" type="number" amountInput></ion-input>
+            <ion-text>
+              <p style="padding-left: 15px;">If you want reduce the interest, enter negative number</p>
+            </ion-text>
+          </ion-list>
+          <ion-card>
+            <ion-item lines="none">
+              <ion-row>
+                <strong>Note:</strong>
+                <div>
+                  Any changes in Rate of Interest or EMI or EMI debit day, will affect all the next month EMI.
+                </div>
+              </ion-row>
+            </ion-item>
+          </ion-card>
           <ion-row>
             <ion-col>
-              <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
-            </ion-col>
-            <ion-col size="2" style="text-align: end;">
-              {{ emi.interestRate }}%
+              <ion-button (click)="save(loanForm)" type="submit" expand="block">Save</ion-button>
             </ion-col>
           </ion-row>
-        </ion-grid>
-      </ion-card-header>
-
-      <ion-card-content>
-        <ion-list>
-
-          <span class="label">Enter Rate of Interest per year</span>
-          <ion-input formControlName="interestRate" type="number" placeholder="8" required>
-          </ion-input>
-
-          <ion-text color="danger"
-            *ngIf="loanForm.get('interestRate')?.dirty || loanForm.get('interestRate')?.touched || submitted == true">
-            <p *ngIf="loanForm.get('interestRate')?.hasError('required')">
-              <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest is required
-            </p>
-            <p *ngIf="loanForm.get('interestRate')?.hasError('min')">
-              <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be greater than 0
-            </p>
-            <p *ngIf="loanForm.get('interestRate')?.hasError('max')">
-              <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be less than 50
-            </p>
-          </ion-text>
-
-          <span class="label">Enter EMI Amount</span>
-          <ion-input formControlName="emi" type="number" placeholder="7000" amountInput required></ion-input>
-
-          <ion-text color="danger"
-            *ngIf="loanForm.get('emi')?.dirty || loanForm.get('emi')?.touched || submitted == true">
-            <p *ngIf="loanForm.get('emi')?.hasError('required')">
-              <ion-icon name="information-circle-outline"></ion-icon>EMI is required
-            </p>
-            <p *ngIf="loanForm.get('emi')?.hasError('min')">
-              <ion-icon name="information-circle-outline"></ion-icon>EMI should be greater than 1
-            </p>
-            <p *ngIf="loanForm.get('emi')?.hasError('max')">
-              <ion-icon name="information-circle-outline"></ion-icon>EMI should be less than 99999999
-            </p>
-            <p *ngIf="minEmi > loanForm.get('emi')?.value">
-              <ion-icon name="information-circle-outline"></ion-icon>As per your loan amount, your minimum EMI should be
-              greater than {{minEmi}}
-            </p>
-          </ion-text>
-
-          <ion-item>
-            <ion-label>Apply EMI Amount change for this month only</ion-label>
-            <ion-toggle formControlName="emiChangeCurrent"></ion-toggle>
-          </ion-item>
-
-          <ion-item lines="none">
-            <ion-select label="EMI debit day" formControlName="emiDay" placeholder="Select" style="max-width: none;"
-              required>
-              <ion-select-option *ngFor="let day of days" [value]="day">{{day}} of every month</ion-select-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-text color="danger"
-            *ngIf="loanForm.get('emiDay')?.dirty || loanForm.get('emiDay')?.touched || submitted == true">
-            <p *ngIf="loanForm.get('emiDay')?.hasError('required')">
-              <ion-icon name="information-circle-outline"></ion-icon>EMI Day is required
-            </p>
-          </ion-text>
-
-          <span class="label">Charges if any</span>
-          <ion-input formControlName="charges" type="number" amountInput></ion-input>
-
-          <span class="label">Interest Adjustment If our logic is wrong</span>
-          <ion-input formControlName="interestAdjustment" type="number" amountInput></ion-input>
-          <ion-text>
-            <p style="padding-left: 15px;">If you want reduce the interest, enter negative number</p>
-          </ion-text>
-        </ion-list>
-
-        <ion-card>
-          <ion-item lines="none">
-            <ion-row>
-              <strong>Note:</strong>
-              <div>
-                Any changes in Rate of Interest or EMI or EMI debit day, will affect all the next month EMI.
-              </div>
-            </ion-row>
-          </ion-item>
-        </ion-card>
-        <ion-row>
-          <ion-col>
-            <ion-button (click)="save(loanForm)" type="submit" expand="block">Save</ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-card-content>
-    </ion-card>
+        </ion-card-content>
+      </ion-card>
+    }
   </form>
 
 </ion-content>

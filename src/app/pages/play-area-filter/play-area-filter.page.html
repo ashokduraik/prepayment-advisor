@@ -19,55 +19,83 @@
     <ion-input [(ngModel)]="outstanding.interestRate" type="number" autofocus="true" placeholder="8" required>
     </ion-input>
 
-    <ion-text color="danger" *ngIf="submitted == true">
-      <p *ngIf="!outstanding.interestRate">
-        <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest is required
-      </p>
-      <p *ngIf="outstanding.interestRate && outstanding.interestRate <= 0">
-        <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be greater than 0
-      </p>
-      <p *ngIf="outstanding.interestRate > 50">
-        <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be less than 50
-      </p>
-    </ion-text>
+    @if (submitted == true) {
+      <ion-text color="danger">
+        @if (!outstanding.interestRate) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest is required
+          </p>
+        }
+        @if (outstanding.interestRate && outstanding.interestRate <= 0) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be greater than 0
+          </p>
+        }
+        @if (outstanding.interestRate > 50) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>Rate of Interest should be less than 50
+          </p>
+        }
+      </ion-text>
+    }
 
     <span class="label">Enter EMI Amount</span>
     <ion-input [(ngModel)]="outstanding.emi" type="number" placeholder="7000" amountInput required></ion-input>
 
-    <ion-text color="danger" *ngIf="submitted == true">
-      <p *ngIf="!outstanding.emi">
-        <ion-icon name="information-circle-outline"></ion-icon>EMI is required
-      </p>
-      <p *ngIf="outstanding.emi && outstanding.emi <= 0">
-        <ion-icon name="information-circle-outline"></ion-icon>EMI should be greater than 1
-      </p>
-      <p *ngIf="outstanding.emi > 999999">
-        <ion-icon name="information-circle-outline"></ion-icon>EMI should be less than 999999
-      </p>
-      <p *ngIf="minEmi > outstanding.emi">
-        <ion-icon name="information-circle-outline"></ion-icon>As per your loan amount, your minimum EMI should be
-        greater
-        than {{minEmi}}
-      </p>
-    </ion-text>
+    @if (submitted == true) {
+      <ion-text color="danger">
+        @if (!outstanding.emi) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>EMI is required
+          </p>
+        }
+        @if (outstanding.emi && outstanding.emi <= 0) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>EMI should be greater than 1
+          </p>
+        }
+        @if (outstanding.emi > 999999) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>EMI should be less than 999999
+          </p>
+        }
+        @if (minEmi > outstanding.emi) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>As per your loan amount, your minimum EMI should be
+            greater
+            than {{minEmi}}
+          </p>
+        }
+      </ion-text>
+    }
 
     <span class="label">Enter Current Outstanding Amount</span>
     <ion-input [(ngModel)]="outstanding.amount" type="number" placeholder="500000" amountInput required></ion-input>
 
-    <ion-text color="danger" *ngIf="submitted == true">
-      <p *ngIf="!outstanding.amount">
-        <ion-icon name="information-circle-outline"></ion-icon>Outstanding Amount is required
-      </p>
-      <p *ngIf="outstanding.amount && outstanding.amount <= 0">
-        <ion-icon name="information-circle-outline"></ion-icon>Outstanding Amount should be greater than 1
-      </p>
-      <p *ngIf="outstanding.amount > 99999999">
-        <ion-icon name="information-circle-outline"></ion-icon>Outstanding Amount should be less than 999999999
-      </p>
-      <p *ngIf="outstanding.amount && outstanding.amount < outstanding.emi">
-        <ion-icon name="information-circle-outline"></ion-icon>Amount should be greater than EMI
-      </p>
-    </ion-text>
+    @if (submitted == true) {
+      <ion-text color="danger">
+        @if (!outstanding.amount) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>Outstanding Amount is required
+          </p>
+        }
+        @if (outstanding.amount && outstanding.amount <= 0) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>Outstanding Amount should be greater than 1
+          </p>
+        }
+        @if (outstanding.amount > 99999999) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>Outstanding Amount should be less than 999999999
+          </p>
+        }
+        @if (outstanding.amount && outstanding.amount < outstanding.emi) {
+          <p>
+            <ion-icon name="information-circle-outline"></ion-icon>Amount should be greater than EMI
+          </p>
+        }
+      </ion-text>
+    }
   </ion-list>
 
 </ion-content>

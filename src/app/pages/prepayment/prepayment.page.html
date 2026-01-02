@@ -7,47 +7,51 @@
       Prepayment
     </ion-title>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card *ngFor="let pp of prepayments;">
-    <ion-list>
-
-      <span class="label">Enter the Prepayments amount</span>
-      <ion-input [(ngModel)]="pp.amount" type="number" (change)="valueChanged();" placeholder="10000" amountInput>
-      </ion-input>
-
-      <ion-item lines="none">
-        <ion-label>Select Date</ion-label>
-        <ion-datetime-button datetime="datetime" required></ion-datetime-button>
-
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime id="datetime" [(ngModel)]="pp.prepaymentDate" min="{{minDate}}" max="{{maxDate}}"
+  @for (pp of prepayments; track pp) {
+    <ion-card>
+      <ion-list>
+        <span class="label">Enter the Prepayments amount</span>
+        <ion-input [(ngModel)]="pp.amount" type="number" (change)="valueChanged();" placeholder="10000" amountInput>
+        </ion-input>
+        <ion-item lines="none">
+          <ion-label>Select Date</ion-label>
+          <ion-datetime-button datetime="datetime" required></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime" [(ngModel)]="pp.prepaymentDate" min="{{minDate}}" max="{{maxDate}}"
               presentation="date" [showDefaultButtons]="true"></ion-datetime>
-          </ng-template>
-        </ion-modal>
-      </ion-item>
-    </ion-list>
-  </ion-card>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+  }
 
   <ion-card>
     <ion-list>
-      <ion-item *ngIf="prepaymentChanged" lines="none">
-        <ion-checkbox [(ngModel)]="noEmi" color="primary" labelPlacement="end">No Change in EMI. Only term needs to be
+      @if (prepaymentChanged) {
+        <ion-item lines="none">
+          <ion-checkbox [(ngModel)]="noEmi" color="primary" labelPlacement="end">No Change in EMI. Only term needs to be
           decreased</ion-checkbox>
-      </ion-item>
+        </ion-item>
+      }
 
-      <div *ngIf="prepaymentChanged && !noEmi">
-        <span class="label">Enter the new EMI Amount</span>
-        <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
-
-        <ion-text color="danger" *ngIf="!newEmiAmount && submitted == true">
-          <p>
-            <ion-icon name="information-circle-outline"></ion-icon>New EMI is required
-          </p>
-        </ion-text>
-      </div>
+      @if (prepaymentChanged && !noEmi) {
+        <div>
+          <span class="label">Enter the new EMI Amount</span>
+          <ion-input [(ngModel)]="newEmiAmount" type="number" amountInput required></ion-input>
+          @if (!newEmiAmount && submitted == true) {
+            <ion-text color="danger">
+              <p>
+                <ion-icon name="information-circle-outline"></ion-icon>New EMI is required
+              </p>
+            </ion-text>
+          }
+        </div>
+      }
 
       <ion-button (click)="save()" type="submit" expand="block">Save</ion-button>
     </ion-list>

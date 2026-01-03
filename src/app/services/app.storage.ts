@@ -1,5 +1,6 @@
-import { Plugins } from '@capacitor/core';
-const { Storage } = (Plugins as any);
+// Use Capacitor runtime Storage plugin when available, otherwise fall back to localStorage
+const CapacitorRuntime: any = typeof window !== 'undefined' ? (window as any).Capacitor : null;
+const NativeStoragePlugin: any = CapacitorRuntime && CapacitorRuntime.Plugins ? CapacitorRuntime.Plugins.Storage : null;
 import { Injectable } from '@angular/core';
 
 import { AppUtils } from './app.utils';
@@ -14,7 +15,12 @@ export class AppStorage {
 
   private async setKey(key: string, value: any) {
     try {
-      await Storage.set({ key, value: JSON.stringify(value) });
+      const v = JSON.stringify(value);
+      if (NativeStoragePlugin && typeof NativeStoragePlugin.set === 'function') {
+        await NativeStoragePlugin.set({ key, value: v });
+      } else if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(key, v);
+      }
     } catch (e) {
       AppUtils.errorLog(e);
     }
@@ -22,8 +28,14 @@ export class AppStorage {
 
   private async getKey(key: string) {
     try {
-      const res = await Storage.get({ key });
-      return res && res.value ? JSON.parse(res.value) : null;
+      if (NativeStoragePlugin && typeof NativeStoragePlugin.get === 'function') {
+        const res = await NativeStoragePlugin.get({ key });
+        return res && res.value ? JSON.parse(res.value) : null;
+      } else if (typeof localStorage !== 'undefined') {
+        const v = localStorage.getItem(key);
+        return v ? JSON.parse(v) : null;
+      }
+      return null;
     } catch (e) {
       AppUtils.errorLog(e);
       return null;

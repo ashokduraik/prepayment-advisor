@@ -1,4 +1,5 @@
-import { Storage } from '@capacitor/storage';
+import { Plugins } from '@capacitor/core';
+const { Storage } = (Plugins as any);
 import { Injectable } from '@angular/core';
 
 import { AppUtils } from './app.utils';

@@ -9,9 +9,10 @@ import { AppService } from '../../services/app.services';
 import { PlayAreaFilterPage } from '../play-area-filter/play-area-filter.page';
 
 @Component({
-  selector: 'app-play-area',
-  templateUrl: './play-area.page.html',
-  styleUrls: ['./play-area.page.scss'],
+    selector: 'app-play-area',
+    templateUrl: './play-area.page.html',
+    styleUrls: ['./play-area.page.scss'],
+    standalone: false
 })
 export class PlayAreaPage implements OnInit {
   loan: any;

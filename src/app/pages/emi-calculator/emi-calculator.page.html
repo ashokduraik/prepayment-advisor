@@ -7,7 +7,7 @@
       EMI Calculator
     </ion-title>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-list lines="none" style="border: none;">
@@ -24,7 +24,7 @@
 
     <span class="label">Enter EMI Amount</span>
     <ion-input [(ngModel)]="emi" type="number" placeholder="7000" (keyup)="triggerFn(emiChanged)"
-      (focusout)="emiChanged()" amountInput></ion-input>
+    (focusout)="emiChanged()" amountInput></ion-input>
 
     <span class="label">Term (Months)</span>
     <ion-input [(ngModel)]="term" type="number" placeholder="98" (keyup)="triggerFn(termChanged)"
@@ -38,79 +38,87 @@
 
   </ion-list>
 
-  <ion-card *ngIf="calculationDone" class="speaker-card" id="projection">
-    <ion-card-header color="primary">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div>Total Interest Payable</div>
-            <h2>{{ interest | appCurrency: 'noDecimal' }}</h2>
-          </ion-col>
-          <ion-col>
-            <div>Total Interest Payable %</div>
-            <h2>{{interestPercentage}}%</h2>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-header>
-    <ion-card-content *ngIf="amount && interestRate && emi && term">
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Total Payment
-            <br>(Principal + Interest)
-          </ion-col>
-          <ion-col size="5" class="ion-align-self-end">
-            {{ totalAmount | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <div style="text-align: center; padding-bottom: 15px;">
-        <ion-button color="success" fill="outline" (click)="projection()">
-          <ion-icon name="albums-outline"></ion-icon>
-          <ion-label style="margin-left: 10px;">Show EMI Projection</ion-label>
-        </ion-button>
-      </div>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-grid *ngIf="loanProjection && loanProjection.instalments && loanProjection.instalments.length">
-    <ion-card *ngFor="let emi of loanProjection.instalments; let indexOfele=index;" class="speaker-card">
-      <ion-card-header color="light">
+  @if (calculationDone) {
+    <ion-card class="speaker-card" id="projection">
+      <ion-card-header color="primary">
         <ion-grid>
           <ion-row>
-            <ion-col style="text-align: center;">
-              <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
+            <ion-col>
+              <div>Total Interest Payable</div>
+              <h2>{{ interest | appCurrency: 'noDecimal' }}</h2>
+            </ion-col>
+            <ion-col>
+              <div>Total Interest Payable %</div>
+              <h2>{{interestPercentage}}%</h2>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card-header>
+      @if (amount && interestRate && emi && term) {
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-align-self-start">
+                Total Payment
+                <br>(Principal + Interest)
+                </ion-col>
+                <ion-col size="5" class="ion-align-self-end">
+                  {{ totalAmount | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+            <div style="text-align: center; padding-bottom: 15px;">
+              <ion-button color="success" fill="outline" (click)="projection()">
+                <ion-icon name="albums-outline"></ion-icon>
+                <ion-label style="margin-left: 10px;">Show EMI Projection</ion-label>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        }
+      </ion-card>
+    }
+
+    @if (loanProjection && loanProjection.instalments && loanProjection.instalments.length) {
       <ion-grid>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Principal
-          </ion-col>
-          <ion-col size="4" style="color: green;" class="ion-align-self-end">
-            {{ emi.principalPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Interest
-          </ion-col>
-          <ion-col size="4" style="color: red;" class="ion-align-self-end">
-            {{ emi.interestPaid | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Closing Balance
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.closingBalance | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
+        @for (emi of loanProjection.instalments; track emi; let indexOfele = $index) {
+          <ion-card class="speaker-card">
+            <ion-card-header color="light">
+              <ion-grid>
+                <ion-row>
+                  <ion-col style="text-align: center;">
+                    <strong>{{emi.emiDate | date: 'MMMM y'}}</strong>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-header>
+            <ion-grid>
+              <ion-row>
+                <ion-col class="ion-align-self-start">
+                  Principal
+                </ion-col>
+                <ion-col size="4" style="color: green;" class="ion-align-self-end">
+                  {{ emi.principalPaid | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="ion-align-self-start">
+                  Interest
+                </ion-col>
+                <ion-col size="4" style="color: red;" class="ion-align-self-end">
+                  {{ emi.interestPaid | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="ion-align-self-start">
+                  Closing Balance
+                </ion-col>
+                <ion-col size="4" class="ion-align-self-end">
+                  {{ emi.closingBalance | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card>
+        }
       </ion-grid>
-    </ion-card>
-  </ion-grid>
-</ion-content>
+    }
+  </ion-content>

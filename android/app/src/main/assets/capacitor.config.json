@@ -1,7 +1,7 @@
 {
 	"appId": "com.altooxs.prepaymentadvisor",
 	"appName": "Prepayment Advisor",
-	"webDir": "www",
+	"webDir": "www/browser",
 	"server": {
 		"androidScheme": "https"
 	}

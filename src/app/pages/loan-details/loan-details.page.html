@@ -6,253 +6,304 @@
     <ion-title>
       Loan Details
     </ion-title>
-    <ion-buttons *ngIf="loan && loan._id" slot="end">
-      <ion-button *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'" (click)="playArea();" color="success"
-        class="blink_me">
-        <ion-icon slot="icon-only" name="play-circle-outline"></ion-icon>
-      </ion-button>
-      <ion-button *ngIf="!loan.isCompleted && loan.loanType === 'FLEXI_LOAN'" (click)="addLedgerItem();" color="success"
-        class="blink_me">
-        <ion-icon slot="icon-only" name="add-circle"></ion-icon>
-      </ion-button>
-      <ion-button (click)="presentPopover($event)">
-        <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    @if (loan && loan._id) {
+      <ion-buttons slot="end">
+        @if (!loan.isCompleted && loan.loanType === 'EMI_LOAN') {
+          <ion-button (click)="playArea();" color="success"
+            class="blink_me">
+            <ion-icon slot="icon-only" name="play-circle-outline"></ion-icon>
+          </ion-button>
+        }
+        @if (!loan.isCompleted && loan.loanType === 'FLEXI_LOAN') {
+          <ion-button (click)="addLedgerItem();" color="success"
+            class="blink_me">
+            <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+          </ion-button>
+        }
+        <ion-button (click)="presentPopover($event)">
+          <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    }
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card class="speaker-card" *ngIf="loan">
-    <ion-card-header color="primary">
-      <ion-grid>
-        <ion-row *ngIf="loan.name">
-          <ion-col class="loan-name">{{loan.name}}</ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            <div>Loan Amount</div>
-            <h2>{{ loan.amount | appCurrency: 'noDecimal' }}</h2>
-          </ion-col>
-          <ion-col *ngIf="loan.loanType === 'EMI_LOAN' && !loan.isCompleted">
-            <div>Balance Term</div>
-            <h2>{{ loan.balanceTerm | monthToYear }}</h2>
-          </ion-col>
-          <ion-col *ngIf="loan.loanType === 'FLEXI_LOAN' && !loan.isCompleted">
-            <div>Balance Amount</div>
-            <h2>{{ loan.balanceAmount | appCurrency: 'noDecimal' }}</h2>
-          </ion-col>
-          <ion-col *ngIf="loan.isCompleted">
-            <div>Interest Paid ({{((loan.interestPaid/(loan.amount +
-              loan.interestPaid)) * 100).toFixed(2)}}%)</div>
-            <h2>{{loan.interestPaid | appCurrency: 'noDecimal'}} </h2>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-grid style="padding: 0;">
-        <ion-row>
-          <ion-col size="6">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns"
-              *ngIf="loanChartOpns"></highcharts-chart>
-          </ion-col>
-          <ion-col size="6">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="repaidChartOpns"
-              *ngIf="repaidChartOpns"></highcharts-chart>
-          </ion-col>
-          <ion-col size="6" *ngIf="loan.totalPrepayment > 0 && prinpaidChartOpns">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="prinpaidChartOpns"></highcharts-chart>
-          </ion-col>
-          <ion-col size="6" *ngIf="payableChartOpns">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="payableChartOpns"></highcharts-chart>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="instaChartOpns">
-          <ion-col size="12">
-            <highcharts-chart [Highcharts]="Highcharts" [options]="instaChartOpns"
-              style="height: 250px;"></highcharts-chart>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'">
-          <ion-col class="ion-align-self-start">
-            Balance Term
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ loan.balanceTerm }} Months
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!loan.isCompleted && loan.loanType === 'EMI_LOAN'">
-          <ion-col class="ion-align-self-start">
-            Estimated End Date
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ loan.endDate | date: 'MMMM YYYY' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="loan.isCompleted" style="color: green;">
-          <ion-col>
-            <strong>The Loan is completed on {{loan.completedAt | date: 'MMMM YYYY'}}</strong>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-grid *ngIf="instalments && instalments.length" fixed>
-    <ion-card *ngFor="let emi of instalments; let indexOfele=index;" class="speaker-card">
-      <ion-card-header color="light" (click)="onEmiClick(emi)">
+  @if (loan) {
+    <ion-card class="speaker-card">
+      <ion-card-header color="primary">
         <ion-grid>
+          @if (loan.name) {
+            <ion-row>
+              <ion-col class="loan-name">{{loan.name}}</ion-col>
+            </ion-row>
+          }
           <ion-row>
             <ion-col>
-              <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
+              <div>Loan Amount</div>
+              <h2>{{ loan.amount | appCurrency: 'noDecimal' }}</h2>
             </ion-col>
-            <ion-col>
-              Term: {{emi.term}}
-            </ion-col>
-            <ion-col size="2.5" style="text-align: end;">
-              {{ emi.interestRate }}%
-            </ion-col>
-            <ion-col size="1">
-              <ion-icon name="ellipsis-vertical"></ion-icon>
-            </ion-col>
+            @if (loan.loanType === 'EMI_LOAN' && !loan.isCompleted) {
+              <ion-col>
+                <div>Balance Term</div>
+                <h2>{{ loan.balanceTerm | monthToYear }}</h2>
+              </ion-col>
+            }
+            @if (loan.loanType === 'FLEXI_LOAN' && !loan.isCompleted) {
+              <ion-col>
+                <div>Balance Amount</div>
+                <h2>{{ loan.balanceAmount | appCurrency: 'noDecimal' }}</h2>
+              </ion-col>
+            }
+            @if (loan.isCompleted) {
+              <ion-col>
+                <div>Interest Paid ({{((loan.interestPaid/(loan.amount +
+                loan.interestPaid)) * 100).toFixed(2)}}%)</div>
+                <h2>{{loan.interestPaid | appCurrency: 'noDecimal'}} </h2>
+              </ion-col>
+            }
           </ion-row>
         </ion-grid>
       </ion-card-header>
-      <ion-grid>
-        <ion-row *ngIf="indexOfele==0">
-          <ion-col>EMI</ion-col>
-          <ion-col>Principal Paid</ion-col>
-          <ion-col style="text-align: end;">
-            Interest Paid
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>
-            {{ (emi.amount + (emi.charges || 0)) | appCurrency: 'noDecimal' }}
-          </ion-col>
-          <ion-col style="color: green;">
-            {{ emi.principalPaid | appCurrency: '' }}
-          </ion-col>
-          <ion-col style="color: red; text-align: end;">
-            {{ (emi.interestPaid + (emi.interestAdjustment || 0)) | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-grid>
-        <ion-row *ngIf="emi.prepaymentTotal > 0 && loan.loanType === 'EMI_LOAN'" style="color: green;">
-          <ion-col class="ion-align-self-start">
-            Prepayment Amount
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.prepaymentTotal | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="emi.topupTotal > 0" style="color: red;">
-          <ion-col class="ion-align-self-start">
-            Topup Amount
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.topupTotal | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Closing Balance
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.closingBalance | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-card *ngIf="emi.financialYear && loan.loanType === 'EMI_LOAN'" color="light" class="inner-card">
-        <ion-row>
-          <ion-col class="ion-align-self-center" style="text-align: center;">
-            Financial Year <strong>{{emi.financialYear}}</strong>
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Principal Paid
-          </ion-col>
-          <ion-col style="color: green;" size="4" class="ion-align-self-end">
-            {{ emi.fyPrincipal | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Interest Paid
-          </ion-col>
-          <ion-col style="color: red;" size="4" class="ion-align-self-end">
-            {{ emi.fyInterest | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Total Paid Amount
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ emi.fyInterest + emi.fyPrincipal | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!loan.isCompleted && emi.fyProvisionalPrincipal">
-          <ion-col class="ion-align-self-start">
-            Provisional Principal
-          </ion-col>
-          <ion-col style="color: green;" size="4" class="ion-align-self-end">
-            {{ emi.fyProvisionalPrincipal | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-        <ion-row *ngIf="!loan.isCompleted && emi.fyProvisionalInterest">
-          <ion-col class="ion-align-self-start">
-            Provisional Interest
-          </ion-col>
-          <ion-col style="color: red;" size="4" class="ion-align-self-end">
-            {{ emi.fyProvisionalInterest | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-      </ion-card>
-      <!-- <ion-button expand="block" color="light" style="margin: 0px;">Options</ion-button> -->
-    </ion-card>
-  </ion-grid>
-
-  <ion-grid *ngIf="ledger && ledger.length" fixed>
-    <ion-card *ngFor="let led of ledger; let indexOfele=index;" class="speaker-card">
-      <ion-card-header color="light" (click)="onLedgerClick(led)">
-        <ion-grid>
+      <ion-card-content>
+        <ion-grid style="padding: 0;">
           <ion-row>
-            <ion-col>
-              <strong>{{led.transactionDate | date: 'dd MMMM YYYY'}}</strong>
+            <ion-col size="6">
+              @if (loanChartOpns) {
+                <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns"
+                ></highcharts-chart>
+              }
             </ion-col>
-            <ion-col style="text-align: end;">
-              <ion-badge style="margin-left: 0px;" color="{{led.type === 'DEBIT'? 'success' : 'danger'}}">
-                {{ led.amount | appCurrency: 'noDecimal' }}
-              </ion-badge>
+            <ion-col size="6">
+              @if (repaidChartOpns) {
+                <highcharts-chart [Highcharts]="Highcharts" [options]="repaidChartOpns"
+                ></highcharts-chart>
+              }
             </ion-col>
-            <ion-col size="1">
-              <ion-icon name="ellipsis-vertical"></ion-icon>
-            </ion-col>
+            @if (loan.totalPrepayment > 0 && prinpaidChartOpns) {
+              <ion-col size="6">
+                <highcharts-chart [Highcharts]="Highcharts" [options]="prinpaidChartOpns"></highcharts-chart>
+              </ion-col>
+            }
+            @if (payableChartOpns) {
+              <ion-col size="6">
+                <highcharts-chart [Highcharts]="Highcharts" [options]="payableChartOpns"></highcharts-chart>
+              </ion-col>
+            }
           </ion-row>
+          @if (instaChartOpns) {
+            <ion-row>
+              <ion-col size="12">
+                <highcharts-chart [Highcharts]="Highcharts" [options]="instaChartOpns"
+                style="height: 250px;"></highcharts-chart>
+              </ion-col>
+            </ion-row>
+          }
+          @if (!loan.isCompleted && loan.loanType === 'EMI_LOAN') {
+            <ion-row>
+              <ion-col class="ion-align-self-start">
+                Balance Term
+              </ion-col>
+              <ion-col size="4" class="ion-align-self-end">
+                {{ loan.balanceTerm }} Months
+              </ion-col>
+            </ion-row>
+          }
+          @if (!loan.isCompleted && loan.loanType === 'EMI_LOAN') {
+            <ion-row>
+              <ion-col class="ion-align-self-start">
+                Estimated End Date
+              </ion-col>
+              <ion-col size="4" class="ion-align-self-end">
+                {{ loan.endDate | date: 'MMMM y' }}
+              </ion-col>
+            </ion-row>
+          }
+          @if (loan.isCompleted) {
+            <ion-row style="color: green;">
+              <ion-col>
+                <strong>The Loan is completed on {{loan.completedAt | date: 'MMMM y'}}</strong>
+              </ion-col>
+            </ion-row>
+          }
         </ion-grid>
-      </ion-card-header>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            {{ led.description }}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <ion-grid>
-        <ion-row>
-          <ion-col class="ion-align-self-start">
-            Closing Balance
-          </ion-col>
-          <ion-col size="4" class="ion-align-self-end">
-            {{ led.closingBalance | appCurrency: '' }}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      </ion-card-content>
     </ion-card>
-  </ion-grid>
+  }
+
+  @if (instalments && instalments.length) {
+    <ion-grid fixed>
+      @for (emi of instalments; track emi; let indexOfele = $index) {
+        <ion-card class="speaker-card">
+          <ion-card-header color="light" (click)="onEmiClick(emi)">
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <strong>{{emi.emiDate | date: 'MMMM y'}}</strong>
+                </ion-col>
+                <ion-col>
+                  Term: {{emi.term}}
+                </ion-col>
+                <ion-col size="2.5" style="text-align: end;">
+                  {{ emi.interestRate }}%
+                </ion-col>
+                <ion-col size="1">
+                  <ion-icon name="ellipsis-vertical"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-header>
+          <ion-grid>
+            @if (indexOfele==0) {
+              <ion-row>
+                <ion-col>EMI</ion-col>
+                <ion-col>Principal Paid</ion-col>
+                <ion-col style="text-align: end;">
+                  Interest Paid
+                </ion-col>
+              </ion-row>
+            }
+            <ion-row>
+              <ion-col>
+                {{ (emi.amount + (emi.charges || 0)) | appCurrency: 'noDecimal' }}
+              </ion-col>
+              <ion-col style="color: green;">
+                {{ emi.principalPaid | appCurrency: '' }}
+              </ion-col>
+              <ion-col style="color: red; text-align: end;">
+                {{ (emi.interestPaid + (emi.interestAdjustment || 0)) | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-grid>
+            @if (emi.prepaymentTotal > 0 && loan.loanType === 'EMI_LOAN') {
+              <ion-row style="color: green;">
+                <ion-col class="ion-align-self-start">
+                  Prepayment Amount
+                </ion-col>
+                <ion-col size="4" class="ion-align-self-end">
+                  {{ emi.prepaymentTotal | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+            }
+            @if (emi.topupTotal > 0) {
+              <ion-row style="color: red;">
+                <ion-col class="ion-align-self-start">
+                  Topup Amount
+                </ion-col>
+                <ion-col size="4" class="ion-align-self-end">
+                  {{ emi.topupTotal | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+            }
+            <ion-row>
+              <ion-col class="ion-align-self-start">
+                Closing Balance
+              </ion-col>
+              <ion-col size="4" class="ion-align-self-end">
+                {{ emi.closingBalance | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          @if (emi.financialYear && loan.loanType === 'EMI_LOAN') {
+            <ion-card color="light" class="inner-card">
+              <ion-row>
+                <ion-col class="ion-align-self-center" style="text-align: center;">
+                  Financial Year <strong>{{emi.financialYear}}</strong>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="ion-align-self-start">
+                  Principal Paid
+                </ion-col>
+                <ion-col style="color: green;" size="4" class="ion-align-self-end">
+                  {{ emi.fyPrincipal | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="ion-align-self-start">
+                  Interest Paid
+                </ion-col>
+                <ion-col style="color: red;" size="4" class="ion-align-self-end">
+                  {{ emi.fyInterest | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col class="ion-align-self-start">
+                  Total Paid Amount
+                </ion-col>
+                <ion-col size="4" class="ion-align-self-end">
+                  {{ emi.fyInterest + emi.fyPrincipal | appCurrency: '' }}
+                </ion-col>
+              </ion-row>
+              @if (!loan.isCompleted && emi.fyProvisionalPrincipal) {
+                <ion-row>
+                  <ion-col class="ion-align-self-start">
+                    Provisional Principal
+                  </ion-col>
+                  <ion-col style="color: green;" size="4" class="ion-align-self-end">
+                    {{ emi.fyProvisionalPrincipal | appCurrency: '' }}
+                  </ion-col>
+                </ion-row>
+              }
+              @if (!loan.isCompleted && emi.fyProvisionalInterest) {
+                <ion-row>
+                  <ion-col class="ion-align-self-start">
+                    Provisional Interest
+                  </ion-col>
+                  <ion-col style="color: red;" size="4" class="ion-align-self-end">
+                    {{ emi.fyProvisionalInterest | appCurrency: '' }}
+                  </ion-col>
+                </ion-row>
+              }
+            </ion-card>
+          }
+          <!-- <ion-button expand="block" color="light" style="margin: 0px;">Options</ion-button> -->
+        </ion-card>
+      }
+    </ion-grid>
+  }
+
+  @if (ledger && ledger.length) {
+    <ion-grid fixed>
+      @for (led of ledger; track led; let indexOfele = $index) {
+        <ion-card class="speaker-card">
+          <ion-card-header color="light" (click)="onLedgerClick(led)">
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <strong>{{led.transactionDate | date: 'dd MMMM y'}}</strong>
+                </ion-col>
+                <ion-col style="text-align: end;">
+                  <ion-badge style="margin-left: 0px;" color="{{led.type === 'DEBIT'? 'success' : 'danger'}}">
+                    {{ led.amount | appCurrency: 'noDecimal' }}
+                  </ion-badge>
+                </ion-col>
+                <ion-col size="1">
+                  <ion-icon name="ellipsis-vertical"></ion-icon>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-card-header>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                {{ led.description }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <ion-grid>
+            <ion-row>
+              <ion-col class="ion-align-self-start">
+                Closing Balance
+              </ion-col>
+              <ion-col size="4" class="ion-align-self-end">
+                {{ led.closingBalance | appCurrency: '' }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+      }
+    </ion-grid>
+  }
 </ion-content>

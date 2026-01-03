@@ -7,19 +7,23 @@
       Statistics
     </ion-title>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card class="welcome-card" *ngIf="loanChartOpns">
-    <h4 style="text-align: center;"> Year Wise Payment</h4><ion-card-content>
+  @if (loanChartOpns) {
+    <ion-card class="welcome-card">
+      <h4 style="text-align: center;"> Year Wise Payment</h4><ion-card-content>
       <highcharts-chart [Highcharts]="Highcharts" [options]="loanChartOpns"></highcharts-chart>
     </ion-card-content>
   </ion-card>
+}
 
-  <ion-card class="welcome-card" *ngIf="instaChartOpns">
+@if (instaChartOpns) {
+  <ion-card class="welcome-card">
     <h4 style="text-align: center;"> Principal Paid vs Interest Paid</h4>
     <ion-card-content>
       <highcharts-chart [Highcharts]="Highcharts" [options]="instaChartOpns"></highcharts-chart>
     </ion-card-content>
   </ion-card>
+}
 </ion-content>

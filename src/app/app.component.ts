@@ -1,13 +1,15 @@
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
-import * as Highcharts from 'highcharts';
-import { Storage } from '@ionic/storage-angular';
-// import darkTheme from 'highcharts/themes/high-contrast-dark';
-import lightTheme from 'highcharts/themes/high-contrast-light';
+import Highcharts from 'highcharts/es-modules/masters/highcharts.src.js';
+// import darkTheme from 'highcharts/es-modules/themes/high-contrast-dark.src.js';
+import lightTheme from 'highcharts/es-modules/masters/themes/high-contrast-light.src.js';
 import { Platform } from '@ionic/angular';
-import HC_drilldown from 'highcharts/modules/drilldown';
-HC_drilldown(Highcharts);
+import HC_drilldown from 'highcharts/es-modules/masters/modules/drilldown.src.js';
+const _hc_drilldown_init = (HC_drilldown as any)?.default ?? (HC_drilldown as any);
+if (typeof _hc_drilldown_init === 'function') {
+  _hc_drilldown_init(Highcharts);
+}
 
 import { LoanUtils } from './services/loan.utils';
 import { AppStorage } from './services/app.storage';
@@ -16,10 +18,12 @@ import { AppCurrencyPipe } from './services/app.pipe';
 // import sampleData from '../../data/sample.json';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    standalone: false
 })
+
 export class AppComponent {
   appPages = [
     {
@@ -50,7 +54,6 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private router: Router,
-    private storage: Storage,
     private appStorage: AppStorage,
     private appService: AppService
   ) {
@@ -62,7 +65,6 @@ export class AppComponent {
   }
 
   async ngOnInit() {
-    await this.storage.create();
     // await this.appStorage.saveLoans(sampleData.loans); // to setup sample data;
 
     this.setProfileData();
@@ -99,8 +101,10 @@ export class AppComponent {
     //     Highcharts['_modules']['Extensions/Themes/HighContrastDark.js'].options
     //   );
     // } else {
-    lightTheme(Highcharts);
-    Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].apply();
+    const _lightTheme = (lightTheme as any)?.default ?? (lightTheme as any);
+    if (typeof _lightTheme === 'function') {
+      _lightTheme(Highcharts);
+    }
     // Highcharts.setOptions(
     //   Highcharts['_modules']['Extensions/Themes/HighContrastLight.js'].options
     // );

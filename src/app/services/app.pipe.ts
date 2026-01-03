@@ -3,7 +3,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import { Currency } from '../services/currency-map';
 
-@Pipe({ name: 'appCurrency' })
+@Pipe({
+    name: 'appCurrency',
+    standalone: false
+})
 
 export class AppCurrencyPipe implements PipeTransform {
 
@@ -50,7 +53,10 @@ export class AppCurrencyPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'monthToYear' })
+@Pipe({
+    name: 'monthToYear',
+    standalone: false
+})
 export class monthToYearPipe implements PipeTransform {
   transform(value: number): string {
 
@@ -64,7 +70,10 @@ export class monthToYearPipe implements PipeTransform {
   }
 }
 
-@Pipe({ name: 'safeHtml' })
+@Pipe({
+    name: 'safeHtml',
+    standalone: false
+})
 export class SafeHtmlPipe implements PipeTransform {
   constructor(private sanitized: DomSanitizer) { }
   transform(value: string) {

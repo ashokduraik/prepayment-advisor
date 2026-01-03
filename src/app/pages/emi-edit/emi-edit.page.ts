@@ -7,9 +7,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-emi-edit',
-  templateUrl: './emi-edit.page.html',
-  styleUrls: ['./emi-edit.page.scss'],
+    selector: 'app-emi-edit',
+    templateUrl: './emi-edit.page.html',
+    styleUrls: ['./emi-edit.page.scss'],
+    standalone: false
 })
 export class EmiEditPage implements OnInit {
   emi: any;

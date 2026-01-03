@@ -7,34 +7,48 @@
       Timeline
     </ion-title>
   </ion-toolbar>
-</ion-header> 
+</ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="rb-container" *ngIf="timeLine && timeLine.length">
-    <ul class="rb">
-      <li *ngFor="let line of timeLine;" class="rb-item" ng-repeat="itembx">
-        <div class="rb-body">
-          <div class="timestamp">
-            {{line.date}}
-          </div>
-          <div class="item-title" [innerHtml]="line.changes | safeHtml"></div>
-          <div *ngIf="line.termChange > 0" style="margin-top: 10px; color: red;">
-            {{line.termChange}} months term is increased.
-          </div>
-          <div *ngIf="line.interestChange > 0" style="color: red;">
-            Interest amount {{line.interestChange | appCurrency: '' }} is increased.
-          </div>
-          <div *ngIf="line.termChange < 0" style="margin-top: 10px; color: green;">
-            {{line.termChange * -1}} months term is reduced.
-          </div>
-          <div *ngIf="line.interestChange < 0" style="color: green;">
-            Interest amount {{line.interestChange * -1 | appCurrency: '' }} is decreased.
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <div *ngIf="noInstalment" style="text-align: center;">
-    <ion-text color="danger">No Instalment found</ion-text>
-  </div>
+  @if (timeLine && timeLine.length) {
+    <div class="rb-container">
+      <ul class="rb">
+        @for (line of timeLine; track line) {
+          <li class="rb-item" ng-repeat="itembx">
+            <div class="rb-body">
+              <div class="timestamp">
+                {{line.date}}
+              </div>
+              <div class="item-title" [innerHtml]="line.changes | safeHtml"></div>
+              @if (line.termChange > 0) {
+                <div style="margin-top: 10px; color: red;">
+                  {{line.termChange}} months term is increased.
+                </div>
+              }
+              @if (line.interestChange > 0) {
+                <div style="color: red;">
+                  Interest amount {{line.interestChange | appCurrency: '' }} is increased.
+                </div>
+              }
+              @if (line.termChange < 0) {
+                <div style="margin-top: 10px; color: green;">
+                  {{line.termChange * -1}} months term is reduced.
+                </div>
+              }
+              @if (line.interestChange < 0) {
+                <div style="color: green;">
+                  Interest amount {{line.interestChange * -1 | appCurrency: '' }} is decreased.
+                </div>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+  @if (noInstalment) {
+    <div style="text-align: center;">
+      <ion-text color="danger">No Instalment found</ion-text>
+    </div>
+  }
 </ion-content>

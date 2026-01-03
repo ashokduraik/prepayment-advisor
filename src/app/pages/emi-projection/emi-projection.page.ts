@@ -6,9 +6,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-emi-projection',
-  templateUrl: './emi-projection.page.html',
-  styleUrls: ['./emi-projection.page.scss'],
+    selector: 'app-emi-projection',
+    templateUrl: './emi-projection.page.html',
+    styleUrls: ['./emi-projection.page.scss'],
+    standalone: false
 })
 export class EmiProjectionPage {
   loan: any;

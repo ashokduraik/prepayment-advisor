@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { DateUtils } from '../../services/date.utils';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -12,9 +12,10 @@ import { AppService } from '../../services/app.services';
 import { CurrencySelectComponent } from '../currency-select/currency-select.component';
 
 @Component({
-  selector: 'app-loan-basic',
-  templateUrl: './loan-basic.component.html',
-  styleUrls: ['./loan-basic.component.scss'],
+    selector: 'app-loan-basic',
+    templateUrl: './loan-basic.component.html',
+    styleUrls: ['./loan-basic.component.scss'],
+    standalone: false
 })
 export class LoanBasicComponent implements OnInit {
   _id: string = '';
@@ -22,7 +23,7 @@ export class LoanBasicComponent implements OnInit {
   minEmi = 0;
   defaultHref = 'home';
   saveInProgress = false;
-  maxDate = moment().endOf('month').format("YYYY-MM-DD");
+  maxDate = DateUtils.endOfMonth(DateUtils.now()).toISOString().slice(0,10);
   days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
   loanForm = this.formBuilder.group({
     interestRate: new FormControl('', Validators.compose([

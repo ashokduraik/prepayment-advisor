@@ -1,26 +1,34 @@
 <ion-list>
-  <ion-item button (click)="timeline()" *ngIf="loanType === 'EMI_LOAN'">
-    <ion-icon name="time-outline"></ion-icon>
-    <ion-label>Timeline</ion-label>
-  </ion-item>
-  <ion-item button (click)="claculationLogic()" *ngIf="loanType === 'EMI_LOAN'">
-    <ion-icon name="calculator-outline"></ion-icon>
-    <ion-label>Calculation Logic</ion-label>
-  </ion-item>
-  <ion-item button (click)="statistics()" *ngIf="loanType === 'EMI_LOAN'">
-    <ion-icon name="pie-chart-outline"></ion-icon>
-    <ion-label>Statistics</ion-label>
-  </ion-item>
-  <ion-item button (click)="projection()" *ngIf="loanType === 'EMI_LOAN' && !isCompleted">
-    <ion-icon name="albums-outline"></ion-icon>
-    <ion-label>EMI Projection</ion-label>
-  </ion-item>
+  @if (loanType === 'EMI_LOAN') {
+    <ion-item button (click)="timeline()">
+      <ion-icon name="time-outline"></ion-icon>
+      <ion-label>Timeline</ion-label>
+    </ion-item>
+  }
+  @if (loanType === 'EMI_LOAN') {
+    <ion-item button (click)="claculationLogic()">
+      <ion-icon name="calculator-outline"></ion-icon>
+      <ion-label>Calculation Logic</ion-label>
+    </ion-item>
+  }
+  @if (loanType === 'EMI_LOAN') {
+    <ion-item button (click)="statistics()">
+      <ion-icon name="pie-chart-outline"></ion-icon>
+      <ion-label>Statistics</ion-label>
+    </ion-item>
+  }
+  @if (loanType === 'EMI_LOAN' && !isCompleted) {
+    <ion-item button (click)="projection()">
+      <ion-icon name="albums-outline"></ion-icon>
+      <ion-label>EMI Projection</ion-label>
+    </ion-item>
+  }
   <ion-item button (click)="deleteLoan()">
     <ion-icon color="danger" name="trash-outline"></ion-icon>
     <ion-label>Delete Loan</ion-label>
   </ion-item>
   <!-- <ion-item button (click)="recalCulateLoan()">
-    <ion-icon color="danger" name="reload-outline"></ion-icon>
-    <ion-label>Recalculate Everything</ion-label>
-  </ion-item> -->
+  <ion-icon color="danger" name="reload-outline"></ion-icon>
+  <ion-label>Recalculate Everything</ion-label>
+</ion-item> -->
 </ion-list>

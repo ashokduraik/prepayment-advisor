@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { LoanUtils } from '../../services/loan.utils';
 
 @Component({
-  selector: 'app-fixed-chit-fund',
-  templateUrl: './fixed-chit-fund.page.html',
-  styleUrls: ['./fixed-chit-fund.page.scss'],
+    selector: 'app-fixed-chit-fund',
+    templateUrl: './fixed-chit-fund.page.html',
+    styleUrls: ['./fixed-chit-fund.page.scss'],
+    standalone: false
 })
 export class FixedChitFundPage implements OnInit {
   projections: any = [];

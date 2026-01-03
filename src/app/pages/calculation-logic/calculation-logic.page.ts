@@ -6,9 +6,10 @@ import { AppStorage } from '../../services/app.storage';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-calculation-logic',
-  templateUrl: './calculation-logic.page.html',
-  styleUrls: ['./calculation-logic.page.scss'],
+    selector: 'app-calculation-logic',
+    templateUrl: './calculation-logic.page.html',
+    styleUrls: ['./calculation-logic.page.scss'],
+    standalone: false
 })
 export class CalculationLogicPage implements OnInit {
   emi: any;

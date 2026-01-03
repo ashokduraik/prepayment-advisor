@@ -2,8 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import moment from 'moment';
-import * as Highcharts from 'highcharts';
+import { DateUtils } from 'src/app/services/date.utils';
+import Highcharts from 'highcharts/es-modules/masters/highcharts.src.js';
 // import { AppRate } from '@ionic-native/app-rate/ngx';
 import {
   ActionSheetController,
@@ -20,9 +20,10 @@ import { ChartUtils } from 'src/app/services/chart.utils';
 import { AppUtils } from 'src/app/services/app.utils';
 
 @Component({
-  selector: 'app-loan-details',
-  templateUrl: './loan-details.page.html',
-  styleUrls: ['./loan-details.page.scss'],
+    selector: 'app-loan-details',
+    templateUrl: './loan-details.page.html',
+    styleUrls: ['./loan-details.page.scss'],
+    standalone: false
 })
 export class LoanDetailsPage implements OnInit {
   _id: String = '';
@@ -181,22 +182,22 @@ export class LoanDetailsPage implements OnInit {
       );
     } else if (this.loan.loanType === 'FLEXI_LOAN') {
       const lastInstallments = Array.from({ length: 5 }, (_, index) => {
-        const currentDate = moment().subtract(index, 'months');
+        const currentDate = DateUtils.addMonths(DateUtils.now(), -index);
         return {
           interestPaid: 0,
           principalPaid: 0,
-          emiDate: currentDate.startOf('month').add(1, 'day').toDate(),
+          emiDate: DateUtils.addDays(DateUtils.startOfMonth(currentDate), 1),
         };
       });
 
       lastInstallments.forEach((insta) => {
-        const month = moment(insta.emiDate);
+        const month = DateUtils.toDate(insta.emiDate);
         let monthPaid = 0;
         let monthInterest = 0;
         let principalPaid = 0;
 
         this.loan.ledger.forEach((led) => {
-          if (month.isSame(led.transactionDate, 'month')) {
+          if (DateUtils.isSameMonth(month, led.transactionDate)) {
             if (led.type === 'DEBIT') {
               monthPaid += led.amount;
             } else {
@@ -326,7 +327,7 @@ export class LoanDetailsPage implements OnInit {
     });
 
     return await this.actionSheetController.create({
-      header: this.datePipe.transform(emi.emiDate, 'MMMM YYYY') || '',
+      header: this.datePipe.transform(emi.emiDate, 'MMMM y') || '',
       cssClass: 'my-custom-class',
       buttons,
     });

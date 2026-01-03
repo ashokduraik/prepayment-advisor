@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import * as Highcharts from 'highcharts';
-import moment from 'moment';
+import Highcharts from 'highcharts/es-modules/masters/highcharts.src.js';
+import { DateUtils } from 'src/app/services/date.utils';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
@@ -10,9 +10,10 @@ import { AppCurrencyPipe } from '../../services/app.pipe';
 import { ChartUtils } from 'src/app/services/chart.utils';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+    selector: 'app-home',
+    templateUrl: 'home.page.html',
+    styleUrls: ['home.page.scss'],
+    standalone: false
 })
 export class HomePage {
   profile = null;
@@ -60,12 +61,12 @@ export class HomePage {
       principalPaid = 0,
       interestPaid = 0;
     const lastInstallments: any = Array.from({ length: 5 }, (_, index) => {
-      const currentDate = moment().subtract(index, 'months');
+      const currentDate = DateUtils.addMonths(DateUtils.now(), -index);
       return {
         interestPaid: 0,
         principalPaid: 0,
         drilldowns: [],
-        emiDate: currentDate.startOf('month').add(1, 'day').toDate(),
+        emiDate: DateUtils.addDays(DateUtils.startOfMonth(currentDate), 1),
       };
     });
 
@@ -84,8 +85,8 @@ export class HomePage {
       const insts = this.getLastInstallemts(loan.instalments);
 
       lastInstallments.forEach((insta) => {
-        const month = moment(insta.emiDate);
-        const matchedEmi = insts.find((e) => month.isSame(e.emiDate, 'month'));
+        const month = DateUtils.toDate(insta.emiDate);
+        const matchedEmi = insts.find((e) => DateUtils.isSameMonth(month, e.emiDate));
         if (!matchedEmi) return;
 
         const principalPaid =
@@ -104,13 +105,13 @@ export class HomePage {
       if (!loan.ledger.length) return;
 
       lastInstallments.forEach((insta) => {
-        const month = moment(insta.emiDate);
+        const month = DateUtils.toDate(insta.emiDate);
         let monthPaid = 0;
         let monthInterest = 0;
         let principalPaid = 0;
 
         loan.ledger.forEach((led) => {
-          if (month.isSame(led.transactionDate, 'month')) {
+          if (DateUtils.isSameMonth(month, led.transactionDate)) {
             if (led.type === 'DEBIT') {
               monthPaid += led.amount;
             } else {

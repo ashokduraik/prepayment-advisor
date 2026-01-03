@@ -8,9 +8,10 @@ import { AppService } from '../../services/app.services';
 import { AppCurrencyPipe } from '../../services/app.pipe';
 
 @Component({
-  selector: 'app-timeline',
-  templateUrl: './timeline.page.html',
-  styleUrls: ['./timeline.page.scss'],
+    selector: 'app-timeline',
+    templateUrl: './timeline.page.html',
+    styleUrls: ['./timeline.page.scss'],
+    standalone: false
 })
 export class TimelinePage {
   loan: any;
@@ -56,7 +57,7 @@ export class TimelinePage {
 
     this.loan.instalments.forEach((emi, i) => {
       const changes: any = [];
-      const date = this.datePipe.transform(emi.emiDate, 'MMM YYYY');
+      const date = this.datePipe.transform(emi.emiDate, 'MMM y');
       let amount = this.getAmount(emi.amount);
 
       if (!lastEMI || !lastInterest) {

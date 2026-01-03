@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as Highcharts from 'highcharts';
+import Highcharts from 'highcharts/es-modules/masters/highcharts.src.js';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppStorage } from '../../services/app.storage';
@@ -9,9 +9,10 @@ import { AppCurrencyPipe } from '../../services/app.pipe';
 import { ChartUtils } from 'src/app/services/chart.utils';
 
 @Component({
-  selector: 'app-statistics',
-  templateUrl: './statistics.page.html',
-  styleUrls: ['./statistics.page.scss'],
+    selector: 'app-statistics',
+    templateUrl: './statistics.page.html',
+    styleUrls: ['./statistics.page.scss'],
+    standalone: false
 })
 export class StatisticsPage implements AfterViewInit {
   loan: any;

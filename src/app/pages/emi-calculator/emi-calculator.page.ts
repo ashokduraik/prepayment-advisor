@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent, LoadingController } from '@ionic/angular';
-import moment from 'moment';
+import { DateUtils } from '../../services/date.utils';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppService } from '../../services/app.services';
 
 @Component({
-  selector: 'app-emi-calculator',
-  templateUrl: './emi-calculator.page.html',
-  styleUrls: ['./emi-calculator.page.scss'],
+    selector: 'app-emi-calculator',
+    templateUrl: './emi-calculator.page.html',
+    styleUrls: ['./emi-calculator.page.scss'],
+    standalone: false
 })
 export class EmiCalculatorPage implements OnInit {
   //@ts-ignore
@@ -144,7 +145,7 @@ export class EmiCalculatorPage implements OnInit {
       amount: this.amount,
       interestRate: this.interestRate,
       amountType: 'FULL_TRANS',
-      startDate: moment().add(1, 'month').startOf('month'),
+      startDate: DateUtils.startOfMonth(DateUtils.addMonths(DateUtils.now(), 1)),
       emiDay: 28,
     };
 

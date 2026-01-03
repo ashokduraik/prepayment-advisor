@@ -12,9 +12,9 @@
 <ion-content [fullscreen]="true">
   @if (previousMonth) {
     <ion-card class="speaker-card" style="margin: -10px 10px 15px 10px;">
-      <ion-button (click)="goToPrevious()" expand="block" color="light" style="margin: 0px; text-transform: none;">
+        <ion-button (click)="goToPrevious()" expand="block" color="light" style="margin: 0px; text-transform: none;">
         <ion-icon name="arrow-up-outline" style="margin-right: 5px;"></ion-icon>
-        Go to {{previousMonth | date: 'MMMM YYYY'}} EMI
+        Go to {{previousMonth | date: 'MMMM y'}} EMI
       </ion-button>
     </ion-card>
   }
@@ -28,7 +28,7 @@
               Term: {{emi.term}}
             </ion-col>
             <ion-col>
-              <h2 style="font-size: 20px;">{{emi.emiDate | date: 'MMMM YYYY'}}</h2>
+              <h2 style="font-size: 20px;">{{emi.emiDate | date: 'MMMM y'}}</h2>
             </ion-col>
             <ion-col size="2" style="text-align: end;" class="ion-align-self-center">
               {{ emi.interestRate }}%
@@ -374,7 +374,7 @@
   <ion-card class="speaker-card" style="margin-top: 20px;">
     <ion-button (click)="goToNext()" expand="block" color="light" style="margin: 0px; text-transform: none;">
       <ion-icon name="arrow-down-outline" style="margin-right: 5px;"></ion-icon>
-      Go to {{nextMonth | date: 'MMMM YYYY'}} EMI
+      Go to {{nextMonth | date: 'MMMM y'}} EMI
     </ion-button>
   </ion-card>
 }

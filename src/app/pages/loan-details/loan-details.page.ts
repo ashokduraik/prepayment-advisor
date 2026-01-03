@@ -327,7 +327,7 @@ export class LoanDetailsPage implements OnInit {
     });
 
     return await this.actionSheetController.create({
-      header: this.datePipe.transform(emi.emiDate, 'MMMM YYYY') || '',
+      header: this.datePipe.transform(emi.emiDate, 'MMMM y') || '',
       cssClass: 'my-custom-class',
       buttons,
     });

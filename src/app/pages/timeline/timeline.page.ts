@@ -57,7 +57,7 @@ export class TimelinePage {
 
     this.loan.instalments.forEach((emi, i) => {
       const changes: any = [];
-      const date = this.datePipe.transform(emi.emiDate, 'MMM YYYY');
+      const date = this.datePipe.transform(emi.emiDate, 'MMM y');
       let amount = this.getAmount(emi.amount);
 
       if (!lastEMI || !lastInterest) {

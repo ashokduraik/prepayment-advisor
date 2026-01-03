@@ -115,14 +115,14 @@
                 Estimated End Date
               </ion-col>
               <ion-col size="4" class="ion-align-self-end">
-                {{ loan.endDate | date: 'MMMM YYYY' }}
+                {{ loan.endDate | date: 'MMMM y' }}
               </ion-col>
             </ion-row>
           }
           @if (loan.isCompleted) {
             <ion-row style="color: green;">
               <ion-col>
-                <strong>The Loan is completed on {{loan.completedAt | date: 'MMMM YYYY'}}</strong>
+                <strong>The Loan is completed on {{loan.completedAt | date: 'MMMM y'}}</strong>
               </ion-col>
             </ion-row>
           }
@@ -139,7 +139,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col>
-                  <strong>{{emi.emiDate | date: 'MMMM YYYY'}}</strong>
+                  <strong>{{emi.emiDate | date: 'MMMM y'}}</strong>
                 </ion-col>
                 <ion-col>
                   Term: {{emi.term}}
@@ -272,7 +272,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col>
-                  <strong>{{led.transactionDate | date: 'dd MMMM YYYY'}}</strong>
+                  <strong>{{led.transactionDate | date: 'dd MMMM y'}}</strong>
                 </ion-col>
                 <ion-col style="text-align: end;">
                   <ion-badge style="margin-left: 0px;" color="{{led.type === 'DEBIT'? 'success' : 'danger'}}">

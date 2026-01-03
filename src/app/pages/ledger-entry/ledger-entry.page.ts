@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { DateUtils } from 'src/app/services/date.utils';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -36,7 +36,7 @@ export class LedgerEntryPage implements OnInit {
   });
   saveInProgress = false;
   minDate = '2010-01-01T00:00:00';
-  maxDate = moment().endOf('month').format("YYYY-MM-DD");
+  maxDate = DateUtils.endOfMonth(DateUtils.now()).toISOString().slice(0,10);
 
   constructor(
     private router: Router,

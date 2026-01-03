@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent, LoadingController } from '@ionic/angular';
-import moment from 'moment';
+import { DateUtils } from '../../services/date.utils';
 
 import { LoanUtils } from '../../services/loan.utils';
 import { AppService } from '../../services/app.services';
@@ -145,7 +145,7 @@ export class EmiCalculatorPage implements OnInit {
       amount: this.amount,
       interestRate: this.interestRate,
       amountType: 'FULL_TRANS',
-      startDate: moment().add(1, 'month').startOf('month'),
+      startDate: DateUtils.startOfMonth(DateUtils.addMonths(DateUtils.now(), 1)),
       emiDay: 28,
     };
 

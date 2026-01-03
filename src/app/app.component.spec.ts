@@ -1,8 +1,13 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { DatePipe } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RouterTestingModule } from '@angular/router/testing';
+import { IonicModule } from '@ionic/angular';
 
+import { CommonTestModule } from '../testing/common-test.module';
+import { PipesModule } from './pipes.module';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -13,7 +18,8 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [AppComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule.withRoutes([])],
+      imports: [CommonTestModule],
+      providers: [DatePipe]
     }).compileComponents();
   });
 

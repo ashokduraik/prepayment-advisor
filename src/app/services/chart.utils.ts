@@ -1,5 +1,5 @@
-import moment from 'moment';
-import * as Highcharts from 'highcharts';
+import { DateUtils } from './date.utils';
+import Highcharts from 'highcharts/es-modules/masters/highcharts.src.js';
 
 export class ChartUtils {
   static getPieChartOptions(currencyPipe, title, data): Highcharts.Options {
@@ -96,7 +96,7 @@ export class ChartUtils {
       ymax = Math.max(ymax, emi.interestPaid + pPaid);
 
       if (lessCate) {
-        const name = moment(date).format('MMM YYYY');
+        const name = DateUtils.formatMonthYear(date);
         let dd = emi.drilldowns && emi.drilldowns.length;
 
         interestPaid.push({
@@ -178,7 +178,7 @@ export class ChartUtils {
           autoRotationLimit: 10,
           formatter: function () {
             if (isNaN(Number(this.value))) return this.value + '';
-            return moment(Number(this.value)).format('MMM YYYY');
+            return DateUtils.formatMonthYear(Number(this.value));
           }
         },
       },
@@ -258,7 +258,7 @@ export class ChartUtils {
         </td>
       </tr>`
     }).join('');
-    return `
+        return `
     <table>
         <tr>
           <th colspan="2">${Highcharts.dateFormat('%b %Y', Number(_this.key))}</th>

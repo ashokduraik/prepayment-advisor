@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { DateUtils } from '../../services/date.utils';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -28,7 +28,7 @@ export class LoanTopupPage implements OnInit {
   minDate = '2010-01-01';
   saveInProgress = false;
   valueChangedPromise: any = null;
-  maxDate = moment().endOf('month').format("YYYY-MM-DD");
+  maxDate = DateUtils.endOfMonth(DateUtils.now()).toISOString().slice(0,10);
 
   constructor(
     private router: Router,
@@ -65,8 +65,8 @@ export class LoanTopupPage implements OnInit {
 
     this.loanDetails = JSON.parse(JSON.stringify(this.loan));
     LoanUtils.calculateLoanDetails(this.loanDetails);
-    this.minDate = moment(this.emi.emiDate).startOf('month').format("YYYY-MM-DD");
-    this.maxDate = moment(this.emi.emiDate).endOf('month').format("YYYY-MM-DD");
+    this.minDate = DateUtils.startOfMonth(this.emi.emiDate).toISOString().slice(0,10);
+    this.maxDate = DateUtils.endOfMonth(this.emi.emiDate).toISOString().slice(0,10);
     this.topups = JSON.parse(JSON.stringify(this.emi.topups || []));
     this.newEmiAmount = this.emi.newEmiAmount;
 
@@ -133,7 +133,7 @@ export class LoanTopupPage implements OnInit {
       const topupDate = topups[0].topupDate;
 
       /** if topup were added before the emi day then new emi will be applied in the current month itself */
-      if (this.emi.emiDay > moment(topupDate).get('date')) {
+      if (this.emi.emiDay > DateUtils.getDate(topupDate)) {
         this.emi.amount = this.newEmiAmount;
       } else {
         this.emi.amount = lastMonthEmi;

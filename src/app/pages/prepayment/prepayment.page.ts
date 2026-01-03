@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { DateUtils } from '../../services/date.utils';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -28,7 +28,7 @@ export class PrepaymentPage implements OnInit {
   saveInProgress = false;
   prepaymentChanged = false;
   valueChangedPromise: any = null;
-  maxDate = moment().endOf('month').format("YYYY-MM-DD");
+  maxDate = DateUtils.endOfMonth(DateUtils.now()).toISOString().slice(0,10);
 
   constructor(
     private router: Router,
@@ -65,8 +65,8 @@ export class PrepaymentPage implements OnInit {
 
     this.loanDetails = JSON.parse(JSON.stringify(this.loan));
     LoanUtils.calculateLoanDetails(this.loanDetails);
-    this.minDate = moment(this.emi.emiDate).startOf('month').format("YYYY-MM-DD");
-    this.maxDate = moment(this.emi.emiDate).endOf('month').format("YYYY-MM-DD");
+    this.minDate = DateUtils.startOfMonth(this.emi.emiDate).toISOString().slice(0,10);
+    this.maxDate = DateUtils.endOfMonth(this.emi.emiDate).toISOString().slice(0,10);
     this.prepayments = JSON.parse(JSON.stringify(this.emi.prepayments || []));
     this.newEmiAmount = this.emi.newEmiAmount;
 
@@ -131,7 +131,7 @@ export class PrepaymentPage implements OnInit {
       const prepaymentDate = prepayments[0].prepaymentDate;
 
       /** if prepayments were added before the emi day then new emi will be applied in the current month itself */
-      if (this.emi.emiDay > moment(prepaymentDate).get('date')) {
+      if (this.emi.emiDay > DateUtils.getDate(prepaymentDate)) {
         this.emi.amount = this.newEmiAmount;
       } else {
         this.emi.amount = lastMonthEmi;

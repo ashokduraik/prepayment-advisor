@@ -2,7 +2,6 @@ import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 
 import * as Highcharts from 'highcharts';
-import { Storage } from '@ionic/storage-angular';
 // import darkTheme from 'highcharts/themes/high-contrast-dark';
 import lightTheme from 'highcharts/themes/high-contrast-light';
 import { Platform } from '@ionic/angular';
@@ -51,7 +50,6 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private router: Router,
-    private storage: Storage,
     private appStorage: AppStorage,
     private appService: AppService
   ) {
@@ -63,7 +61,6 @@ export class AppComponent {
   }
 
   async ngOnInit() {
-    await this.storage.create();
     // await this.appStorage.saveLoans(sampleData.loans); // to setup sample data;
 
     this.setProfileData();

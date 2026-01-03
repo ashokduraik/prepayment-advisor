@@ -3,8 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { Drivers } from '@ionic/storage';
-import { IonicStorageModule } from '@ionic/storage-angular';
+// Ionic Storage removed — using Capacitor Storage (@capacitor/storage)
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { HighchartsChartModule } from 'highcharts-angular';
 
@@ -36,15 +35,7 @@ export const myComponents = [
     FormsModule,
     HighchartsChartModule,
     ReactiveFormsModule,
-    IonicStorageModule.forRoot({
-      name: '__ppadb',
-      driverOrder: [
-        Drivers.IndexedDB,
-        'sqlite',
-        'websql',
-        Drivers.LocalStorage,
-      ],
-    }),
+    // Capacitor Storage does not require module initialization
     AmountInputModule,
   ],
   providers: [

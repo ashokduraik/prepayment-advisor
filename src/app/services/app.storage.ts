@@ -1,4 +1,4 @@
-import { Storage } from '@ionic/storage';
+import { Storage } from '@capacitor/storage';
 import { Injectable } from '@angular/core';
 
 import { AppUtils } from './app.utils';
@@ -9,14 +9,32 @@ import { AppUtils } from './app.utils';
 
 export class AppStorage {
 
-  constructor(public storage: Storage) { }
+  constructor() { }
+
+  private async setKey(key: string, value: any) {
+    try {
+      await Storage.set({ key, value: JSON.stringify(value) });
+    } catch (e) {
+      AppUtils.errorLog(e);
+    }
+  }
+
+  private async getKey(key: string) {
+    try {
+      const res = await Storage.get({ key });
+      return res && res.value ? JSON.parse(res.value) : null;
+    } catch (e) {
+      AppUtils.errorLog(e);
+      return null;
+    }
+  }
 
   async createLoan(loan: { createdat: string; }) {
     try {
-      const loans = await this.getLoans() || [];
+      const loans = (await this.getLoans()) || [];
       loan.createdat = (new Date()).toISOString();
       loans.push(loan);
-      await this.storage.set('loans', loans);
+      await this.setKey('loans', loans);
       return loans;
     } catch (e) {
       AppUtils.errorLog(e);
@@ -26,11 +44,11 @@ export class AppStorage {
 
   async updateLoan(loan: { _id: any; }) {
     try {
-      let loans = await this.getLoans() || [];
+      let loans = (await this.getLoans()) || [];
       loans = loans.map((l: { _id: any; }) => {
         return l._id == loan._id ? loan : l;
       });
-      await this.storage.set('loans', loans);
+      await this.setKey('loans', loans);
       return loans;
     } catch (e) {
       AppUtils.errorLog(e);
@@ -41,7 +59,7 @@ export class AppStorage {
   async saveLoans(loans: any[]) {
     try {
       loans = loans || [];
-      await this.storage.set('loans', loans);
+      await this.setKey('loans', loans);
     } catch (e) {
       AppUtils.errorLog(e);
     }
@@ -49,7 +67,7 @@ export class AppStorage {
 
   async getLoans() {
     try {
-      const loans = await this.storage.get('loans');
+      const loans = await this.getKey('loans');
       return loans;
     } catch (e) {
       AppUtils.errorLog(e);
@@ -59,7 +77,7 @@ export class AppStorage {
 
   async getLoan(_id: string) {
     try {
-      const loans = await this.storage.get('loans') || [];
+      const loans = (await this.getKey('loans')) || [];
       return loans.find((l: { _id: any; }) => l._id == _id);
     } catch (e) {
       AppUtils.errorLog(e);
@@ -93,10 +111,10 @@ export class AppStorage {
         return;
       }
 
-      await this.storage.set('loans', loans);
+      await this.setKey('loans', loans);
       const deleteLoans = await this.getDeletedLoans() || [];
       deleteLoans.push(loan);
-      await this.storage.set('deleteLoans', deleteLoans);
+      await this.setKey('deleteLoans', deleteLoans);
     } catch (e) {
       AppUtils.errorLog(e);
     }
@@ -104,7 +122,7 @@ export class AppStorage {
 
   async getDeletedLoans() {
     try {
-      const loans = await this.storage.get('deleteLoans');
+      const loans = await this.getKey('deleteLoans');
       return loans;
     } catch (e) {
       AppUtils.errorLog(e);
@@ -114,8 +132,7 @@ export class AppStorage {
 
   async getProfile() {
     try {
-      //this.storage.clear();
-      const profile = await this.storage.get('profile');
+      const profile = await this.getKey('profile');
       return profile;
     } catch (e) {
       AppUtils.errorLog(e);
@@ -127,8 +144,7 @@ export class AppStorage {
     try {
       profile = profile || {};
       if (!profile._id) profile._id = AppUtils.getUid();
-      await this.storage.set('profile', null);
-      await this.storage.set('profile', profile);
+      await this.setKey('profile', profile);
     } catch (e) {
       AppUtils.errorLog(e);
     }

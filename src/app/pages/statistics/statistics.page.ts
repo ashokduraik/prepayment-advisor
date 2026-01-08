@@ -113,7 +113,7 @@ export class StatisticsPage implements AfterViewInit {
         name: 'Principal Paid',
         data: principal,
         type: 'column',
-        color: '#2dd36f',
+        color: '#1b6534',
       }]
     }
 

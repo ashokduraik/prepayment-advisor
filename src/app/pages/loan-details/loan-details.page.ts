@@ -83,7 +83,7 @@ export class LoanDetailsPage implements OnInit {
         name: 'Principal<br> Paid',
         y: (this.loan.principalPaid * 100) / this.loan.amount,
         amount: this.loan.principalPaid,
-        color: '#2dd36f',
+        color: '#1b6534',
       },
       {
         name: 'Balanace',
@@ -116,7 +116,7 @@ export class LoanDetailsPage implements OnInit {
           (this.loan.principalPaid * 100) /
           (this.loan.principalPaid + this.loan.interestPaid),
         amount: this.loan.principalPaid,
-        color: '#2dd36f',
+        color: '#1b6534',
       },
     ];
     this.repaidChartOpns = ChartUtils.getPieChartOptions(
@@ -138,7 +138,7 @@ export class LoanDetailsPage implements OnInit {
         name: 'Prepayment',
         y: (this.loan.totalPrepayment * 100) / this.loan.principalPaid,
         amount: this.loan.totalPrepayment,
-        color: '#2dd36f',
+        color: '#1b6534',
       },
     ];
     this.prinpaidChartOpns = ChartUtils.getPieChartOptions(
@@ -157,7 +157,7 @@ export class LoanDetailsPage implements OnInit {
         name: 'Principal',
         y: (this.loan.amount * 100) / total,
         amount: this.loan.amount,
-        color: '#2dd36f',
+        color: '#1b6534',
       },
       {
         name: 'Interest',

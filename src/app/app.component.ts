@@ -59,9 +59,9 @@ export class AppComponent {
   ) {
     this.isAndroid = this.platform.is('android');
     this.initializeApp();
-    // Highcharts.setOptions({
-    //   credits: { enabled: false },
-    // });
+    Highcharts.setOptions({
+      credits: { enabled: false },
+    });
   }
 
   async ngOnInit() {

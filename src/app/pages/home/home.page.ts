@@ -10,10 +10,10 @@ import { AppCurrencyPipe } from '../../services/app.pipe';
 import { ChartUtils } from 'src/app/services/chart.utils';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: 'home.page.html',
-    styleUrls: ['home.page.scss'],
-    standalone: false
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+  standalone: false
 })
 export class HomePage {
   profile = null;
@@ -25,6 +25,7 @@ export class HomePage {
   loanChartOpns: Highcharts.Options | null = null;
   repaidChartOpns: Highcharts.Options | null = null;
   instaChartOpns: any = null;
+  paidChartOpns: any = null;
   summary = {
     loanCnt: 0,
     outstanding: 0,
@@ -36,7 +37,7 @@ export class HomePage {
     private storage: AppStorage,
     private appService: AppService,
     private currencyPipe: AppCurrencyPipe
-  ) {}
+  ) { }
 
   async ionViewWillEnter() {
     this.initializeHome();
@@ -70,6 +71,10 @@ export class HomePage {
       };
     });
 
+    let ymax = 0;
+    const loadNames: String[] = [];
+    const totalLoanAmts: Number[] = [];
+    const principalPaids: Number[] = [];
     this.loans.forEach((loan) => {
       LoanUtils.calculateLoanDetails(loan);
       totalLoanAmount += loan.amount;
@@ -79,6 +84,10 @@ export class HomePage {
 
       if (!loan.isCompleted) {
         this.summary.loanCnt++;
+        loadNames.push(loan.name);
+        totalLoanAmts.push(loan.amount);
+        principalPaids.push(loan.principalPaid);
+        ymax = Math.max(ymax, loan.amount);
       }
 
       if (!loan.instalments.length) return;
@@ -142,7 +151,7 @@ export class HomePage {
         name: 'Principal<br> Paid',
         y: (principalPaid * 100) / totalLoanAmount,
         amount: principalPaid,
-        color: '#2dd36f',
+        color: '#1b6534',
       },
       {
         name: 'Balanace',
@@ -171,7 +180,7 @@ export class HomePage {
         name: 'Principal<br> Paid',
         y: (principalPaid * 100) / (principalPaid + interestPaid),
         amount: principalPaid,
-        color: '#2dd36f',
+        color: '#1b6534',
       },
     ];
     this.repaidChartOpns = ChartUtils.getPieChartOptions(
@@ -202,13 +211,90 @@ export class HomePage {
         redrawEnabled = true;
       },
     };
+
+    const self = this;
+    ymax += ymax * 0.1;
+    this.paidChartOpns = {
+      chart: {
+        type: 'column',
+      },
+      title: { text: '' },
+      xAxis: {
+        categories: loadNames,
+        labels: { enabled: false },
+      },
+      yAxis: [{
+        min: 0,
+        max: ymax,
+        title: { text: '' },
+        labels: { enabled: false },
+      }],
+      legend: { shadow: false },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        formatter: function () {
+          const _t: any = this;
+          const tds = 'style="padding: 3px 5px"';
+          const rows = (_t.points || [])
+            .map((p) => {
+              return `
+            <tr>
+               <td ${tds}>${p.series.name}</td>
+               <td>:
+                 <b>${self.currencyPipe.transform(p.y, 'noDecimal')}
+               </td>
+            </tr>`;
+            })
+            .join('');
+          return `
+            <table>
+              <tr>
+                <th colspan="2" style="text-align: center">${_t.x}</th>
+              </tr>
+              ${rows}
+              <tr>
+                <td ${tds}>Balance Amount</td>
+                <td>: <b>${self.currencyPipe.transform(_t.points[0].y - _t.points[1].y, 'noDecimal')}</b></td>
+              </tr>
+              <tr>
+                <td ${tds} colspan="2"><b>${(
+              ((_t.points[0].y - _t.points[1].y) * 100) /
+              self.summary.outstanding
+            ).toFixed(2)}%</b> of Total Outstanding</td>
+              </tr>
+            </table>
+          `;
+        },
+      },
+      plotOptions: {
+        column: {
+          grouping: false,
+          shadow: false,
+          borderWidth: 0,
+        },
+      },
+      series: [{
+        name: 'Total Loan',
+        color: '#aebab2',
+        data: totalLoanAmts,
+        pointPadding: 0.1,
+        pointPlacement: -0.2,
+      }, {
+        name: 'Paid Amount',
+        color: '#1b6534',
+        data: principalPaids,
+        pointPadding: 0.3,
+        pointPlacement: -0.2,
+      }],
+    };
   }
 
   getLastInstallemts(arr) {
     return Object.assign([], arr).reverse().slice(0, 5);
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   newLoan() {
     this.router.navigateByUrl('loan-basic', {

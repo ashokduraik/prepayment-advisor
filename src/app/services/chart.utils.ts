@@ -125,12 +125,16 @@ export class ChartUtils {
             name: 'Interest',
             color: '#eb445a',
             yAxis: 0,
+            pointPadding: 0.3,
+            pointPlacement: -0.2,
           }, {
             id: 'p' + name,
             data: principal,
             name: 'Principal',
-            color: '#2dd36f',
+            color: '#1b6534',
             yAxis: 0,
+            pointPadding: 0.3,
+            pointPlacement: -0.2,
           });
         }
         return;
@@ -142,7 +146,7 @@ export class ChartUtils {
     });
 
     ymax += ymax * 0.3;
-    const series: Highcharts.Options["series"] = [{
+    const series: Highcharts.Options['series'] = [{
       name: 'Interest',
       type: 'column',
       data: interestPaid,
@@ -152,7 +156,7 @@ export class ChartUtils {
       name: 'Principal',
       type: 'column',
       data: principalPaid,
-      color: '#2dd36f',
+      color: '#1b6534',
       yAxis: 0,
     }];
 
@@ -258,7 +262,7 @@ export class ChartUtils {
         </td>
       </tr>`
     }).join('');
-        return `
+    return `
     <table>
         <tr>
           <th colspan="2">${Highcharts.dateFormat('%b %Y', Number(_this.key))}</th>

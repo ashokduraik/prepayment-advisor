@@ -36,5 +36,6 @@ window.addEventListener('unhandledrejection', (ev: PromiseRejectionEvent) => {
     console.error('Error while logging unhandledrejection', e);
   }
 });
-platformBrowserDynamic().bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()], })
-  .catch(err => console.log(err));
+platformBrowserDynamic().bootstrapModule(AppModule, {
+  applicationProviders: [provideZoneChangeDetection()],
+}).catch(err => console.log(err));

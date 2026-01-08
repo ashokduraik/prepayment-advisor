@@ -20,10 +20,10 @@ import { ChartUtils } from 'src/app/services/chart.utils';
 import { AppUtils } from 'src/app/services/app.utils';
 
 @Component({
-    selector: 'app-loan-details',
-    templateUrl: './loan-details.page.html',
-    styleUrls: ['./loan-details.page.scss'],
-    standalone: false
+  selector: 'app-loan-details',
+  templateUrl: './loan-details.page.html',
+  styleUrls: ['./loan-details.page.scss'],
+  standalone: false
 })
 export class LoanDetailsPage implements OnInit {
   _id: String = '';
@@ -50,7 +50,7 @@ export class LoanDetailsPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     public alertController: AlertController,
     public actionSheetController: ActionSheetController
-  ) {}
+  ) { }
 
   async ionViewWillEnter() {
     const _id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -306,20 +306,17 @@ export class LoanDetailsPage implements OnInit {
       });
     }
 
-    buttons.push(
-      {
-        role: 'prepayment',
-        text: 'Add / Edit Prepayment',
-        icon: 'cash-outline',
-        cssClass: 'action-sheet-primary',
-      },
-      {
-        role: 'callogic',
-        text: 'Calculation Logic',
-        icon: 'calculator-outline',
-        cssClass: 'action-sheet-primary',
-      }
-    );
+    buttons.push({
+      role: 'prepayment',
+      text: 'Add / Edit Prepayment',
+      icon: 'cash-outline',
+      cssClass: 'action-sheet-primary',
+    }, {
+      role: 'callogic',
+      text: 'Calculation Logic',
+      icon: 'calculator-outline',
+      cssClass: 'action-sheet-primary',
+    });
 
     buttons.push({
       text: 'Cancel',

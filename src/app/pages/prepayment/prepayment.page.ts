@@ -72,7 +72,7 @@ export class PrepaymentPage implements OnInit {
 
     this.prepayments.push({
       amount: '',
-      prepaymentDate: (new Date(this.emi.emiDate)).toISOString()
+      prepaymentDate: (new Date()).toISOString()
     });
   }
 

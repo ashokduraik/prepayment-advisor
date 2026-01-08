@@ -79,8 +79,8 @@
               </ion-text>
             }
             <ion-item>
-              <ion-label>Apply EMI Amount change for this month only</ion-label>
-              <ion-toggle formControlName="emiChangeCurrent"></ion-toggle>
+              <ion-label fl>Apply the EMI amount change for this month only</ion-label>
+              <ion-toggle formControlName="emiChangeCurrent" slot="end"></ion-toggle>
             </ion-item>
             <ion-item lines="none">
               <ion-select label="EMI debit day" formControlName="emiDay" placeholder="Select" style="max-width: none;"
@@ -105,15 +105,15 @@
             <span class="label">Interest Adjustment If our logic is wrong</span>
             <ion-input formControlName="interestAdjustment" type="number" amountInput></ion-input>
             <ion-text>
-              <p style="padding-left: 15px;">If you want reduce the interest, enter negative number</p>
+              <p style="padding-left: 15px;">To reduce the interest, enter a negative value.</p>
             </ion-text>
           </ion-list>
           <ion-card>
-            <ion-item lines="none">
+            <ion-item lines="none" style="padding: 10px 0;">
               <ion-row>
                 <strong>Note:</strong>
                 <div>
-                  Any changes in Rate of Interest or EMI or EMI debit day, will affect all the next month EMI.
+                  Any changes to the rate of interest, EMI amount, or EMI debit day will impact all subsequent EMIs.
                 </div>
               </ion-row>
             </ion-item>

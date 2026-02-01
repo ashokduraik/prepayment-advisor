@@ -53,7 +53,7 @@ export class ChartUtils {
     }
   }
 
-  static getPaymentHistoryChart(currencyPipe, instalments): Highcharts.Options {
+  static getPaymentHistoryChart(currencyPipe, instalments, isDrillDown?): Highcharts.Options {
     let ymax = 0;
     let categories: any = null;
     const interestPaid: any = [];
@@ -95,7 +95,7 @@ export class ChartUtils {
       const pPaid = emi.principalPaid + (emi.prepaymentTotal || 0);
       ymax = Math.max(ymax, emi.interestPaid + pPaid);
 
-      if (lessCate) {
+      if (lessCate || isDrillDown) {
         const name = DateUtils.formatMonthYear(date);
         let dd = emi.drilldowns && emi.drilldowns.length;
 
@@ -177,7 +177,7 @@ export class ChartUtils {
       title: { text: '' },
       xAxis: {
         categories,
-        type: !lessCate ? 'datetime' : 'category',
+        type: (!lessCate && !isDrillDown) ? 'datetime' : 'category',
         labels: {
           autoRotationLimit: 10,
           formatter: function () {
@@ -254,11 +254,12 @@ export class ChartUtils {
 
   static getTooltip(_this: Highcharts.TooltipFormatterContextObject, currencyPipe) {
     const rows = (_this.points || []).map(p => {
+      const percentage = p.percentage ? p.percentage.toFixed(2) : '0.00';
       return `
       <tr>
         <td style="padding: 3px 5px">${p.series.name}</td>
         <td style="color:${p.series.color}">:
-          <b>${p.series.name === 'Interest Rate' ? (p.y + '%') : (`${currencyPipe.transform(p.y, 'noDecimal')}</b>(${p.percentage.toFixed(2)}%)`)}
+          <b>${p.series.name === 'Interest Rate' ? (p.y + '%') : (`${currencyPipe.transform(p.y, 'noDecimal')}</b>(${percentage}%)`)}
         </td>
       </tr>`
     }).join('');
@@ -269,7 +270,7 @@ export class ChartUtils {
         </tr>
         <tr>
           <td style="padding: 3px 5px">Total Paid</td>
-          <td>: <b>${currencyPipe.transform(_this.total, 'noDecimal')}</b><td>
+          <td>: <b>${currencyPipe.transform(_this.total || 0, 'noDecimal')}</b><td>
         </tr>
         ${rows}
       </table>`;

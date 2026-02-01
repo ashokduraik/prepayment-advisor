@@ -61,7 +61,7 @@ export class HomePage {
       outstanding = 0,
       principalPaid = 0,
       interestPaid = 0;
-    const lastInstallments: any = Array.from({ length: 5 }, (_, index) => {
+    let lastInstallments: any = Array.from({ length: 36 }, (_, index) => {
       const currentDate = DateUtils.addMonths(DateUtils.now(), -index);
       return {
         interestPaid: 0,
@@ -145,21 +145,30 @@ export class HomePage {
       });
     });
 
+    if (lastInstallments.length > 5) {
+      let temp: any = []
+      for (let i = lastInstallments.length - 1; i >= 0; i--) {
+        if (temp.length > 0 || lastInstallments[i].principalPaid > 0 || lastInstallments[i].interestPaid > 0) {
+          temp.push(lastInstallments[i]);
+        }
+      }
+      lastInstallments = temp;
+    } else {
+      lastInstallments = lastInstallments.reverse();
+    }
+
     this.summary.outstanding = outstanding;
-    const loanData = [
-      {
-        name: 'Principal<br> Paid',
-        y: (principalPaid * 100) / totalLoanAmount,
-        amount: principalPaid,
-        color: '#1b6534',
-      },
-      {
-        name: 'Balanace',
-        y: (outstanding * 100) / totalLoanAmount,
-        amount: outstanding,
-        color: '#eb445a',
-      },
-    ];
+    const loanData = [{
+      name: 'Principal<br> Paid',
+      y: (principalPaid * 100) / totalLoanAmount,
+      amount: principalPaid,
+      color: '#1b6534',
+    }, {
+      name: 'Balanace',
+      y: (outstanding * 100) / totalLoanAmount,
+      amount: outstanding,
+      color: '#eb445a',
+    }];
     this.loanChartOpns = ChartUtils.getPieChartOptions(
       this.currencyPipe,
       `Total Loan<br>${this.currencyPipe.transform(
@@ -169,20 +178,17 @@ export class HomePage {
       loanData
     );
 
-    const paidData = [
-      {
-        name: 'Interest<br> Paid',
-        y: (interestPaid * 100) / (principalPaid + interestPaid),
-        amount: interestPaid,
-        color: '#eb445a',
-      },
-      {
-        name: 'Principal<br> Paid',
-        y: (principalPaid * 100) / (principalPaid + interestPaid),
-        amount: principalPaid,
-        color: '#1b6534',
-      },
-    ];
+    const paidData = [{
+      name: 'Interest<br> Paid',
+      y: (interestPaid * 100) / (principalPaid + interestPaid),
+      amount: interestPaid,
+      color: '#eb445a',
+    }, {
+      name: 'Principal<br> Paid',
+      y: (principalPaid * 100) / (principalPaid + interestPaid),
+      amount: principalPaid,
+      color: '#1b6534',
+    }];
     this.repaidChartOpns = ChartUtils.getPieChartOptions(
       this.currencyPipe,
       `Total Paid<br>${this.currencyPipe.transform(
@@ -195,9 +201,24 @@ export class HomePage {
     let redrawEnabled = true;
     this.instaChartOpns = ChartUtils.getPaymentHistoryChart(
       this.currencyPipe,
-      lastInstallments.reverse()
+      lastInstallments,
+      true
     );
+
     this.instaChartOpns.chart.events = {
+      load: function () {
+        // Zoom to last 5 months for datetime charts
+        if (this.xAxis && this.xAxis[0] && lastInstallments.length > 5) {
+          const xaxis = this.xAxis[0];
+          const series = this.series[0];
+          if (series && series.xData && series.xData.length > 5) {
+            const dataLength = series.xData.length;
+            const newMin = series.xData[dataLength - 3];
+            const newMax = series.xData[dataLength - 1];
+            xaxis.setExtremes(newMin, newMax);
+          }
+        }
+      },
       redraw: function () {
         if (!redrawEnabled) return;
         redrawEnabled = false;
@@ -291,7 +312,12 @@ export class HomePage {
   }
 
   getLastInstallemts(arr) {
-    return Object.assign([], arr).reverse().slice(0, 5);
+    const tp = Object.assign([], arr).reverse();
+    if (tp.length <= 36) {
+      return tp;
+    } else {
+      return tp.slice(0, 36);
+    }
   }
 
   ngOnInit() { }
